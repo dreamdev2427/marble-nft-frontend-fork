@@ -1,0 +1,77 @@
+import {
+  Box,
+  chakra,
+  Divider,
+  Flex,
+  Image,
+  Text,
+} from "@chakra-ui/react";
+import * as React from "react";
+import { NftInfo } from "services/nft/type";
+
+interface NftCardProps {
+  readonly nft: NftInfo;
+}
+
+export function NftCard({ nft }: NftCardProps): JSX.Element {
+  return (
+    <Flex
+      w="full"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Box w="full">
+        <Image
+          roundedTop="lg"
+          h={56}
+          w="full"
+          fit="cover"
+          src={nft.image}
+          fallbackSrc="assets/cosmverse.jpg"
+          alt={nft.title}
+        />
+        <Box px={4} bg="gray.500" roundedBottom="md">
+          <Box py={2}>
+            <chakra.p
+              mt={1}
+              fontSize="xs"
+              color="gray.200"
+            >
+              @{nft.user}
+            </chakra.p>
+            <chakra.h1
+              color={"white"}
+              fontWeight="bold"
+              fontSize="2xl"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              title={nft.title}
+            >
+              {nft.title}
+            </chakra.h1>
+            <chakra.p
+              mt={1}
+              fontSize="xs"
+              color="white"
+            >
+              {nft.total === 1 ? "One edition" : `${nft.total} editions`}
+            </chakra.p>
+          </Box>
+          <Divider />
+          <Box
+            py={4}
+            color="white"
+          >
+            <Text fontSize="xs">
+              Price
+            </Text>
+            <chakra.h1 fontWeight="semibold" fontSize="sm">
+              {nft.price}
+            </chakra.h1>
+          </Box>
+        </Box>
+      </Box>
+    </Flex>
+  );
+}

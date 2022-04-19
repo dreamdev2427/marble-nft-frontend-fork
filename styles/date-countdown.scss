@@ -1,0 +1,44 @@
+
+
+@keyframes moveup {
+    0%   {opacity: 0; transform: translateY(12px);}
+    100%  {opacity: 1; transform: translateY(0px);}
+}
+
+@keyframes movedown {
+    0%   {opacity: 1; transform: translateY(0px);}
+    100%  {opacity: 0; transform: translateY(-12px);}
+}
+
+.odometerStart{
+    display: inline-block;
+    animation-name: modeup 0.25s;
+    -webkit-animation: moveup 0.25s;
+    animation-fill-mode: forwards;
+}
+.odometerEnd{
+    display: inline-block;
+    animation-name: movedown 0.25s;
+    -webkit-animation: movedown 0.25s;
+    animation-fill-mode: forwards;
+}
+
+.odometer-block{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.dcd-info{
+    width: 48px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.dcd-info .dcd-val{
+    font-size: 24px;
+}
+.dcd-comment{
+    color: #666666;
+    font-size: 12px;
+    text-align: center;
+}
