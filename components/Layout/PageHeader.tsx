@@ -22,7 +22,7 @@ export const PageHeader = ({ title, subtitle }) => {
       <Text
         variant="body"
         className="page-subtitle"
-        css={{ paddingBottom: '48px', fontSize: '$8', textAlign: 'center', maxWidth:'970px', color:'$textColors$secondary' }}
+        css={{ paddingBottom: '48px', fontSize: '$8', textAlign: 'center', maxWidth:'970px', margin:'0 auto', color:'$textColors$secondary' }}
       >
         {subtitle}
       </Text>

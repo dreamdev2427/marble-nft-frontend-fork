@@ -1,7 +1,7 @@
 import React from 'react'
-import { AppLayout } from '../components/Layout/AppLayout'
-import { PageHeader } from '../components/Layout/PageHeader'
-import { Explore } from '../features/nft/market/explore'
+import { AppLayout } from '/components/Layout/AppLayout'
+import { PageHeader } from '/components/Layout/PageHeader'
+import { Explore } from '/features/nft/market/explore'
 import { styled } from 'components/theme'
 
 export default function Home() {

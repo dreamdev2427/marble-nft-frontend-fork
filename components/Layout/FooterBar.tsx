@@ -79,18 +79,10 @@ export const FooterBar = () => {
             />
           </StyledDivForFooter>
         </ContainerForColumn>
+        
         <ContainerForColumn className="bottom-quick-section">
-         <h3 className="desktop-section">Marketplace</h3>
-          <h3
-            className={`mobile-section collapse-header ${openQuickNav ? 'open' :'close'}`}
-            onClick={() => {
-              setOpenQuickNav(!openQuickNav)
-            }}
-          >
-            Marketplace
-            {openQuickNav?<IconWrapper icon={<CollapseUp />} />:<IconWrapper icon={<CollapseDown />} />}
-          </h3>
-          <ContainerForMarketplace className={`footer-links ${openQuickNav ? 'open' :'close'}`}>
+         <h3>Marketplace</h3>
+          <ContainerForMarketplace className={`footer-links`}>
             <Link href="#" passHref >All NFTs</Link>
             <Link href="#" passHref >Photography</Link>
             <Link href="#" passHref >Art</Link>
@@ -104,23 +96,8 @@ export const FooterBar = () => {
           </ContainerForMarketplace>
         </ContainerForColumn>
         <ContainerForColumn className="bottom-myaccount-section">
-          <h3 className="desktop-section">My Account</h3>
-          <h3
-            className={`mobile-section collapse-header ${
-              openCommunityNav ? 'open' : 'close'
-            }`}
-            onClick={() => {
-              setOpenCommunityNav(!openCompanyNav)
-            }}
-          >
-            My Account
-            {openCommunityNav ? (
-              <IconWrapper icon={<CollapseUp />} />
-            ) : (
-              <IconWrapper icon={<CollapseDown />} />
-            )}
-          </h3>
-          <ContainerForFooterLinks className={`footer-links ${openCommunityNav ? 'open' :'close'}`}>
+          <h3>My Account</h3>
+          <ContainerForFooterLinks className={`footer-links`}>
             <Link href="#" passHref>
               Profile
             </Link>
@@ -139,23 +116,8 @@ export const FooterBar = () => {
           </ContainerForFooterLinks>
         </ContainerForColumn>
         <ContainerForColumn className="bottom-community-section">
-          <h3 className="desktop-section">Community</h3>
-          <h3
-            className={`mobile-section collapse-header ${
-              openCommunityNav ? 'open' : 'close'
-            }`}
-            onClick={() => {
-              setOpenCommunityNav(!openCompanyNav)
-            }}
-          >
-            Community
-            {openCommunityNav ? (
-              <IconWrapper icon={<CollapseUp />} />
-            ) : (
-              <IconWrapper icon={<CollapseDown />} />
-            )}
-          </h3>
-          <ContainerForFooterLinks className={`footer-links ${openCommunityNav ? 'open' :'close'}`}>
+          <h3>Community</h3>
+          <ContainerForFooterLinks className={`footer-links`}>
             <Link href={process.env.NEXT_PUBLIC_DISCORD_LINK} passHref>
               Discord
             </Link>
@@ -171,23 +133,8 @@ export const FooterBar = () => {
           </ContainerForFooterLinks>
         </ContainerForColumn>
         <ContainerForColumn className="bottom-company-section">
-          <h3 className="desktop-section">Company</h3>
-          <h3
-            className={`mobile-section collapse-header ${
-              openCompanyNav ? 'open' : 'close'
-            }`}
-            onClick={() => {
-              setOpenCompanyNav(!openCompanyNav)
-            }}
-          >
-            Company
-            {openCompanyNav ? (
-              <IconWrapper icon={<CollapseUp />} />
-            ) : (
-              <IconWrapper icon={<CollapseDown />} />
-            )}
-          </h3>
-          <ContainerForFooterLinks className={`footer-links ${openCompanyNav ? 'open' :'close'}`}>
+          <h3>Company</h3>
+          <ContainerForFooterLinks className={`footer-links`}>
             <Link href="https://marbledao.finance" passHref>
               Home
             </Link>
@@ -244,7 +191,7 @@ const ContainerBottom = styled('div', {
 })
 const ContainerForColumn = styled('div', {
   display: 'flex',
-  minWidth: '128px',
+  minWidth: '110px',
   flexDirection: 'column',
 })
 const ContainerForMarketplace = styled('div', {

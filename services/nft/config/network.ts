@@ -25,7 +25,6 @@ export function getAppConfig(configs: NetworkConfigs): AppConfig {
     
     return configs.testnet;
   } 
-  console.log(configs[network]);
   const config = configs[network];
   if (!config) {
     throw new Error(`No configuration found for network ${network}`);

@@ -17,6 +17,8 @@ const tagManagerArgs = {
 export const AppLayout = ({
   footerBar = <FooterBar />,
   children,
+  fullWidth
+
 }) => {
   const [openNav, setOpenNav] = useState(false);
 
@@ -27,8 +29,8 @@ export const AppLayout = ({
     <>
       <StyledWrapper>
         <NavigationSidebar openNav={openNav} setOpenNav={setOpenNav} />
-        <StyledBackground className="container main-section">
-          <StyledContainer>
+        <StyledBackground className={`main-section ${fullWidth ? 'fullWidth' :''}`}>
+          <StyledContainer className="container">
           <main>{children}</main>
           </StyledContainer>
         </StyledBackground>
@@ -72,7 +74,6 @@ const StyledContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  padding: '0 40px',
 })
 
 const StyledBackground = styled('div', {
@@ -81,7 +82,6 @@ zIndex: '1',
 display: 'flex',
 flexDirection: 'column',
 justifyContent: 'space-between',
-padding: '0 40px',
 })
 
 const StyledFooter = styled('div', {
@@ -91,7 +91,6 @@ display: 'flex',
 marginTop: '100px',
 flexDirection: 'column',
 justifyContent: 'space-between',
-padding: '40px 0 0 0',
 backgroundColor: '$backgroundColors$footer',
 })
 
@@ -101,7 +100,6 @@ const StyledFooterWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  padding: '0 40px',
 })
 const StyledBottom = styled('div', {
 position: 'relative',

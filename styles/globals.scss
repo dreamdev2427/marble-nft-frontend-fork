@@ -128,9 +128,45 @@ input {
   }
   
 }
-.main-section{
-  margin-top: 100px;
+div{
+  .main-section{
+    margin-top: 100px;
+    padding: 0 32px;
+  }
+  .container{
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1600px;
+      
+    .collections{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 56px;
+      margin-top: 32px;
+      .collection{
+        >div{
+          h2{
+            margin-top: 16px;
+            margin-bottom: 8px;
+          }
+          h5{
+            margin-top: 0px;
+          }
+        }
+        .nft-img-url{
+          width: 100%;
+        }
+      }
+    }
+    .mobile-section {
+      display: none;
+    }
+
+  }
+  
 }
+
+
 .mauto{
   margin: 0 auto;
 }
@@ -138,14 +174,13 @@ input {
   padding: 1rem 3rem;
 }
 .footer{
+  padding: 40px 32px 32px 32px;
   .footer-logo{width: 243px;}
   .footer-desc{width: 420px;}
   .bottom-section{
     padding-bottom: 2rem;
     justify-content: space-between;
-    .mobile-section {
-      display: none;
-    }
+    
   }
   .footer-section{
     display: block;
@@ -190,6 +225,7 @@ input {
   .container{
     width: 100%;
     margin: 0 auto;
+    
   }
   .wrap-header{
     .wrap-menu{
@@ -225,14 +261,21 @@ input {
 }
 
 @media screen and (max-width: 1200px) {
-  .container{
-    width: 100%;
-    margin: 0 auto;
-    .middle{
-      width: 100%;
+  div{
+    .main-section{
+      .collections{
+        gap: 32px;
+      }
     }
-
+    .container{
+      width: 100%;
+      margin: 0 auto;
+      .middle{
+        width: 100%;
+      }
+    }
   }
+  
   .logo-img{width: 180px;}
   .wrap-header{
 
@@ -253,17 +296,27 @@ input {
       }
     }
   }
+  
   .footer-desc{width: 90%;}
 }
 
 @media screen and (max-width: 968px) {
-  .container{
-    width: 100%;
-    margin: 0 auto;
-    .middle{
+  div{
+    .main-section{
+      .collections{
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+    }
+    .container{
       width: 100%;
+      margin: 0 auto;
+      .middle{
+        width: 100%;
+      }
     }
   }
+  
   .wrap-header{
     .wrap-menu{
       .top-menu-links{
@@ -288,16 +341,29 @@ input {
   body{
     font-size: 16px;
   }
-  .container{
-    width: 100%;
-    margin: 0 auto;
-    .middle{
+  div{
+    .container{
       width: 100%;
-    }
-    .mint-section{
-      flex-direction: column-reverse;
+      margin: 0 auto;
+      .middle{
+        width: 100%;
+      }
+      .mint-section{
+        flex-direction: column-reverse;
+      }
+      .desktop-section {
+        display: none;
+      }
+      .mobile-section {
+        display: flex;
+        a{
+          width: 32px;
+          height: 32px;
+        }
+      }
     }
   }
+  
   .wrap-header{
     &.open{
       /*position: absolute;*/
@@ -317,6 +383,7 @@ input {
       .mobile-icon{display: flex;fill: #6af900;}
       .desktop-icon{display: none;}
       .connect-wallet{
+        display: none;
         flex-grow: unset;
         >div{
           padding: 0px;
@@ -362,7 +429,7 @@ input {
         }
       }
     }
-
+    
   }
   .mobile-menu{
     &.open{
@@ -372,9 +439,9 @@ input {
         /*margin-left: 10px;*/
         &.open{
           display:block;
-          position: absolute;
-          left: 0px;
-          top: 0px;
+          position: fixed;
+          right: 0px;
+          top: 100px;
           margin: 0px;
           z-index: 100;
           background: #000000;
@@ -405,7 +472,7 @@ input {
   div{
     .footer{
       margin-top: 48px;
-      padding-top: 16px;
+      padding: 40px 0px 16px 0px;
       .container{
         padding-left: 16px;
         padding-right: 16px;
@@ -425,7 +492,12 @@ input {
 
   .container{
     p{
+      
       font-size: 0.8rem;
+      &.page-title{
+        font-size: 25px;
+        margin: 0;
+      }
     }
     a{
       font-size: 0.8rem;
@@ -434,28 +506,28 @@ input {
     .bottom-section{
       flex-direction: column;
       border: 0px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       .bottom-desc-section{
         align-items: center;
-        border-bottom: 1px solid rgb(25 29 32 / 20%);
+        margin: 0rem 0 2rem 0;
+        grid-column-start: 1;
+        grid-column-end: 4;
       }
       .desktop-section{
         display: none;
       }
-      .mobile-section {
-        display: flex;
-        a{
-          width: 32px;
-          height: 32px;
-        }
-      }
+      
+      
       .bottom-community-section{
-        border-bottom: 1px solid rgb(25 29 32 / 20%);
+        
       }
       .bottom-quick-section{
-        border-bottom: 1px solid rgb(25 29 32 / 20%);
+        grid-column-start: 1;
+        grid-column-end: 4;
       }
       .bottom-company-section{
-        border-bottom: 1px solid rgb(25 29 32 / 20%);
+        
       }
       .collapse-header{
         display: flex;
@@ -469,22 +541,71 @@ input {
       }
     }
   }
-
-  .footer-section{
-    flex-direction: column-reverse;
-    align-items: center;
-    padding-bottom: 2rem;
-    .desktop-section {
-      display: none;
+  .footer{
+    .footer-section{
+      flex-direction: column-reverse;
+      align-items: center;
+      padding-bottom: 2rem;
+      .copyright{
+        text-align: left;
+        padding-top: 12px;
+        border-top: 1px solid #ccc;
+        p{
+          font-size: 9px;
+        }
+      }
+      .terms-policy{
+        a{
+          font-size: 9px;
+        }
+      }
+      .desktop-section {
+        display: none;
+      }
     }
   }
+  
 }
 @media screen and (max-width: 767px) {
+  div{
+    .main-section{
+      padding: 0 16px;
+      .collections{
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+  }
   
 
 }
 @media screen and (max-width: 480px) {
-  
+  .container{
+    .collections{
+      .collection{
+        >div{
+          padding: 0px;
+          margin-left: 24px;
+          &:first-child{
+            padding: 0px;
+            margin-left: 0px;
+          }
+          &:last-child{
+            padding: 0px 24px 24px 24px;
+            margin-left: 0px;
+          }
+        }
+      }
+    }
+    .bottom-section{
+      >div{
+        min-width: 80px;
+        h3{
+          font-size: 14px;
+        }
+      }
+    }
+  }
 
 }
 @media screen and (max-width: 400px) {

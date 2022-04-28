@@ -43,14 +43,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
     <>
       <StyledWrapper className={`wrap-header ${openNav ? 'open' :''}`}>
         <StyledMenuContainer className="wrap-menu container">
-          <IconWrapper
-            className="mobile-nav"
-              type="button"
-              icon={<Nav />}
-              onClick={() => {
-                setOpenNav(!openNav)
-              }}
-            />
+          
           <Link href="/" passHref>
             <StyledDivForLogo as="a">
               <StyledImageForLogoText className="logo-img" src="/images/logotext.png" />
@@ -66,11 +59,11 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                 Explore
               </Button>
             </Link>
-            <Link href="/transfer" passHref>
+            <Link href="/collection" passHref>
               <Button className="top-menu"
                 as="a"
                 variant="ghost"
-                css={getActiveStylesIfActive('/transfer')}
+                css={getActiveStylesIfActive('/collection')}
               >
                 Collection
               </Button>
@@ -99,7 +92,14 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </Link>
 
           </StyledListForLinks>
-
+          <IconWrapper
+            className="mobile-nav"
+              type="button"
+              icon={<Nav />}
+              onClick={() => {
+                setOpenNav(!openNav)
+              }}
+            />
           <ConnectedWalletButton
             connected={Boolean(key?.name)}
             walletName={key?.name}
@@ -165,8 +165,15 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             NFT
             </Button>
           </Link>
-          
+          <ConnectedWalletButton
+            connected={Boolean(key?.name)}
+            walletName={key?.name}
+            onConnect={() => connectWallet(null)}
+            onDisconnect={resetWalletConnection}
+            
+          />
         </StyledListForLinks>
+        
       </MobileMenu>
     </>
   )

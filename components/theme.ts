@@ -11,6 +11,8 @@ export const colors = createColorPalette({
   error: '#ED5276',
   valid: '#53D0C9',
   gray: '#666666',
+  selected: '#292D32',
+  link: '#165FCD',
 })
 
 export const { theme, styled, css } = createStitches({
@@ -86,6 +88,8 @@ export const { theme, styled, css } = createStitches({
       20: '40px',
       21: '100px',
       22: '50px',
+      23: '80px',
+      24: '86px',
     },
     rowGap: {
       1: '8px',
@@ -128,7 +132,19 @@ export const { theme, styled, css } = createStitches({
       4: '16px',
     },
     letterSpacings: {},
-    sizes: {},
+    sizes: {
+      1: '1px',
+      2: '2px',
+      3: '4px',
+      4: '8px',
+      5: '16px',
+      6: '20px',
+      7: '24px',
+      8: '32px',
+      23: '80px',
+      24: '86px'
+    
+    },
     borderWidths: {
       1: '1px',
       2: '2px',
