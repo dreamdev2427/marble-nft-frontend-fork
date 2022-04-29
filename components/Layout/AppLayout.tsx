@@ -88,7 +88,6 @@ const StyledFooter = styled('div', {
 position: 'relative',
 zIndex: '1',
 display: 'flex',
-marginTop: '100px',
 flexDirection: 'column',
 justifyContent: 'space-between',
 backgroundColor: '$backgroundColors$footer',

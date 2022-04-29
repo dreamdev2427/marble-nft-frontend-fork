@@ -130,6 +130,7 @@ export const { theme, styled, css } = createStitches({
       2: '24px',
       3: '20px',
       4: '16px',
+      5: '48px',
     },
     letterSpacings: {},
     sizes: {
@@ -141,9 +142,10 @@ export const { theme, styled, css } = createStitches({
       6: '20px',
       7: '24px',
       8: '32px',
+      10: '64px',
       23: '80px',
-      24: '86px'
-    
+      24: '86px',
+      25: '367px',
     },
     borderWidths: {
       1: '1px',

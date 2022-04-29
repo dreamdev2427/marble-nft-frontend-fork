@@ -132,6 +132,23 @@ div{
   .main-section{
     margin-top: 100px;
     padding: 0 32px;
+    .tab-link{
+      border-radius: 0px;
+      &.active{
+        border-bottom-width: 3px;
+        border-bottom-style: solid;
+      }
+    }
+    .filter-header{
+      height: 48px;
+      padding-right: 32px;
+      border-radius: 0px;
+    }
+    .filter-item{
+      height: 48px;
+      padding-right: 32px;
+      border-radius: 0px;
+    }
   }
   .container{
     width: 100%;
@@ -143,6 +160,7 @@ div{
       grid-template-columns: 1fr 1fr 1fr;
       gap: 56px;
       margin-top: 32px;
+      margin-bottom: 100px;
       .collection{
         >div{
           h2{
@@ -163,7 +181,20 @@ div{
     }
 
   }
-  
+  .fullWidth{
+    &.main-section{
+      padding: 0px;
+      .container{
+        max-width: 100%;
+        .middle{
+          max-width: 1600px;
+        }
+      }
+    }
+  }
+  .hide{
+    display: none;
+  }
 }
 
 

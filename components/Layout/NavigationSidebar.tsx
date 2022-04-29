@@ -59,7 +59,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                 Explore
               </Button>
             </Link>
-            <Link href="/collection" passHref>
+            <Link href={{
+              pathname: '/collection/[slug]',
+              query: { slug: 'active' },
+            }} passHref>
               <Button className="top-menu"
                 as="a"
                 variant="ghost"
