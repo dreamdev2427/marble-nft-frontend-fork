@@ -1,9 +1,7 @@
 import * as React from "react"
-import { useState } from "react";
-import Link from 'next/link'
+import { useState, useEffect } from "react";
 import { Button } from 'components/Button'
 import { styled } from 'components/theme'
-import { useRouter } from 'next/router'
 import { IconWrapper } from 'components/IconWrapper'
 import { Activity, Grid, Search, ColumnBig, ColumnSmall } from 'icons'
 import { CollectionFilter } from "./filter";
@@ -12,6 +10,9 @@ import {
   NftInfo,
 } from "services/nft";
 import { ChakraProvider, Tab, Input, InputGroup, InputRightElement, Select, IconButton } from '@chakra-ui/react'
+import { useDispatch, useSelector } from "react-redux";
+import { setUIData } from "store/actions/uiAction";
+import { NFT_COLUMN_COUNT, UI_ERROR } from "store/types";
 
 export const CollectionTab = ({index}) => {
   
@@ -39,7 +40,8 @@ export const CollectionTab = ({index}) => {
   )
 }
 export const Collection = () => {  
-  const [isCollapse, setCollapse] = useState(false);
+  const [isCollapse, setCollapse] = useState(false)
+  const [isLargeNFT, setLargeNFT] = useState(true)
   const [nfts, setNfts] = useState<NftInfo[]>(
     [
       {'tokenId': 'aaa1', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
@@ -54,6 +56,18 @@ export const Collection = () => {
       {'tokenId': 'aaa10', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
     ]
   )
+  const dispatch = useDispatch();
+  const uiListData = useSelector((state) => state.uiData);
+  const { nft_column_count } = uiListData;
+
+  useEffect(() => {
+    if (isLargeNFT){
+      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count - 1))
+    }else{
+      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count +1))
+    }
+    
+  }, [dispatch, isLargeNFT]);
 
   return (
     <CollectionWrapper>
@@ -90,8 +104,28 @@ export const Collection = () => {
               <option>Oldest</option>
             </Select>
             <ColumnCount>
-              <IconButton className="column-type" aria-label='Search database' icon={<ColumnBig />} />
-              <IconButton className="column-type" aria-label='Search database' icon={<ColumnSmall />} />
+              <IconButton 
+                className={`column-type ${isLargeNFT?'active':''}`} 
+                aria-label='Search database' 
+                icon={<ColumnBig />} 
+                onClick={() => {
+                  if (isLargeNFT)
+                    return;
+                  setLargeNFT(!isLargeNFT)
+                  return false
+                }}
+              />
+              <IconButton 
+                className={`column-type ${!isLargeNFT?'active':''}`} 
+                aria-label='Search database' 
+                icon={<ColumnSmall />} 
+                onClick={() => {
+                  if (!isLargeNFT)
+                    return;
+                  setLargeNFT(!isLargeNFT)
+                  return false
+                }}
+              />
             </ColumnCount>
           </ChakraProvider>
         </SearchItem>
@@ -185,5 +219,17 @@ const ColumnCount = styled('div', {
     height: '$22',
     background: '$backgroundColors$main',
     border: '$borderWidths$1 solid $borderColors$default',
+    ' svg': {
+      ' rect': {
+        fill: '$iconColors$disabled'
+      }
+    },
+    '&.active':{
+      ' svg': {
+        ' rect': {
+          fill: '$iconColors$primary'
+        }
+      } 
+    }
   }
 })

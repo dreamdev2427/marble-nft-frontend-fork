@@ -13,6 +13,9 @@ import { TestnetDialog } from 'components/TestnetDialog'
 import { queryClient } from 'services/queryClient'
 import { __TEST_MODE__ } from '../util/constants'
 
+import { wrapper, store } from "../store/store";
+import { Provider } from "react-redux";
+
 function SafeHydrate({ children }) {
   return (
     <div data-app-wrapper="" lang="en-US" suppressHydrationWarning>
@@ -27,23 +30,25 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <SafeHydrate>
           <ErrorBoundary>
-            <Component {...pageProps} />
-            {__TEST_MODE__ && <TestnetDialog />}
-            <Portal>
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={true}
-                newestOnTop
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                toastStyle={{ zIndex: 150 }}
-                style={{ width: 'auto' }}
-              />
-            </Portal>
+            <Provider store={store}>
+              <Component {...pageProps} />
+              {__TEST_MODE__ && <TestnetDialog />}
+              <Portal>
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={true}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  toastStyle={{ zIndex: 150 }}
+                  style={{ width: 'auto' }}
+                />
+              </Portal>
+            </Provider>
           </ErrorBoundary>
         </SafeHydrate>
       </QueryClientProvider>

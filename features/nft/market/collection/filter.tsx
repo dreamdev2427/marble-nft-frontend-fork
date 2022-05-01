@@ -1,5 +1,5 @@
 import React from "react"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from 'next/link'
 import { Button } from 'components/Button'
 import { styled } from 'components/theme'
@@ -13,8 +13,23 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
+import { useDispatch, useSelector } from "react-redux";
+import { setUIData } from "store/actions/uiAction";
+import { NFT_COLUMN_COUNT, UI_ERROR } from "store/types";
 
 export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
+  const dispatch = useDispatch();
+  const uiListData = useSelector((state) => state.uiData);
+  const { nft_column_count } = uiListData;
+
+  useEffect(() => {
+    if (isCollapse){
+      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count + 1))
+    }else{
+      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count -1))
+    }
+    
+  }, [dispatch, isCollapse]);
 
   return (
     <FilterWrapper className={`filter-wrapper ${isCollapse?'collapse':''}`}>
@@ -25,6 +40,7 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
           iconRight={!isCollapse && <IconWrapper icon={<ArrowLeft />}/> || isCollapse && <IconWrapper icon={<Sidebar />}/> }
           onClick={() => {
             setCollapse(!isCollapse)
+            
             return false
           }}
         >

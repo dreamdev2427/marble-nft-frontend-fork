@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Link from 'next/link'
 import {
   LinkBox,
@@ -8,14 +9,24 @@ import {
 import { NftCard } from "../nft-card";
 import { NftInfo } from "services/nft";
 import { styled } from 'components/theme'
+import { useDispatch, useSelector } from "react-redux";
+import { setUIData } from "store/actions/uiAction";
+import { NFT_COLUMN_COUNT, UI_ERROR } from "store/types";
 
 interface NftTableProps {
   readonly data: NftInfo[];
 }
 
 export function NftTable({ data }: NftTableProps) {
+  const dispatch = useDispatch();
+  const uiListData = useSelector((state) => state.uiData);
+  const { nft_column_count } = uiListData;
+  useEffect(() => {
+    
+  }, [dispatch, nft_column_count]);
+
   return (
-    <NftGrid className="column3">
+    <NftGrid className={`column${nft_column_count}`}>
       {data.map(nft => (
         <LinkBox as="picture" key={nft.tokenId}
           transition="transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0s"
