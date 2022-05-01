@@ -1,4 +1,5 @@
 export interface NftInfo {
+    readonly address: string;
     readonly tokenId: string;
     readonly image: string;
     readonly title: string;

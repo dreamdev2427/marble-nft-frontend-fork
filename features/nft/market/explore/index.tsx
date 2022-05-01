@@ -7,17 +7,9 @@ import { styled } from 'components/theme'
 
 import { CategoryTab, NftCollectionTable } from "components/NFT";
 import {
-  CW721,
-  formatPrice,
-  NftInfoResponse,
-  Market,
-  Marble,
   NftInfo,
   NftCategory,
   NftCollection,
-  publicIpfsUrl,
-  OfferResponse,
-  useSdk,
 } from "services/nft";
 import { NftCard } from "components/NFT"
 import { config } from "services/config";

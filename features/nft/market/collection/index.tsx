@@ -5,12 +5,16 @@ import { Button } from 'components/Button'
 import { styled } from 'components/theme'
 import { useRouter } from 'next/router'
 import { IconWrapper } from 'components/IconWrapper'
-import { Activity, Grid } from 'icons'
+import { Activity, Grid, Search, ColumnBig, ColumnSmall } from 'icons'
 import { CollectionFilter } from "./filter";
-import { NftSection } from "components/NFT";
-import { Tab } from '@chakra-ui/react'
+import { NftTable } from "components/NFT";
+import {
+  NftInfo,
+} from "services/nft";
+import { ChakraProvider, Tab, Input, InputGroup, InputRightElement, Select, IconButton } from '@chakra-ui/react'
 
 export const CollectionTab = ({index}) => {
+  
   return (
     <TabWrapper>
       <Tab>
@@ -36,11 +40,62 @@ export const CollectionTab = ({index}) => {
 }
 export const Collection = () => {  
   const [isCollapse, setCollapse] = useState(false);
+  const [nfts, setNfts] = useState<NftInfo[]>(
+    [
+      {'tokenId': 'aaa1', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa2', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa3', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa4', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa5', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa6', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa7', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa8', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa9', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa10', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+    ]
+  )
+
   return (
     <CollectionWrapper>
       <CollectionFilter isCollapse={isCollapse} setCollapse={setCollapse} />
       <NftList className={`${isCollapse?'collapse-close':'collapse-open'}`}>
-        <NftSection/>
+        <SearchItem>
+          <ChakraProvider>
+            <InputGroup >
+              <Input
+                pr='48px'
+                type='text'
+                placeholder='Search'
+              />
+              <InputRightElement width='48px'>
+                <IconWrapper icon={<Search />} />
+              </InputRightElement>
+            </InputGroup>
+            <Select id='item_type' placeholder='Single Items'>
+              <option>Single Items</option>
+              <option>Bundles</option>
+              <option>All Items</option>
+            </Select>
+            <Select id='sort_type' placeholder='Price: Low to High'>
+              <option>Recently Listed</option>
+              <option>Recently Created</option>
+              <option>Recently Sold</option>
+              <option>Recently Received</option>
+              <option>Ending Soon</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Highest Last Sale</option>
+              <option>Most Viewed</option>
+              <option>Most Favorited</option>
+              <option>Oldest</option>
+            </Select>
+            <ColumnCount>
+              <IconButton className="column-type" aria-label='Search database' icon={<ColumnBig />} />
+              <IconButton className="column-type" aria-label='Search database' icon={<ColumnSmall />} />
+            </ColumnCount>
+          </ChakraProvider>
+        </SearchItem>
+        <NftTable data={nfts}/>
       </NftList>
     </CollectionWrapper>
   )
@@ -49,7 +104,7 @@ export const Collection = () => {
 const CollectionWrapper = styled('div', {
   display: 'flex',
   ' .category-menus':{
-    borderBottom: '1px solid $borderColors$default',
+    borderBottom: '$borderWidths$1 solid $borderColors$default',
     display: 'flex',
     justifyContent: 'space-between',
     overFlow: 'hidden',
@@ -89,11 +144,46 @@ const TabWrapper = styled('div', {
 })
 
 const NftList = styled('div', {
+  padding: '$16 0 0 $16',
   '&.collapse-open':{
     width: 'calc(100% - $25)',
   },
   '&.collapse-close':{
     width: 'calc(100% - $10)',
+  },
+  ' .nft-table':{
+    display: 'flex',
+    gap: '$16',
   }
 })
 
+const SearchItem = styled('div', {
+  display: 'flex',
+  gap: '$6',
+  ' .chakra-input':{
+    height: '$22',
+    border: '$borderWidths$1 solid $borderColors$default',
+  },
+  ' .chakra-input__right-element':{
+    height: '$22',
+  },
+  ' .chakra-select__wrapper':{
+    width: '$26',
+    ' select':{
+      border: '$borderWidths$1 solid $borderColors$default',
+      height: '$22',
+      width: '$26',
+    }
+  }
+  
+})
+
+const ColumnCount = styled('div', {
+  display: 'flex',
+  gap: '$2',
+  ' button':{
+    height: '$22',
+    background: '$backgroundColors$main',
+    border: '$borderWidths$1 solid $borderColors$default',
+  }
+})

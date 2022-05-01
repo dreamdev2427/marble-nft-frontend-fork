@@ -12,6 +12,7 @@ export function NftCollectionTable({ collections }: NftCollectionProps): JSX.Ele
     <>
       <CollectionsDiv className="collections">
       {collections.map((collection, idx) => (
+        <a href={`/collection/${collection.name}`}>
         <CollectionDiv className="collection" key={idx} >
           <ImgDiv>
           <img className="nft-img-url" src={collection.imgUrl}/>
@@ -25,6 +26,7 @@ export function NftCollectionTable({ collections }: NftCollectionProps): JSX.Ele
           <p>{collection.description}</p>
           </TextDiv>
         </CollectionDiv>
+        </a>
       ))}
       </CollectionsDiv>
     </>

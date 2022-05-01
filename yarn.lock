@@ -1204,10 +1204,30 @@
     "@chakra-ui/react-utils" "1.2.3"
     "@chakra-ui/utils" "1.10.4"
 
+"@chakra-ui/form-control@1.6.0":
+  "integrity" "sha512-MtUE98aocP2QTgvyyJ/ABuG33mhT3Ox56phKreG3HzbUKByMwrbQSm1QcAgyYdqSZ9eKB2tXx+qgGNh+avAfDA=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/form-control/-/form-control-1.6.0.tgz"
+  "version" "1.6.0"
+  dependencies:
+    "@chakra-ui/hooks" "1.9.1"
+    "@chakra-ui/icon" "2.0.5"
+    "@chakra-ui/react-utils" "1.2.3"
+    "@chakra-ui/utils" "1.10.4"
+
 "@chakra-ui/hooks@1.8.5":
   "integrity" "sha512-/UrBfUG7NLxuU/09gy2qQfEH+H5SPBUaUiFtokRlq887D/32JQ3XksZdF78RKMCM/0bbZuIjqUkuN/wO9kAbSw=="
   "resolved" "https://registry.npmjs.org/@chakra-ui/hooks/-/hooks-1.8.5.tgz"
   "version" "1.8.5"
+  dependencies:
+    "@chakra-ui/react-utils" "1.2.3"
+    "@chakra-ui/utils" "1.10.4"
+    "compute-scroll-into-view" "1.0.14"
+    "copy-to-clipboard" "3.3.1"
+
+"@chakra-ui/hooks@1.9.1":
+  "integrity" "sha512-SEeh1alDKzrP9gMLWMnXOUDBQDKF/URL6iTmkumTn6vhawWNla6sPrcMyoCzWdMzwUhZp3QNtCKbUm7dxBXvPw=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/hooks/-/hooks-1.9.1.tgz"
+  "version" "1.9.1"
   dependencies:
     "@chakra-ui/react-utils" "1.2.3"
     "@chakra-ui/utils" "1.10.4"
@@ -1445,6 +1465,14 @@
     "@chakra-ui/transition" "1.4.7"
     "@chakra-ui/utils" "1.10.4"
     "@chakra-ui/visually-hidden" "1.1.6"
+
+"@chakra-ui/select@^1.2.11":
+  "integrity" "sha512-6Tis1+ZrRjQeWhQfziQn3ZdPphV5ccafpZOhiPdTcM2J1XcXOlII+9rHxvaW+jx7zQ5ly5o8kd7iXzalDgl5wA=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/select/-/select-1.2.11.tgz"
+  "version" "1.2.11"
+  dependencies:
+    "@chakra-ui/form-control" "1.6.0"
+    "@chakra-ui/utils" "1.10.4"
 
 "@chakra-ui/select@1.2.9":
   "integrity" "sha512-f8cRy3whXFYviuKGfugPnvXTGarPVt2ux5pffipmliYOhfaJ8O2OtdmNJ/od4WaeGStUH13x12GsEqVw2LBKOg=="

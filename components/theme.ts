@@ -143,9 +143,11 @@ export const { theme, styled, css } = createStitches({
       7: '24px',
       8: '32px',
       10: '64px',
+      22: '50px',
       23: '80px',
       24: '86px',
       25: '367px',
+      26: '330px',
     },
     borderWidths: {
       1: '1px',
