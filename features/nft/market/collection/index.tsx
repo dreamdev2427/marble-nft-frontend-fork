@@ -1,18 +1,30 @@
 import * as React from "react"
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import { Button } from 'components/Button'
 import { styled } from 'components/theme'
 import { IconWrapper } from 'components/IconWrapper'
 import { Activity, Grid, Search, ColumnBig, ColumnSmall } from 'icons'
-import { CollectionFilter } from "./filter";
-import { NftTable } from "components/NFT";
+import { CollectionFilter } from "./filter"
+import { NftTable } from "components/NFT"
 import {
   NftInfo,
-} from "services/nft";
-import { ChakraProvider, Tab, Input, InputGroup, InputRightElement, Select, IconButton } from '@chakra-ui/react'
-import { useDispatch, useSelector } from "react-redux";
-import { setUIData } from "store/actions/uiAction";
-import { NFT_COLUMN_COUNT, UI_ERROR } from "store/types";
+} from "services/nft"
+import { 
+  ChakraProvider, 
+  Tab, 
+  Input, 
+  InputGroup, 
+  InputRightElement, 
+  Select, 
+  IconButton,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+} from '@chakra-ui/react'
+import { useDispatch, useSelector } from "react-redux"
+import { setUIData } from "store/actions/uiAction"
+import { setFilterData } from "store/actions/filterAction"
+import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS, FILTER_STATUS_TXT } from "store/types"
 
 export const CollectionTab = ({index}) => {
   
@@ -56,18 +68,35 @@ export const Collection = () => {
       {'tokenId': 'aaa10', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
     ]
   )
-  const dispatch = useDispatch();
-  const uiListData = useSelector((state) => state.uiData);
-  const { nft_column_count } = uiListData;
+  const dispatch = useDispatch()
+  const uiListData = useSelector((state) => state.uiData)
+  const { nft_column_count } = uiListData
+  
+  const filterData = useSelector((state) => state.filterData)
+  const { filter_status } = filterData
 
+  const closeFilterStatusButton = (fstatus) => {
+    console.log(filter_status)
+    filter_status.splice(filter_status.indexOf(fstatus), 1)
+    dispatch(setFilterData(FILTER_STATUS, filter_status))
+    return true
+  }
+  const closeFilterAllStatusButtons = () => {
+    dispatch(setFilterData(FILTER_STATUS, []))
+    return true
+  }
   useEffect(() => {
     if (isLargeNFT){
+      if (nft_column_count <= 3)
+        return
       dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count - 1))
     }else{
+      if (nft_column_count >= 5)
+        return
       dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count +1))
     }
     
-  }, [dispatch, isLargeNFT]);
+  }, [dispatch, isLargeNFT])
 
   return (
     <CollectionWrapper>
@@ -110,7 +139,7 @@ export const Collection = () => {
                 icon={<ColumnBig />} 
                 onClick={() => {
                   if (isLargeNFT)
-                    return;
+                    return
                   setLargeNFT(!isLargeNFT)
                   return false
                 }}
@@ -121,7 +150,7 @@ export const Collection = () => {
                 icon={<ColumnSmall />} 
                 onClick={() => {
                   if (!isLargeNFT)
-                    return;
+                    return
                   setLargeNFT(!isLargeNFT)
                   return false
                 }}
@@ -129,6 +158,27 @@ export const Collection = () => {
             </ColumnCount>
           </ChakraProvider>
         </SearchItem>
+        <FilterItem>
+          {filter_status.map(fstatus => (
+            <Tag
+              borderRadius='full'
+              variant='solid'
+              key={fstatus}
+            >
+              <TagLabel>{FILTER_STATUS_TXT[fstatus]}{fstatus}</TagLabel>
+              <TagCloseButton onClick={()=>closeFilterStatusButton(fstatus)}/>
+            </Tag>
+          ))}
+          {filter_status.length > 0 &&
+            <Tag
+              borderRadius='full'
+              variant='solid'
+            >
+              <TagLabel>Clear All</TagLabel>
+              <TagCloseButton onClick={()=>closeFilterAllStatusButtons()}/>
+            </Tag>
+          }
+        </FilterItem>
         <NftTable data={nfts}/>
       </NftList>
     </CollectionWrapper>
@@ -211,7 +261,17 @@ const SearchItem = styled('div', {
   }
   
 })
-
+const FilterItem = styled('div', {
+  display: 'flex',
+  gap: '$4',
+  margin: '$4 0',
+  ' >span':{
+    background: '$backgroundColors$primary',
+    color: '$textColors$primary',
+    borderRadius: '$3',
+    padding: '$4',
+  }
+})
 const ColumnCount = styled('div', {
   display: 'flex',
   gap: '$2',

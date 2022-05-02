@@ -1,29 +1,24 @@
 import * as React from "react";
 import { useEffect } from "react";
-import Link from 'next/link'
-import {
-  LinkBox,
-  LinkOverlay,
-  SimpleGrid,
-} from "@chakra-ui/react";
+import { LinkBox } from "@chakra-ui/react";
 import { NftCard } from "../nft-card";
 import { NftInfo } from "services/nft";
 import { styled } from 'components/theme'
 import { useDispatch, useSelector } from "react-redux";
-import { setUIData } from "store/actions/uiAction";
-import { NFT_COLUMN_COUNT, UI_ERROR } from "store/types";
 
 interface NftTableProps {
-  readonly data: NftInfo[];
+  readonly data: NftInfo[]
 }
 
 export function NftTable({ data }: NftTableProps) {
-  const dispatch = useDispatch();
-  const uiListData = useSelector((state) => state.uiData);
-  const { nft_column_count } = uiListData;
+  const dispatch = useDispatch()
+  const uiListData = useSelector((state) => state.uiData)
+  const { nft_column_count } = uiListData
+  const filterData = useSelector((state) => state.filterData)
+  const { filter_status } = filterData
   useEffect(() => {
     
-  }, [dispatch, nft_column_count]);
+  }, [dispatch, nft_column_count])
 
   return (
     <NftGrid className={`column${nft_column_count}`}>

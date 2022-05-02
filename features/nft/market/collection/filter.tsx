@@ -1,5 +1,5 @@
 import React from "react"
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"
 import Link from 'next/link'
 import { Button } from 'components/Button'
 import { styled } from 'components/theme'
@@ -13,24 +13,40 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
-import { useDispatch, useSelector } from "react-redux";
-import { setUIData } from "store/actions/uiAction";
-import { NFT_COLUMN_COUNT, UI_ERROR } from "store/types";
+import { useDispatch, useSelector } from "react-redux"
+import { setUIData } from "store/actions/uiAction"
+import { setFilterData } from "store/actions/filterAction"
+import { 
+  NFT_COLUMN_COUNT, 
+  UI_ERROR, 
+  FILTER_STATUS,
+  FILTER_STATUS_BUY_NOW,
+  FILTER_STATUS_ON_AUCTION,
+  FILTER_STATUS_NEW,
+  FILTER_STATUS_HAS_OFFERS,
+  FILTER_STATUS_TXT
+} from "store/types"
 
 export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
-  const dispatch = useDispatch();
-  const uiListData = useSelector((state) => state.uiData);
-  const { nft_column_count } = uiListData;
+  const dispatch = useDispatch()
+  
+  const uiListData = useSelector((state) => state.uiData)
+  const { nft_column_count } = uiListData
 
+  const filterData = useSelector((state) => state.filterData)
+  const { filter_status } = filterData
   useEffect(() => {
     if (isCollapse){
+      if (nft_column_count >= 5)
+        return
       dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count + 1))
     }else{
+      if (nft_column_count <= 3)
+        return
       dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count -1))
     }
-    
-  }, [dispatch, isCollapse]);
-
+  }, [dispatch, isCollapse])
+  
   return (
     <FilterWrapper className={`filter-wrapper ${isCollapse?'collapse':''}`}>
       <header>
@@ -40,7 +56,6 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
           iconRight={!isCollapse && <IconWrapper icon={<ArrowLeft />}/> || isCollapse && <IconWrapper icon={<Sidebar />}/> }
           onClick={() => {
             setCollapse(!isCollapse)
-            
             return false
           }}
         >
@@ -61,17 +76,61 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
           </h4>
           <AccordionPanel pb={4}>
             <Conditions className="grid">
-              <Button>
-                Buy Now
+              <Button 
+                variant={`${filter_status.indexOf(FILTER_STATUS_BUY_NOW) != -1?'primary':'secondary'}`}
+                onClick={() => {
+                  if (filter_status.indexOf(FILTER_STATUS_BUY_NOW) == -1){
+                    filter_status.push(FILTER_STATUS_BUY_NOW)
+                  }else{
+                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_BUY_NOW), 1)
+                  }
+                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  return false
+                }}
+              >
+                {FILTER_STATUS_TXT[FILTER_STATUS_BUY_NOW]}
               </Button>
-              <Button>
-                On Auction
+              <Button
+                variant={`${filter_status.indexOf(FILTER_STATUS_ON_AUCTION) != -1?'primary':'secondary'}`}
+                onClick={() => {
+                  if (filter_status.indexOf(FILTER_STATUS_ON_AUCTION) == -1){
+                    filter_status.push(FILTER_STATUS_ON_AUCTION)
+                  }else{
+                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_ON_AUCTION), 1)
+                  }
+                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  return false
+                }}
+              >
+                {FILTER_STATUS_TXT[FILTER_STATUS_ON_AUCTION]}
               </Button>
-              <Button>
-                New
+              <Button
+                variant={`${filter_status.indexOf(FILTER_STATUS_NEW) != -1?'primary':'secondary'}`}
+                onClick={() => {
+                  if (filter_status.indexOf(FILTER_STATUS_NEW) == -1){
+                    filter_status.push(FILTER_STATUS_NEW)
+                  }else{
+                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_NEW), 1)
+                  }
+                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  return false
+                }}
+              >
+                {FILTER_STATUS_TXT[FILTER_STATUS_NEW]}
               </Button>
-              <Button>
-                Has Offers
+              <Button
+                variant={`${filter_status.indexOf(FILTER_STATUS_HAS_OFFERS) != -1?'primary':'secondary'}`}
+                onClick={() => {
+                  if (filter_status.indexOf(FILTER_STATUS_HAS_OFFERS) == -1){
+                    filter_status.push(FILTER_STATUS_HAS_OFFERS)
+                  }else{
+                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_HAS_OFFERS), 1)
+                  }
+                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  return false
+                }}
+              >
+                {FILTER_STATUS_TXT[FILTER_STATUS_HAS_OFFERS]}
               </Button>
             </Conditions>
           </AccordionPanel>
@@ -143,6 +202,7 @@ const Conditions = styled('div', {
     gridTemplateColumns: '1fr 1fr',
     gridGap: '$2',
     padding: '$8',
+    
   }
 })
 

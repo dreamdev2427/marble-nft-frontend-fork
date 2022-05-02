@@ -8,24 +8,32 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 import { useDispatch, useSelector } from "react-redux";
 import { setUIData } from "store/actions/uiAction";
-import { NFT_COLUMN_COUNT, UI_ERROR } from "store/types";
+import { setFilterData } from "store/actions/filterAction";
+import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS } from "store/types";
 
 export default function Home() {
+  const DEFAULT_NFT_COLUMN_COUNT = 3
+  const DEFAULT_FILTER_STATUS = []
+
   const [fullWidth, setFullWidth] = useState(true);
   const [tabIndex, setTabIndex] = React.useState(0)
+
+  const borderColor = theme.borderColors.default
+  const dispatch = useDispatch()
+  
+  const uiListData = useSelector((state) => state.uiData)
+  const { nft_column_count } = uiListData
+
+  const filterData = useSelector((state) => state.filterData)
+  const { filter_status } = filterData
 
   const handleTabsChange = (index) => {
     setTabIndex(index)
   }
-
-  const borderColor = theme.borderColors.default
-  const dispatch = useDispatch()
-  const uiListData = useSelector((state) => state.uiData)
-  const { nft_column_count } = uiListData
-  const DEFAULT_NFT_COLUMN_COUNT = 3
+  
   useEffect(() => {
     dispatch(setUIData(NFT_COLUMN_COUNT, DEFAULT_NFT_COLUMN_COUNT))
-    
+    dispatch(setFilterData(FILTER_STATUS, DEFAULT_FILTER_STATUS))
   }, [dispatch]);
 
   return (
