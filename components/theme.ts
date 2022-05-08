@@ -90,6 +90,7 @@ export const { theme, styled, css } = createStitches({
       22: '50px',
       23: '80px',
       24: '86px',
+      25: '367px',
     },
     rowGap: {
       1: '8px',

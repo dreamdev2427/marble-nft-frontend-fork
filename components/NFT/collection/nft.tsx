@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import Link from 'next/link'
 import { NftCollection } from "services/nft";
 import { styled } from 'components/theme'
 
@@ -12,8 +13,8 @@ export function NftCollectionTable({ collections }: NftCollectionProps): JSX.Ele
     <>
       <CollectionsDiv className="collections">
       {collections.map((collection, idx) => (
-        <a href={`/collection/${collection.name}`}>
-        <CollectionDiv className="collection" key={idx} >
+        <Link href={`/collection/${collection.name}`} passHref key={idx}>
+        <CollectionDiv className="collection" key={idx}>
           <ImgDiv>
           <img className="nft-img-url" src={collection.imgUrl}/>
           </ImgDiv>
@@ -26,7 +27,8 @@ export function NftCollectionTable({ collections }: NftCollectionProps): JSX.Ele
           <p>{collection.description}</p>
           </TextDiv>
         </CollectionDiv>
-        </a>
+        </Link>
+        
       ))}
       </CollectionsDiv>
     </>
@@ -40,7 +42,8 @@ const CollectionDiv = styled('div', {
   border: '1px solid $borderColors$default',
   borderRadius: '$4',
   boxSizing: 'border-box',
-  boxShadow: '0px 4px 24px rgba(0, 0, 0, 0.05)'
+  boxShadow: '0px 4px 24px rgba(0, 0, 0, 0.05)',
+  cursor: 'pointer',
 })
 
 const ImgDiv = styled('div', {

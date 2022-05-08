@@ -30,7 +30,7 @@ import { config } from "services/config";
 import { NftCard } from "components/NFT";
 
 interface AccountParams {
-  [key: string]: string;
+  //[key: string]: string;
   readonly user: string;
 }
 

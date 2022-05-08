@@ -6,6 +6,7 @@ import { IconWrapper } from 'components/IconWrapper'
 import { Activity, Grid, Search, ColumnBig, ColumnSmall } from 'icons'
 import { CollectionFilter } from "./filter"
 import { NftTable } from "components/NFT"
+
 import {
   NftInfo,
 } from "services/nft"
@@ -32,46 +33,67 @@ import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS, FILTER_STATUS_TXT } from "st
 
 const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
 const PUBLIC_CW721_OWNER = process.env.NEXT_PUBLIC_CW721_OWNER || ''
-export const CollectionTab = ({index}) => {
-  
+export const ProfileTab = ({index}) => {
   return (
     <TabWrapper>
       <Tab>
         <Button className={`tab-link ${index==0?'active':''}`}
             as="a"
             variant="ghost"
-            iconLeft={<IconWrapper icon={<Grid />} />}
           >
-            Items
+            All
         </Button>
       </Tab>
       <Tab>
         <Button className={`tab-link ${index==1?'active':''}`}
             as="a"
             variant="ghost"
-            iconLeft={<IconWrapper icon={<Activity />} />}
+          >
+            Created
+        </Button>
+      </Tab>
+      <Tab>
+        <Button className={`tab-link ${index==2?'active':''}`}
+            as="a"
+            variant="ghost"
+          >
+            Favorite
+        </Button>
+      </Tab>
+      <Tab>
+        <Button className={`tab-link ${index==3?'active':''}`}
+            as="a"
+            variant="ghost"
           >
             Activity
+        </Button>
+      </Tab>
+      <Tab>
+        <Button className={`tab-link ${index==4?'active':''}`}
+            as="a"
+            variant="ghost"
+          >
+            Offers
         </Button>
       </Tab>
     </TabWrapper>
   )
 }
-export const Collection = () => {  
+export const MyCollectedNFTs = () => {  
   const [isCollapse, setCollapse] = useState(false)
   const [isLargeNFT, setLargeNFT] = useState(true)
   const [nfts, setNfts] = useState<NftInfo[]>(
     [
-      {'tokenId': 'aaa1', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa2', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa3', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa4', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa5', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa6', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa7', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa8', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa9', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa10', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa1', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa2', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa3', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa4', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa5', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa6', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa7', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa8', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa9', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa10', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
     ]
   )
   const dispatch = useDispatch()
@@ -106,19 +128,16 @@ export const Collection = () => {
 
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
-  const [tokens, setNFTIds] = useState<number[]>([])
+  const [tokens, setNFTIds] = useState([""])
 
   const loadNfts = useCallback(async () => {
-    console.log("called load nfts")
     if (!client) return
-    console.log("called load nfts1")
     const marbleContract = Marble(PUBLIC_CW721_CONTRACT).use(client)
     const contractConfig = await marbleContract.getConfig()
     console.log("cw721:", contractConfig.cw721_address)
-    // const contract = CW721(contractConfig.cw721_address).use(client)
-    // const nftTokens = await contract.ownerOf(PUBLIC_CW721_OWNER)
-    // console.log(nftTokens)
-    //setNFTIds(nftTokens)
+    const contract = CW721(contractConfig.cw721_address).use(client)
+    const nftTokens = await contract.tokens(PUBLIC_CW721_OWNER)
+    setNFTIds(nftTokens.tokens)
   }, [client])
 
   useEffect(() => {
@@ -186,9 +205,6 @@ export const Collection = () => {
           </ChakraProvider>
         </SearchItem>
         <FilterItem>
-          {tokens.map(token => (
-            {token}
-          ))}
           {filter_status.map(fstatus => (
             <Tag
               borderRadius='full'
@@ -201,13 +217,16 @@ export const Collection = () => {
           ))}
           {filter_status.length > 0 &&
             <Tag
-              borderRadius='full'
+              borderRadius='full' 
               variant='solid'
             >
               <TagLabel>Clear All</TagLabel>
               <TagCloseButton onClick={()=>closeFilterAllStatusButtons()}/>
             </Tag>
           }
+          {tokens.length > 0 && tokens.map((token)=>{
+            return (<div>{token}</div>)
+          })}
         </FilterItem>
         <NftTable data={nfts}/>
       </NftList>
