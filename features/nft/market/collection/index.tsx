@@ -3,7 +3,7 @@ import { useCallback, useState, useEffect } from "react"
 import { Button } from 'components/Button'
 import { styled } from 'components/theme'
 import { IconWrapper } from 'components/IconWrapper'
-import { Activity, Grid, Search, ColumnBig, ColumnSmall } from 'icons'
+import { Activity, Grid, Search, ColumnBig, ColumnSmall, Sidebar, ArrowLeft } from 'icons'
 import { CollectionFilter } from "./filter"
 import { NftTable } from "components/NFT"
 import {
@@ -50,7 +50,7 @@ export const CollectionTab = ({index}) => {
             as="a"
             variant="ghost"
             iconLeft={<IconWrapper icon={<Activity />} />}
-          >
+          > 
             Activity
         </Button>
       </Tab>
@@ -59,6 +59,7 @@ export const CollectionTab = ({index}) => {
 }
 export const Collection = () => {  
   const [isCollapse, setCollapse] = useState(false)
+  const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
   const [isLargeNFT, setLargeNFT] = useState(true)
   const [nfts, setNfts] = useState<NftInfo[]>(
     [
@@ -129,7 +130,7 @@ export const Collection = () => {
     <CollectionWrapper>
       <CollectionFilter isCollapse={isCollapse} setCollapse={setCollapse} />
       <NftList className={`${isCollapse?'collapse-close':'collapse-open'}`}>
-        <SearchItem>
+        <SearchItem className="search-item">
           <ChakraProvider>
             <InputGroup >
               <Input
@@ -159,7 +160,7 @@ export const Collection = () => {
               <option>Most Favorited</option>
               <option>Oldest</option>
             </Select>
-            <ColumnCount>
+            <ColumnCount className="desktop-section">
               <IconButton 
                 className={`column-type ${isLargeNFT?'active':''}`} 
                 aria-label='Search database' 
@@ -183,6 +184,21 @@ export const Collection = () => {
                 }}
               />
             </ColumnCount>
+            <FilterSection className="mobile-section filter-section">
+              <Button className="filter-header"
+                variant="primary"
+                iconRight={isMobileFilterCollapse && <IconWrapper icon={<ArrowLeft />}/> || !isMobileFilterCollapse && <IconWrapper icon={<Sidebar />}/> }
+                onClick={() => {
+                  setMobileFilterCollapse(!isMobileFilterCollapse)
+                  return false
+                }}
+              >
+                  Quick Filters
+              </Button>
+              {!isMobileFilterCollapse &&
+                <CollectionFilter isCollapse={isCollapse} setCollapse={setCollapse} />
+              }
+            </FilterSection>
           </ChakraProvider>
         </SearchItem>
         <FilterItem>
@@ -322,4 +338,7 @@ const ColumnCount = styled('div', {
       } 
     }
   }
+})
+const FilterSection = styled('div', {
+  display: 'flex',
 })

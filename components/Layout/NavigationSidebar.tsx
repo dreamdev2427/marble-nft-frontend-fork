@@ -143,7 +143,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               Explore
             </Button>
           </Link>
-          <Link href="/transfer" passHref>
+          <Link href={{
+              pathname: '/collection/[slug]',
+              query: { slug: 'active' },
+            }}  passHref>
             <Button className="top-menu"
               as="a"
               variant="ghost"
@@ -153,7 +156,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               Collection
             </Button>
           </Link>
-          <Link href="/pools" passHref>
+          <Link href={{
+              pathname: '/profile',
+              query: { key: key, user: key.name },
+            }}  passHref>
             <Button className="top-menu"
               as="a"
               variant="ghost"
@@ -164,7 +170,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </Button>
           </Link>
           <Link
-            href="/nft"
+            href={{
+              pathname: '/nft',
+              query: { id: 824 },
+            }}
             passHref
           >
             <Button className="top-menu"

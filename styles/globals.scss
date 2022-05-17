@@ -149,6 +149,16 @@ div{
       padding-right: 32px;
       border-radius: 0px;
     }
+    .nft-uri{
+      width: 40%;
+      padding-right: 30px;
+      img{
+        width: 100%;
+      }
+    }
+    .nft-detail{
+      width: 60%;
+    }
   }
   .container{
     width: 100%;
@@ -276,6 +286,15 @@ div{
   .container{
     width: 100%;
     margin: 0 auto;
+    .search-item{
+      .chakra-select__wrapper
+      {
+        select{
+          width: 180px;
+        }
+      }
+    }
+    
   }
   .wrap-header{
     .wrap-menu{
@@ -289,13 +308,24 @@ div{
       }
     }
   }
+  
 }
 
 @media screen and (max-width: 1200px) {
   div{
     .main-section{
+      &.fullWidth{
+        padding: 0 1rem;
+      }
       .collections{
         gap: 32px;
+      }
+      .nft-card-info{
+        padding: 16px;
+        .btn-buy{
+          margin-top: 16px;
+          padding: 12px 16px;
+        }
       }
     }
     .container{
@@ -309,9 +339,7 @@ div{
   
   .logo-img{width: 180px;}
   .wrap-header{
-
-    padding: 0px;
-
+    padding: 0 1rem;
     .wrap-menu{
       .top-menu-links{
         /*margin-left: 10px;*/
@@ -382,15 +410,66 @@ div{
       .mint-section{
         flex-direction: column-reverse;
       }
+      .filter-wrapper{
+        display: none;
+      }
       .desktop-section {
         display: none;
       }
       .mobile-section {
         display: flex;
+        &.filter-section{
+          flex-direction: column;
+          .filter-header{
+            width: 100%;
+            border-radius: 8px;
+            svg{
+              line{
+                stroke: #fff;
+              }
+              path{
+                stroke: #fff;
+              }
+            }
+          }
+          .filter-wrapper{
+            display: block;
+            width: 100%;
+  
+            >header{
+              display: none;
+            }
+            .filter-item{
+              button{
+                padding-top: 0px;
+                padding-bottom: 0px;
+              }
+              
+            }
+          }
+        }
+        
         a{
           width: 32px;
           height: 32px;
         }
+      }
+      
+      .search-item{
+        flex-direction: column;
+        .chakra-select__wrapper{
+          width: 100%;
+          select{
+            width: 100%;
+          }
+        }
+      }
+      .collapse-open{
+        width: 100%;
+        padding: 10px 0;
+      }
+      .profile-tab{
+        padding-left: 0px;
       }
     }
   }
@@ -605,6 +684,60 @@ div{
         grid-template-columns: 1fr;
         gap: 16px;
       }
+      .nft-grid{
+        &.column3{
+          grid-template-columns: 1fr 1fr;
+        }
+        &.column4{
+          grid-template-columns: 1fr 1fr;
+        }
+        &.column5{
+          grid-template-columns: 1fr 1fr;
+        }
+        &.column6{
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .nft-info{
+        .nft-uri{
+          width:50%;
+        }
+        .nft-detail{
+          width:50%;
+          .nft-buy-offer{
+            >div{
+              padding: 16px 20px;
+              button{
+                padding: 8px 12px;
+                font-size: 12px;
+                border-radius: 8px;
+              }
+            }
+            
+          }
+          .nft-offer{
+            .offer-title{
+              padding: 16px 20px;
+            }
+            table{
+              thead{
+                tr{
+                  th{
+                    padding: 1rem;
+                  }
+                }
+              }
+              tbody{
+                tr{
+                  td{
+                    padding: 1rem;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
   
@@ -612,6 +745,11 @@ div{
 }
 @media screen and (max-width: 480px) {
   .container{
+    p{
+      &.nft-title{
+        text-align: center;
+      }
+    }
     .collections{
       .collection{
         >div{
@@ -636,8 +774,55 @@ div{
         }
       }
     }
+    
   }
-
+  div{
+    .main-section{
+      .nft-grid{
+        &.column3{
+          grid-template-columns: 1fr;
+        }
+        &.column4{
+          grid-template-columns: 1fr;
+        }
+        &.column5{
+          grid-template-columns: 1fr;
+        }
+        &.column6{
+          grid-template-columns: 1fr;
+        }
+      }
+      .nft-info{
+        flex-direction: column;
+        .nft-uri{
+          width: 100%;
+          padding-right: 0px;
+        }
+        .nft-detail{
+          width: 100%;
+          margin-top: 28px;
+          .nft-title{
+            text-align: center;
+          }
+          .nft-link{
+            justify-content: center;
+            display: flex;
+          }
+          .nft-meta{
+            justify-content: center;
+          }
+          .nft-buy-offer{
+            >div{
+              button{
+                font-size: 16px;
+              }
+            }
+            
+          }
+        }
+      }
+    }
+  }
 }
 @media screen and (max-width: 400px) {
   

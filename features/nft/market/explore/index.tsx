@@ -59,23 +59,27 @@ const ExploreWrapper = styled('div', {
     justifyContent: 'space-between',
     overFlow: 'hidden',
     '&.desktop-section': {
-      ' a':{
+      ' >span':{
         minWidth: '8%',
+        textAlign: 'center',
+        paddingBottom: '$8',
+        cursor: 'pointer',
+        '&.active':{
+          borderBottom: '4px solid $selected',
+        }
       }
     },
     '&.mobile-section': {
-      ' a':{
+      ' >span':{
         minWidth: '18%',
+        textAlign: 'center',
+        paddingBottom: '$8',
+        cursor: 'pointer',
+        '&.active':{
+          borderBottom: '4px solid $selected',
+        }
       }
     },
-    ' a':{
-      
-      textAlign: 'center',
-      paddingBottom: '$8',
-      '&.active':{
-        borderBottom: '4px solid $selected',
-      }
-    }
   }
 })
 

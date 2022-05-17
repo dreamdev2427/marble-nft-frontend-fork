@@ -17,24 +17,24 @@ export function CategoryTab({ categories }: NftCategoryProps): JSX.Element {
       <CategoryDiv className="desktop-section category-menus">
       {categories.map((category, idx) => (
         (idx < 11) && (
-        <a href="#" key={category.id} 
+        <span key={category.id} 
           onClick={() => setActiveTab(category.id)}
           className={`category-menu ${getActiveTabIfActive(category.id)}`}
         >
         {category.name}
-        </a>
+        </span>
         )
       ))}
       </CategoryDiv>
       <CategoryDiv className="mobile-section category-menus">
       {categories.map((category, idx) => (
         (idx < 5) && (
-        <a href="#" key={category.id} 
+        <span key={category.id} 
           onClick={() => setActiveTab(category.id)}
           className={`category-menu ${getActiveTabIfActive(category.id)}`}
         >
         {category.name}
-        </a>
+        </span>
         )
       ))}
       </CategoryDiv>

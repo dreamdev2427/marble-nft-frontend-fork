@@ -12,6 +12,7 @@ import { NftInfo } from "services/nft/type";
 import { Button } from 'components/Button'
 import { IconWrapper } from 'components/IconWrapper'
 import { Credit } from 'icons'
+import { NftPrice } from './price'
 interface NftCardProps {
   readonly nft: NftInfo;
 }
@@ -22,15 +23,11 @@ export function NftCard({ nft }: NftCardProps): JSX.Element {
       <ImgDiv>
         <img className="nft-img-url" src={nft.image}/>
       </ImgDiv>
-      <TextDiv>
+      <TextDiv className="nft-card-info">
         <h2>{nft.title}</h2>
         <h5>{nft.collectionName}</h5>
         <p className="price-title">Current Price</p>
-        <PriceDiv>
-          <img className="token-icon" src="/nft/ether.png"/>
-          <span className="token-balance">{nft.price}</span>
-          <span className="nft-price">(${nft.price})</span>
-        </PriceDiv>
+        <NftPrice nft={nft}/>
         <Button className="btn-buy btn-default"
           css={{
             'background': '$black',
@@ -89,18 +86,5 @@ const TextDiv = styled('div', {
     marginTop: '$12',
     padding: '$10 $12',
     fontWeight: 'normal',
-  }
-})
-const PriceDiv = styled('div', {
-  display: 'flex',
-  gap: '$5',
-  alignItems: 'center',
-  ' .token-balance': {
-    fontWeight: 'bold',
-    fontSize: '$1'
-  },
-  ' .nft-price': {
-    color: '$textColors$disabled',
-    paddingTop: '$2'
   }
 })

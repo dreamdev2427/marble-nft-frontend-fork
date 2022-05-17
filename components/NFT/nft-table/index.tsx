@@ -21,7 +21,7 @@ export function NftTable({ data }: NftTableProps) {
   }, [dispatch, nft_column_count])
 
   return (
-    <NftGrid className={`column${nft_column_count}`}>
+    <NftGrid className={`nft-grid column${nft_column_count}`}>
       {data.map(nft => (
         <LinkBox as="picture" key={nft.tokenId}
           transition="transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0s"
@@ -41,15 +41,15 @@ const NftGrid = styled('div', {
   gap: '$16',
   margin: '$16 0',
   '&.column3':{
-    'gridTemplateColumns': '1fr 1fr 1fr',
+    'gridTemplateColumns': 'repeat(3, calc( 33.3% - 21.3333px ))',
   },
   '&.column4':{
-    'gridTemplateColumns': '1fr 1fr 1fr 1fr',
+    'gridTemplateColumns': 'repeat(4, calc( 25% - 24px ))',
   },
   '&.column5':{
-    'gridTemplateColumns': '1fr 1fr 1fr 1fr 1fr',
+    'gridTemplateColumns': 'repeat(5, calc( 20% - 25.6px ))',
   },
   '&.column6':{
-    'gridTemplateColumns': '1fr 1fr 1fr 1fr 1fr 1fr',
+    'gridTemplateColumns': 'repeat(6, calc( 16.6% - 26.666px ))',
   }
 })

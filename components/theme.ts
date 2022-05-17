@@ -13,6 +13,7 @@ export const colors = createColorPalette({
   gray: '#666666',
   selected: '#292D32',
   link: '#165FCD',
+  nft: '#5A5A5A',
 })
 
 export const { theme, styled, css } = createStitches({

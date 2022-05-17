@@ -27,7 +27,7 @@ import {
   FILTER_STATUS_TXT
 } from "store/types"
 
-export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
+export const CollectionFilter = ({ isCollapse, setCollapse}) => {
   const dispatch = useDispatch()
   
   const uiListData = useSelector((state) => state.uiData)
