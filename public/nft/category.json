@@ -1,0 +1,54 @@
+{
+  "categories":[
+    {
+      "id": 0,
+      "name": "All",
+      "slug": "all"
+    },
+    {
+      "id": 1,
+      "name": "Digital",
+      "slug": "digital"
+    },
+    {
+      "id": 2,
+      "name": "Physical",
+      "slug": "physical"
+    },
+    {
+      "id": 3,
+      "name": "Sport",
+      "slug": "sport"
+    },
+    {
+      "id": 4,
+      "name": "Music",
+      "slug": "music"
+    },
+    {
+      "id": 5,
+      "name": "Photography",
+      "slug": "photography"
+    },
+    {
+      "id": 6,
+      "name": "Sports",
+      "slug": "sports"
+    },
+    {
+      "id": 7,
+      "name": "Trading Cards",
+      "slug": "trading_cards"
+    },
+    {
+      "id": 8,
+      "name": "Utility",
+      "slug": "utility"
+    },
+    {
+      "id": 9,
+      "name": "Virtual Worlds",
+      "slug": "virtual_worlds"
+    }
+  ]
+}

@@ -6,29 +6,31 @@ import { styled } from 'components/theme'
 
 interface NftCollectionProps {
   readonly collections: NftCollection[];
+  readonly activeCategoryId: number;
 }
 
-export function NftCollectionTable({ collections }: NftCollectionProps): JSX.Element {
+export function NftCollectionTable({ collections, activeCategoryId }: NftCollectionProps): JSX.Element {
   return (
     <>
       <CollectionsDiv className="collections">
       {collections.map((collection, idx) => (
-        <Link href={`/collection/${collection.name}`} passHref key={idx}>
-        <CollectionDiv className="collection" key={idx}>
-          <ImgDiv>
-          <img className="nft-img-url" src={collection.imgUrl}/>
-          </ImgDiv>
-          <BannerDiv>
-          <img className="nft-banner-url" src={collection.bannerUrl}/>
-          </BannerDiv>
-          <TextDiv>
-          <h2>{collection.name}</h2>
-          <h5><span>by</span> <a href="#">{collection.creator}</a></h5>
-          <p>{collection.description}</p>
-          </TextDiv>
-        </CollectionDiv>
-        </Link>
-        
+        (activeCategoryId == 0 || collection.cat_ids.split(",").indexOf(activeCategoryId.toString()) != -1) && (
+          <Link href={`/collection/${collection.name}`} passHref key={idx}>
+          <CollectionDiv className="collection" key={idx}>
+            <ImgDiv>
+            <img className="nft-img-url" src={collection.image}/>
+            </ImgDiv>
+            <BannerDiv>
+            <img className="nft-banner-url" src={collection.banner_image}/>
+            </BannerDiv>
+            <TextDiv>
+            <h2>{collection.name}</h2>
+            <h5><span>by</span> <a href="#">{collection.creator}</a></h5>
+            <p>{collection.description}</p>
+            </TextDiv>
+          </CollectionDiv>
+          </Link>
+        )
       ))}
       </CollectionsDiv>
     </>

@@ -10,16 +10,15 @@ export interface NftInfo {
 }
 export interface NftCategory {
     readonly id: string;
-    readonly url: string;
+    readonly slug: string;
     readonly name: string;
 }
 export interface NftCollection {
-    readonly address: string;
-    readonly url: string;
-    readonly imgUrl: string;
-    readonly bannerUrl: string;
+    readonly image: string;
+    readonly num_tokens: number;
     readonly name: string;
-    readonly symbol: string;
     readonly description: string;
     readonly creator: string;
+    readonly banner_image: string;
+    readonly cat_ids: string;
 }

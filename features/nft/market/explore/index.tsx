@@ -16,38 +16,31 @@ import { config } from "services/config";
 
 const pageSize = 15;
 export const Explore = () => {
-  
-    
-  const [nft, setNft] = useState<NftInfo>({'tokenId':'aaa', 'image': 'https://lh3.googleusercontent.com/19uIC4yYuJfgYmO1XkDGHHzTVtBH_g3-OznaetWDX5iy_BHzR5wPvL65urGT8uXWzvpADoODLmGVTGnNyAFbuKEB=w600', 'title': 'aaa', 'user': 'aaa', 'price': 'aaa', 'total': 1});
   const [nftcategories, setNftCategories] = useState<NftCategory[]>(
-      [
-        {'id': '1', 'url':'#', 'name':'All'}, 
-        {'id': '2', 'url':'#2', 'name': 'Digital'}, 
-        {'id': '3', 'url':'#3', 'name': 'Physical'},
-        {'id': '4', 'url':'#4', 'name': 'Sport'},
-        {'id': '5', 'url':'#5', 'name': 'Music'},
-        {'id': '6', 'url':'#6', 'name': 'Music'},
-        {'id': '7', 'url':'#7', 'name': 'Photography'},
-        {'id': '8', 'url':'#8', 'name': 'Sports'},
-        {'id': '9', 'url':'#9', 'name': 'Trading Cards'},
-        {'id': '10', 'url':'#10', 'name': 'Utility'},
-        {'id': '11', 'url':'#11', 'name': 'Virtual Worlds'}
-      ]
-    )
-    const [nftcollections, setNftCollections] = useState<NftCollection[]>(
-      [
-        {'address': '', 'url': '', 'imgUrl': '/nft/nft.jpg', 'bannerUrl': '/nft/symbol.png', 'name': 'Rubber Duckz', 'symbol': 'RBD', 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tellus pharetra, neque felis vitae arcu egestas risus. Lorem in tellus arcu a.', 'creator':'RubberDuckz'},
-        {'address': '', 'url': '', 'imgUrl': '/nft/nft.jpg', 'bannerUrl': '/nft/symbol.png', 'name': 'Rubber Duckz', 'symbol': 'RBD', 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tellus pharetra, neque felis vitae arcu egestas risus. Lorem in tellus arcu a.', 'creator':'RubberDuckz'},
-        {'address': '', 'url': '', 'imgUrl': '/nft/nft.jpg', 'bannerUrl': '/nft/symbol.png', 'name': 'Rubber Duckz', 'symbol': 'RBD', 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tellus pharetra, neque felis vitae arcu egestas risus. Lorem in tellus arcu a.', 'creator':'RubberDuckz'},
-        {'address': '', 'url': '', 'imgUrl': '/nft/nft.jpg', 'bannerUrl': '/nft/symbol.png', 'name': 'Rubber Duckz', 'symbol': 'RBD', 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tellus pharetra, neque felis vitae arcu egestas risus. Lorem in tellus arcu a.', 'creator':'RubberDuckz'},
-      ]
-    )
-  
+    []
+  )
+  const [nftcollections, setNftCollections] = useState<NftCollection[]>(
+    []
+  )
+  const [activeCategoryId, setActiveCategoryId] = useState(0)
+
+  useEffect(() => {
+    (async () => {
+      let res_categories = await fetch(process.env.NEXT_PUBLIC_CATEGORY_URL)
+      let categories = await res_categories.json()
+      setNftCategories(categories.categories)
+      let res_collections = await fetch(process.env.NEXT_PUBLIC_COLLECTION_META_URL)
+      let collections = await res_collections.json()
+      setNftCollections(collections.collections)
+    })();
+
+  }, [])
+
   return (
     <ExploreWrapper>
-    <CategoryTab categories={nftcategories}/>
+    <CategoryTab categories={nftcategories} activeCategoryId={activeCategoryId} setActiveCategoryId={setActiveCategoryId}/>
     
-    <NftCollectionTable collections={nftcollections}/>
+    <NftCollectionTable collections={nftcollections} activeCategoryId={activeCategoryId} />
     </ExploreWrapper>
   );
 }

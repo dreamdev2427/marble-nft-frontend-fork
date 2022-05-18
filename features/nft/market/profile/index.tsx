@@ -138,6 +138,8 @@ export const MyCollectedNFTs = () => {
     console.log("cw721:", contractConfig.cw721_address)
     const contract = CW721(contractConfig.cw721_address).use(client)
     const nftTokens = await contract.tokens(PUBLIC_CW721_OWNER)
+    console.log("nftTokens 0:", nftTokens.tokens[0])
+    console.log(await contract.nftInfo(nftTokens.tokens[0]))
     setNFTIds(nftTokens.tokens)
   }, [client])
 

@@ -61,7 +61,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                 Explore
               </Button>
             </Link>
-            <Link href={{
+            {/* <Link href={{
               pathname: '/collection/[slug]',
               query: { slug: 'active' },
             }} passHref>
@@ -72,7 +72,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               >
                 Collection
               </Button>
-            </Link>
+            </Link> */}
             { Boolean(key?.name) &&
             <Link href={{
               pathname: '/profile',
@@ -123,16 +123,6 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
       </StyledWrapper>
       <MobileMenu className={`mobile-menu ${openNav ? 'open' :''}`}>
         <StyledListForLinks className={`top-menu-links ${openNav ? 'open' :''}`}>
-        {/*<Link href="/" passHref>
-            <Button className="top-menu"
-              as="a"
-              variant="ghost"
-              iconCenter={<IconWrapper icon={<NewDash />} />}
-              css={getActiveStylesIfActive('/dashboard')}
-            >
-              Dashboard
-            </Button>
-          </Link>*/}
           <Link href="/" passHref>
             <Button className="top-menu"
               as="a"
@@ -143,7 +133,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               Explore
             </Button>
           </Link>
-          <Link href={{
+          {/* <Link href={{
               pathname: '/collection/[slug]',
               query: { slug: 'active' },
             }}  passHref>
@@ -151,11 +141,11 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               as="a"
               variant="ghost"
               iconCenter={<IconWrapper icon={<UpRightArrow />} />}
-              css={getActiveStylesIfActive('/transfer')}
+              css={getActiveStylesIfActive('/collection/')}
             >
               Collection
             </Button>
-          </Link>
+          </Link> */}
           <Link href={{
               pathname: '/profile',
               query: { key: key, user: key.name },

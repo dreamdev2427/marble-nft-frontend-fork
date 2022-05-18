@@ -5,20 +5,20 @@ import { styled } from '@stitches/react'
 
 interface NftCategoryProps {
   readonly categories: NftCategory[];
+  readonly activeCategoryId: number;
 }
 
-export function CategoryTab({ categories }: NftCategoryProps): JSX.Element {
-  const [ activeTab, setActiveTab ] = useState(categories[0].id)
+export function CategoryTab({ categories, activeCategoryId, setActiveCategoryId }) {
   const getActiveTabIfActive = (tabId) => (
-    activeTab === tabId ? 'active' : ''
+    activeCategoryId === tabId ? 'active' : ''
   )
   return (
     <>
       <CategoryDiv className="desktop-section category-menus">
-      {categories.map((category, idx) => (
+      {categories.length > 0 && categories.map((category, idx) => (
         (idx < 11) && (
         <span key={category.id} 
-          onClick={() => setActiveTab(category.id)}
+          onClick={() => setActiveCategoryId(category.id)}
           className={`category-menu ${getActiveTabIfActive(category.id)}`}
         >
         {category.name}
@@ -27,10 +27,10 @@ export function CategoryTab({ categories }: NftCategoryProps): JSX.Element {
       ))}
       </CategoryDiv>
       <CategoryDiv className="mobile-section category-menus">
-      {categories.map((category, idx) => (
+      {categories.length > 0 && categories.map((category, idx) => (
         (idx < 5) && (
         <span key={category.id} 
-          onClick={() => setActiveTab(category.id)}
+          onClick={() => setActiveCategoryId(category.id)}
           className={`category-menu ${getActiveTabIfActive(category.id)}`}
         >
         {category.name}

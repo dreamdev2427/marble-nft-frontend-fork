@@ -1,0 +1,49 @@
+{
+    "collections":[
+        {
+            "image": "/nft/nft.jpg",
+            "num_tokens": 1001,
+            "name": "The Marblenauts",
+            "description": "ADD_PROJECT_DESCRIPTION_HERE, Category: Digital, Sport",
+            "creator": "RubberDuckz",
+            "banner_image": "/nft/symbol.png",
+            "cat_ids": "1,3"
+        },
+        {
+            "image": "/nft/nft.jpg",
+            "num_tokens": 1001,
+            "name": "The Marblenauts",
+            "description": "ADD_PROJECT_DESCRIPTION_HERE, Category: Physical, Music",
+            "creator": "RubberDuckz",
+            "banner_image": "/nft/symbol.png",
+            "cat_ids": "2,4"
+        },
+        {
+            "image": "/nft/nft.jpg",
+            "num_tokens": 1001,
+            "name": "The Marblenauts",
+            "description": "ADD_PROJECT_DESCRIPTION_HERE, Category: Digital, Physical",
+            "creator": "RubberDuckz",
+            "banner_image": "/nft/symbol.png",
+            "cat_ids": "1,2"
+        },
+        {
+            "image": "/nft/nft.jpg",
+            "num_tokens": 1001,
+            "name": "The Marblenauts",
+            "description": "ADD_PROJECT_DESCRIPTION_HERE, Category: Digital, Sport",
+            "creator": "RubberDuckz",
+            "banner_image": "/nft/symbol.png",
+            "cat_ids": "1,3"
+        },
+        {
+            "image": "/nft/nft.jpg",
+            "num_tokens": 1001,
+            "name": "The Marblenauts",
+            "description": "ADD_PROJECT_DESCRIPTION_HERE, Category: Digital, Music",
+            "creator": "RubberDuckz",
+            "banner_image": "/nft/symbol.png",
+            "cat_ids": "1,4"
+        }
+    ]
+}
