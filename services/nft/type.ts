@@ -2,7 +2,7 @@ export interface NftInfo {
     readonly address: string;
     readonly tokenId: string;
     readonly image: string;
-    readonly title: string;
+    readonly name: string;
     readonly user: string;
     readonly price: string;
     readonly total: number;
@@ -20,5 +20,6 @@ export interface NftCollection {
     readonly description: string;
     readonly creator: string;
     readonly banner_image: string;
+    readonly slug: string;
     readonly cat_ids: string;
 }

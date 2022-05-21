@@ -82,7 +82,12 @@ export const dollarValueFormatterWithDecimals = createBalanceFormatter({
 export const dollarValueFormatter = createBalanceFormatter({
   maximumFractionDigits: 2,
 })
-
+export const valueFormatter18 = createBalanceFormatter({
+  maximumFractionDigits: 18,
+})
+export const valueFormatter6 = createBalanceFormatter({
+  maximumFractionDigits: 6
+})
 export const formatTimestamp = (timestamp: number) => {
   const days = Math.floor(timestamp / 86400)
   timestamp -= days * 86400

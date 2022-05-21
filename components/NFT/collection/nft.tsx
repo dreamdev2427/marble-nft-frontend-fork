@@ -15,7 +15,7 @@ export function NftCollectionTable({ collections, activeCategoryId }: NftCollect
       <CollectionsDiv className="collections">
       {collections.map((collection, idx) => (
         (activeCategoryId == 0 || collection.cat_ids.split(",").indexOf(activeCategoryId.toString()) != -1) && (
-          <Link href={`/collection/${collection.name}`} passHref key={idx}>
+          <Link href={`/collection/${collection.slug}`} passHref key={idx}>
           <CollectionDiv className="collection" key={idx}>
             <ImgDiv>
             <img className="nft-img-url" src={collection.image}/>

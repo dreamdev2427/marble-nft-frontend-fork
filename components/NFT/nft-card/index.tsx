@@ -13,6 +13,7 @@ import { Button } from 'components/Button'
 import { IconWrapper } from 'components/IconWrapper'
 import { Credit } from 'icons'
 import { NftPrice } from './price'
+import Link from 'next/link'
 interface NftCardProps {
   readonly nft: NftInfo;
 }
@@ -24,23 +25,24 @@ export function NftCard({ nft }: NftCardProps): JSX.Element {
         <img className="nft-img-url" src={nft.image}/>
       </ImgDiv>
       <TextDiv className="nft-card-info">
-        <h2>{nft.title}</h2>
+        <h2>{nft.name}</h2>
         <h5>{nft.collectionName}</h5>
         <p className="price-title">Current Price</p>
         <NftPrice nft={nft}/>
-        <Button className="btn-buy btn-default"
-          css={{
-            'background': '$black',
-            'color': '$white',
-            'stroke': '$white',
-          }}
-          iconLeft={<IconWrapper icon={<Credit />} />}
-          variant="primary"
-          size="large"
-          
-        >
-          Buy Now
-        </Button>
+        <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
+          <Button className="btn-buy btn-default"
+            css={{
+              'background': '$black',
+              'color': '$white',
+              'stroke': '$white',
+            }}
+            iconLeft={<IconWrapper icon={<Credit />} />}
+            variant="primary"
+            size="large"
+          >
+            Buy Now
+          </Button>
+        </Link>
       </TextDiv>
     </NftCardDiv>
   );

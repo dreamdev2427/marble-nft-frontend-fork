@@ -33,10 +33,6 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
   const getActiveStylesIfActive = (path) =>
     pathname === path || (pathname.indexOf("/collection/") != -1 && path.indexOf("/collection/") != -1)? { borderBottom: '3px solid $white', background: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 100%)" } : {borderBottom: '3px solid transparent', background: 'transparent' }
 
-    
-
-
-
   const StyledImageForLogoText = styled('img', {
     borderRadius: '0%',
   })

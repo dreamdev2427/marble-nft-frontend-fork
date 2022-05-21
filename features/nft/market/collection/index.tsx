@@ -1,5 +1,7 @@
 import * as React from "react"
 import { useCallback, useState, useEffect } from "react"
+import { useRouter } from 'next/router'
+
 import { Button } from 'components/Button'
 import { styled } from 'components/theme'
 import { IconWrapper } from 'components/IconWrapper'
@@ -58,22 +60,14 @@ export const CollectionTab = ({index}) => {
   )
 }
 export const Collection = () => {  
+  const router = useRouter()
+  const name = router.query.name
+  const [pageCount, setPageCount] = useState(1)
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
   const [isLargeNFT, setLargeNFT] = useState(true)
   const [nfts, setNfts] = useState<NftInfo[]>(
-    [
-      {'tokenId': 'aaa1', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa2', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa3', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa4', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa5', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa6', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa7', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa8', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa9', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa10', 'address': '', 'image': '/nft/nft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-    ]
+    []
   )
   const dispatch = useDispatch()
   const uiListData = useSelector((state) => state.uiData)
@@ -92,6 +86,34 @@ export const Collection = () => {
     dispatch(setFilterData(FILTER_STATUS, []))
     return true
   }
+
+  useEffect(() => {
+    (async () => {
+      if (name === undefined)
+        return
+      let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
+      let traits = await res_traits.json()
+      let nftsForCollection = []
+      nftsForCollection = nfts
+      for (let i = (pageCount - 1) * 60; i < Math.min(pageCount * 60, traits.length); i++){
+        let nftPath = ""
+        //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
+        if (traits[i].tokenId > 2){
+          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
+        }else{
+          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
+        }
+        if (nftPath != ""){
+          let res_nft = await fetch(nftPath)
+          let nft = await res_nft.json()
+          nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+        }
+      }
+      setNfts(nftsForCollection)
+    })();
+
+  }, [name])
+
   useEffect(() => {
     if (isLargeNFT){
       if (nft_column_count <= 3)
@@ -110,9 +132,7 @@ export const Collection = () => {
   const [tokens, setNFTIds] = useState<number[]>([])
 
   const loadNfts = useCallback(async () => {
-    console.log("called load nfts")
     if (!client) return
-    console.log("called load nfts1")
     const marbleContract = Marble(PUBLIC_CW721_CONTRACT).use(client)
     const contractConfig = await marbleContract.getConfig()
     console.log("cw721:", contractConfig.cw721_address)
