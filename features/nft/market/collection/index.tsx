@@ -14,7 +14,7 @@ import {
 import { useRecoilValue } from 'recoil'
 import { CW721, Marble, useSdk } from 'services/nft'
 import { walletState } from 'state/atoms/walletAtoms'
-
+import InfiniteScroll from "react-infinite-scroll-component"
 import { 
   ChakraProvider, 
   Tab, 
@@ -62,13 +62,14 @@ export const CollectionTab = ({index}) => {
 export const Collection = () => {  
   const router = useRouter()
   const name = router.query.name
-  const [pageCount, setPageCount] = useState(1)
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
   const [isLargeNFT, setLargeNFT] = useState(true)
   const [nfts, setNfts] = useState<NftInfo[]>(
     []
   )
+  const [hasMore, setHasMore] = useState(true);
+
   const dispatch = useDispatch()
   const uiListData = useSelector((state) => state.uiData)
   const { nft_column_count } = uiListData
@@ -91,28 +92,54 @@ export const Collection = () => {
     (async () => {
       if (name === undefined)
         return
-      let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
-      let traits = await res_traits.json()
-      let nftsForCollection = []
-      nftsForCollection = nfts
-      for (let i = (pageCount - 1) * 60; i < Math.min(pageCount * 60, traits.length); i++){
-        let nftPath = ""
-        //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
-        if (traits[i].tokenId > 2){
-          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
-        }else{
-          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
-        }
-        if (nftPath != ""){
-          let res_nft = await fetch(nftPath)
-          let nft = await res_nft.json()
-          nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
-        }
-      }
-      setNfts(nftsForCollection)
+      // console.log("call effect nfts:", nfts.length)
+      // let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
+      // let traits = await res_traits.json()
+      // let nftsForCollection = []
+      // nftsForCollection = nfts
+      // for (let i = nfts.length; i < Math.min(nfts.length + 10, traits.length); i++){
+      //   let nftPath = ""
+      //   //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
+      //   if (traits[i].tokenId > 2){
+      //     nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
+      //   }else{
+      //     nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
+      //   }
+      //   if (nftPath != ""){
+      //     let res_nft = await fetch(nftPath)
+      //     let nft = await res_nft.json()
+      //     nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+      //   }
+      // }
+      // setNfts(nftsForCollection)
     })();
 
   }, [name])
+  const getMoreNfts = async () => {
+    console.log("Call More NFTs:", nfts.length)
+    let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
+    let traits = await res_traits.json()
+    let nftsForCollection = []
+    let hasMoreFlag = false
+    for (let i = nfts.length; i < Math.min(nfts.length + 10, traits.length); i++){
+      let nftPath = ""
+      //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
+      if (traits[i].tokenId > 2){
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
+      }else{
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
+      }
+      if (nftPath != ""){
+        let res_nft = await fetch(nftPath)
+        let nft = await res_nft.json()
+        nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+        hasMoreFlag = true
+      }
+
+    }
+    setNfts((nft)=>[...nft, ...nftsForCollection])
+    setHasMore(hasMoreFlag)
+  }
 
   useEffect(() => {
     if (isLargeNFT){
@@ -245,7 +272,15 @@ export const Collection = () => {
             </Tag>
           }
         </FilterItem>
+        <InfiniteScroll
+          dataLength={nfts.length}
+          next={getMoreNfts}
+          hasMore={hasMore}
+          loader={<h3> Loading...</h3>}
+          endMessage={<h4></h4>}
+        >
         <NftTable data={nfts}/>
+        </InfiniteScroll>
       </NftList>
     </CollectionWrapper>
   )

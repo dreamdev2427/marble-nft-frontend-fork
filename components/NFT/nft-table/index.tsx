@@ -39,6 +39,7 @@ export function NftTable({ data }: NftTableProps) {
 const NftGrid = styled('div', {
   display: 'grid',
   gap: '$16',
+  padding: '$8',
   margin: '$16 0',
   '&.column3':{
     'gridTemplateColumns': 'repeat(3, calc( 33.3% - 21.3333px ))',
