@@ -1,6 +1,6 @@
 export * from './account-button';
 export * from './collection';
-export * from './collection/nft.tsx';
+export * from './collection/nft';
 export * from './file-upload';
 export * from './footer';
 export * from './loading-spinner';

@@ -12,9 +12,11 @@ export function randomNft(): NftInfo {
     image: randI
       ? 'https://rmrk.mypinata.cloud/ipfs/bafybeicpgysjduvvfvpdhe2zqn2hh2dzdcxyracwtn5foak6i5v7rjxiry'
       : 'https://rmrk.mypinata.cloud/ipfs/bafybeih3g3e4nlg45osboov64z6wb2m3wyh5fud7dswfs7yhyrysemxcsu',
-    title: randT ? 'Break OU' : 'Punk D4',
+    name: randT ? 'Break OU' : 'Punk D4',
     user: randU ? 'RealMint' : 'Mistic',
     price: price + (randC ? ' JUNO' : ' ATOM'),
     total: 2,
+    address: '',
+    collectionName: 'marblenauts'
   }
 }

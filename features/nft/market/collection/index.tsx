@@ -195,12 +195,12 @@ export const Collection = () => {
                 <IconWrapper icon={<Search />} />
               </InputRightElement>
             </InputGroup>
-            <Select id='item_type' placeholder='Single Items'>
+            <Select id='item_type'>
               <option>Single Items</option>
               <option>Bundles</option>
               <option>All Items</option>
             </Select>
-            <Select id='sort_type' placeholder='Price: Low to High'>
+            <Select id='sort_type'>
               <option>Recently Listed</option>
               <option>Recently Created</option>
               <option>Recently Sold</option>

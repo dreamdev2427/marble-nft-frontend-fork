@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from 'next/link'
 import { Button } from 'components/Button'
 import { styled } from 'components/theme'
+import useSWR from 'swr';
 
 
 import { CategoryTab, NftCollectionTable } from "components/NFT";
@@ -15,7 +16,12 @@ import { NftCard } from "components/NFT"
 import { config } from "services/config";
 
 const pageSize = 15;
+
+
 export const Explore = () => {
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const { data } = useSWR('/api/readfiles', fetcher);
+  console.log("nft collections:", data)
   const [nftcategories, setNftCategories] = useState<NftCategory[]>(
     []
   )
@@ -23,18 +29,31 @@ export const Explore = () => {
     []
   )
   const [activeCategoryId, setActiveCategoryId] = useState(0)
-
+  
+  
   useEffect(() => {
     (async () => {
       let res_categories = await fetch(process.env.NEXT_PUBLIC_CATEGORY_URL)
       let categories = await res_categories.json()
       setNftCategories(categories.categories)
-      let res_collections = await fetch(process.env.NEXT_PUBLIC_COLLECTION_META_URL)
-      let collections = await res_collections.json()
-      setNftCollections(collections.collections)
+      let collections = []
+      if (data != undefined){
+        for (let i = 0; i < data.length; i++){
+          let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + data[i] + '/Collection Metadata.json')
+          let collection = await res_collection.json()
+          collection.banner_image = collection.image
+          collection.slug = data[i]
+          collection.creator = collection.owner
+          collection.cat_ids = "1,2"
+          collections.push(collection)
+        }
+      }
+      
+      setNftCollections(collections)
+      
     })();
 
-  }, [])
+  }, [data])
 
   return (
     <ExploreWrapper>
@@ -44,6 +63,7 @@ export const Explore = () => {
     </ExploreWrapper>
   );
 }
+
 
 const ExploreWrapper = styled('div', {
   ' .category-menus':{

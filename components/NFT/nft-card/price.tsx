@@ -17,11 +17,12 @@ interface NftCardProps {
 
 export function NftPrice({ nft }: NftCardProps): JSX.Element {
   const [tokenDollarPrice] = useTokenDollarValueQuery(["JUNO"])
+  const dollarPrice = parseFloat(nft.price) * tokenDollarPrice[0]
   return (
     <PriceDiv>
       <img className="token-icon" src="https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/juno.png"/>
       <span className="token-balance">{nft.price} JUNO</span>
-      <span className="nft-price">(${dollarValueFormatterWithDecimals(tokenDollarPrice * nft.price)})</span>
+      <span className="nft-price">(${dollarValueFormatterWithDecimals(dollarPrice)})</span>
     </PriceDiv>
   );
 }
