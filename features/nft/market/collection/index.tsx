@@ -61,7 +61,10 @@ export const CollectionTab = ({index}) => {
 }
 export const Collection = () => {  
   const router = useRouter()
-  const name = router.query.name
+  const query = router.query
+  const { asPath, pathname } = useRouter();
+  const name = asPath.replace('/collection/', '')
+
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
   const [isLargeNFT, setLargeNFT] = useState(true)
@@ -90,8 +93,10 @@ export const Collection = () => {
 
   useEffect(() => {
     (async () => {
-      if (name === undefined)
-        return
+      console.log("name", name)
+      if (name === undefined || name == "[name]")
+        return false
+      getMoreNfts()
       // console.log("call effect nfts:", nfts.length)
       // let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
       // let traits = await res_traits.json()
@@ -117,6 +122,8 @@ export const Collection = () => {
   }, [name])
   const getMoreNfts = async () => {
     console.log("Call More NFTs:", nfts.length)
+    if (name === undefined || name == "[name]")
+      return false
     let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
     let traits = await res_traits.json()
     let nftsForCollection = []

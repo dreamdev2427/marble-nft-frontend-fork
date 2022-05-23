@@ -142,6 +142,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               Collection
             </Button>
           </Link> */}
+          { Boolean(key?.name) &&
           <Link href={{
               pathname: '/profile',
               query: { key: key, user: key.name },
@@ -155,6 +156,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               Profile
             </Button>
           </Link>
+          }
           <Link
             href={{
               pathname: '/nft',
