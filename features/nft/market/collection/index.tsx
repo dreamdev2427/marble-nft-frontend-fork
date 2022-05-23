@@ -96,7 +96,7 @@ export const Collection = () => {
       console.log("name", name)
       if (name === undefined || name == "[name]")
         return false
-      getMoreNfts()
+      //getMoreNfts()
       // console.log("call effect nfts:", nfts.length)
       // let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
       // let traits = await res_traits.json()
