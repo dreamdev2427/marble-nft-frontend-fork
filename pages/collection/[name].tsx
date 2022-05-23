@@ -22,6 +22,7 @@ export default function Home() {
   const { asPath, pathname } = useRouter();
   const name = asPath.replace('/collection/', '')
   const [collectionName, setCollectionName] = useState("")
+  const [collectionDescription, setCollectionDescription] = useState("")
 
   const [fullWidth, setFullWidth] = useState(true);
   const [tabIndex, setTabIndex] = React.useState(0)
@@ -51,6 +52,7 @@ export default function Home() {
       let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/Collection Metadata.json')
       let collection = await res_collection.json()
       setCollectionName(collection.name)
+      setCollectionDescription(collection.description)
     })();
 
   }, [name])
@@ -58,7 +60,7 @@ export default function Home() {
     <AppLayout fullWidth={fullWidth}>
       <PageHeader
         title={collectionName}
-        subtitle="Welcome to FewoWorld, a universe created by FEWOCiOUS and the Web3 community. FewoWorld is the first generative art project from the mind of FEWOCiOUS. Unlike anything he has created before."
+        subtitle={collectionDescription}
       />
       <Tabs index={tabIndex} onChange={handleTabsChange}>
         <TabList css={`border-bottom: 1px solid ${borderColor}`}>
