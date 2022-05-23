@@ -33,12 +33,7 @@ const PriceDiv = styled('div', {
   ' .token-icon': {
     height: '$8',
   },
-  ' .token-balance': {
-    fontWeight: 'bold',
-    fontSize: '$1'
-  },
   ' .nft-price': {
     color: '$textColors$disabled',
-    paddingTop: '$2'
   }
 })

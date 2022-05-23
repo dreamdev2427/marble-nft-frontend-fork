@@ -121,7 +121,6 @@ export const Collection = () => {
 
   }, [name])
   const getMoreNfts = async () => {
-    console.log("Call More NFTs:", nfts.length)
     if (name === undefined || name == "[name]")
       return false
     let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')

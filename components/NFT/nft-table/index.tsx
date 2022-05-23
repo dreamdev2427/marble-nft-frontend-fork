@@ -43,14 +43,30 @@ const NftGrid = styled('div', {
   margin: '$16 0',
   '&.column3':{
     'gridTemplateColumns': 'repeat(3, calc( 33.3% - 21.3333px ))',
+    ' .token-balance': {
+      fontWeight: 'bold',
+      fontSize: '$1',
+    },
   },
   '&.column4':{
     'gridTemplateColumns': 'repeat(4, calc( 25% - 24px ))',
+    ' .token-balance': {
+      fontWeight: 'bold',
+      fontSize: '$2',
+    },
   },
   '&.column5':{
     'gridTemplateColumns': 'repeat(5, calc( 20% - 25.6px ))',
+    ' .token-balance': {
+      fontWeight: 'bold',
+      fontSize: '$8',
+    },
   },
   '&.column6':{
     'gridTemplateColumns': 'repeat(6, calc( 16.6% - 26.666px ))',
+    ' .token-balance': {
+      fontWeight: 'bold',
+      fontSize: '$8',
+    },
   }
 })
