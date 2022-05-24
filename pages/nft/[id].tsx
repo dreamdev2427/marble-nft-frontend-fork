@@ -3,8 +3,11 @@ import { AppLayout } from '/components/Layout/AppLayout'
 import { PageHeader } from '/components/Layout/PageHeader'
 import { NFTDetail } from '/features/nft/market/detail'
 import { styled } from 'components/theme'
+import { useRouter } from 'next/router'
 
 export default function Home() {
+  const { asPath, pathname } = useRouter();
+  const id = asPath.replace('/nft/', '')
   return (
     <AppLayout>
       <Container className="middle mauto">
