@@ -83,7 +83,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               </Button>
             </Link>
             }
-            <Link
+            {/* <Link
               href={{
                 pathname: '/nft',
                 query: { id: 824 },
@@ -97,7 +97,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               >
               NFT
               </Button>
-            </Link>
+            </Link> */}
 
           </StyledListForLinks>
           <IconWrapper
@@ -157,7 +157,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </Button>
           </Link>
           }
-          <Link
+          {/* <Link
             href={{
               pathname: '/nft',
               query: { id: 824 },
@@ -172,7 +172,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             >
             NFT
             </Button>
-          </Link>
+          </Link> */}
           <ConnectedWalletButton
             connected={Boolean(key?.name)}
             walletName={key?.name}

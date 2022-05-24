@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { LinkBox } from "@chakra-ui/react";
+import Link from 'next/link'
 import { NftCard } from "../nft-card";
 import { NftInfo } from "services/nft";
 import { styled } from 'components/theme'
@@ -28,7 +29,7 @@ export function NftTable({ data }: NftTableProps) {
           _hover={{
             transform: "scale(1.05)"
           }}>
-          <a href="/">
+          <a href={`/nft/${nft.tokenId}`}>
           <NftCard nft={nft} />
           </a>  
         </LinkBox>

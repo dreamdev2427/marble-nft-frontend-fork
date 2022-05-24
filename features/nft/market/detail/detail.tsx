@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRouter } from 'next/router'
 import { useEffect, useState } from "react";
 import { Link as ReactRouterLink, useHistory, useParams } from "react-router-dom";
 import {
@@ -36,8 +37,10 @@ interface DetailParams {
 }
 
 export const Detail = () => {
+  const { asPath, pathname } = useRouter();
+  const id = asPath.replace('/nft/', '')
+
   const toast = useToast();
-  const { id } = useParams<DetailParams>();
   const history = useHistory();
   const { client, address, getSignClient, refreshBalance } = useSdk();
   const [nft, setNft] = useState<NftInfoResponse>();
