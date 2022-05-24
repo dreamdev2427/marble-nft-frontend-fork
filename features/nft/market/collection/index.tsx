@@ -26,6 +26,7 @@ import {
   Tag,
   TagLabel,
   TagCloseButton,
+  filter,
 } from '@chakra-ui/react'
 import { useDispatch, useSelector } from "react-redux"
 import { setUIData } from "store/actions/uiAction"
@@ -39,7 +40,7 @@ export const CollectionTab = ({index}) => {
   return (
     <TabWrapper>
       <Tab>
-        <Button className={`tab-link ${index==0?'active':''}`}
+        <Button className={`hide tab-link ${index==0?'active':''}`}
             as="a"
             variant="ghost"
             iconLeft={<IconWrapper icon={<Grid />} />}
@@ -48,7 +49,7 @@ export const CollectionTab = ({index}) => {
         </Button>
       </Tab>
       <Tab>
-        <Button className={`tab-link ${index==1?'active':''}`}
+        <Button className={`hide tab-link ${index==1?'active':''}`}
             as="a"
             variant="ghost"
             iconLeft={<IconWrapper icon={<Activity />} />}
@@ -59,7 +60,10 @@ export const CollectionTab = ({index}) => {
     </TabWrapper>
   )
 }
+let nftCurrentIndex = 0
 export const Collection = () => {  
+  
+  const pageCount = 10
   const router = useRouter()
   const query = router.query
   const { asPath, pathname } = useRouter();
@@ -68,10 +72,11 @@ export const Collection = () => {
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
   const [isLargeNFT, setLargeNFT] = useState(true)
+  const [filterCount, setFilterCount] = useState(0)
   const [nfts, setNfts] = useState<NftInfo[]>(
     []
   )
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false)
 
   const dispatch = useDispatch()
   const uiListData = useSelector((state) => state.uiData)
@@ -79,7 +84,8 @@ export const Collection = () => {
   
   const filterData = useSelector((state) => state.filterData)
   const { filter_status } = filterData
-
+  const [searchVal, setSearchVal] = useState("")
+  
   const closeFilterStatusButton = (fstatus) => {
     console.log(filter_status)
     filter_status.splice(filter_status.indexOf(fstatus), 1)
@@ -90,44 +96,104 @@ export const Collection = () => {
     dispatch(setFilterData(FILTER_STATUS, []))
     return true
   }
-
+  const handleSearch = (event) => {
+    if (event.key.toLowerCase() === "enter") {
+      setSearchVal(event.target.value)
+    }
+  }
   useEffect(() => {
     (async () => {
       console.log("name", name)
       if (name === undefined || name == "[name]")
         return false
       //getMoreNfts()
-      // console.log("call effect nfts:", nfts.length)
-      // let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
-      // let traits = await res_traits.json()
-      // let nftsForCollection = []
-      // nftsForCollection = nfts
-      // for (let i = nfts.length; i < Math.min(nfts.length + 10, traits.length); i++){
-      //   let nftPath = ""
-      //   //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
-      //   if (traits[i].tokenId > 2){
-      //     nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
-      //   }else{
-      //     nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
-      //   }
-      //   if (nftPath != ""){
-      //     let res_nft = await fetch(nftPath)
-      //     let nft = await res_nft.json()
-      //     nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
-      //   }
-      // }
-      // setNfts(nftsForCollection)
+      setNfts([])
+      console.log("filter_status:", filter_status)
+      console.log("call effect nfts:", nfts.length)
+      let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
+      let all_traits = await res_traits.json()
+      let traits = []
+      for (let i = 0; i < all_traits.length; i++){
+        if (filter_status.length == 0 
+          || filter_status.indexOf(all_traits[i].Accessories) != -1
+          || filter_status.indexOf(all_traits[i].Background) != -1
+          || filter_status.indexOf(all_traits[i].Clothes) != -1
+          || filter_status.indexOf(all_traits[i].Earring) != -1
+          || filter_status.indexOf(all_traits[i].Expressions) != -1
+          || filter_status.indexOf(all_traits[i].Eyes) != -1
+          || filter_status.indexOf(all_traits[i].Helmet) != -1
+        ){
+          traits.push(all_traits[i])
+        }
+      }
+      //let traits = await res_traits.json()
+      let nftsForCollection = []
+      let hasMoreFlag = false
+      let i = 0
+      let nftIndex = 0
+      let isPageEnd = false
+      while (!isPageEnd){
+        let nftPath = ""
+        //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
+        if (traits[i].tokenId > 2){
+          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
+        }else{
+          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
+        }
+        if (nftPath != ""){
+          let res_nft = await fetch(nftPath)
+          let nft = await res_nft.json()
+          if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
+            nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+            hasMoreFlag = true
+            nftIndex++
+            if (nftIndex == pageCount){
+              isPageEnd = true
+            }
+          }
+        }
+        i++;
+        if (i == traits.length){
+          isPageEnd = true
+        }
+      }
+      nftCurrentIndex = i
+      console.log("Effect nftCurrentIndex", nftCurrentIndex)
+      setNfts(nftsForCollection)
+      setHasMore(hasMoreFlag)
     })();
 
-  }, [name])
+  }, [name, filterCount, searchVal])
+
   const getMoreNfts = async () => {
-    if (name === undefined || name == "[name]")
+    if (name === undefined || name == "[name]" || !hasMore)
       return false
     let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
-    let traits = await res_traits.json()
+    let all_traits = await res_traits.json()
+    let traits = []
+    for (let i = 0; i < all_traits.length; i++){
+      if (filter_status.length == 0 
+        || filter_status.indexOf(all_traits[i].Accessories) != -1
+        || filter_status.indexOf(all_traits[i].Background) != -1
+        || filter_status.indexOf(all_traits[i].Clothes) != -1
+        || filter_status.indexOf(all_traits[i].Earring) != -1
+        || filter_status.indexOf(all_traits[i].Expressions) != -1
+        || filter_status.indexOf(all_traits[i].Eyes) != -1
+        || filter_status.indexOf(all_traits[i].Helmet) != -1
+      ){
+        traits.push(all_traits[i])
+      }
+    }
     let nftsForCollection = []
     let hasMoreFlag = false
-    for (let i = nfts.length; i < Math.min(nfts.length + 10, traits.length); i++){
+
+    let i = nftCurrentIndex
+    let nftIndex = 0
+    let isPageEnd = false
+    if (i == traits.length){
+      isPageEnd = true
+    }
+    while (!isPageEnd){
       let nftPath = ""
       //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
       if (traits[i].tokenId > 2){
@@ -138,11 +204,22 @@ export const Collection = () => {
       if (nftPath != ""){
         let res_nft = await fetch(nftPath)
         let nft = await res_nft.json()
-        nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
-        hasMoreFlag = true
+        if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
+          nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+          hasMoreFlag = true
+          nftIndex++
+          if (nftIndex == pageCount){
+            isPageEnd = true
+          }
+        }
       }
-
+      i++;
+      if (i == traits.length){
+        isPageEnd = true
+      }
     }
+    nftCurrentIndex = i
+    console.log("More nftCurrentIndex", nftCurrentIndex)
     setNfts((nft)=>[...nft, ...nftsForCollection])
     setHasMore(hasMoreFlag)
   }
@@ -164,21 +241,6 @@ export const Collection = () => {
   const { address, client: signingClient } = useRecoilValue(walletState)
   const [tokens, setNFTIds] = useState<number[]>([])
 
-  const loadNfts = useCallback(async () => {
-    if (!client) return
-    const marbleContract = Marble(PUBLIC_CW721_CONTRACT).use(client)
-    const contractConfig = await marbleContract.getConfig()
-    console.log("cw721:", contractConfig.cw721_address)
-    // const contract = CW721(contractConfig.cw721_address).use(client)
-    // const nftTokens = await contract.ownerOf(PUBLIC_CW721_OWNER)
-    // console.log(nftTokens)
-    //setNFTIds(nftTokens)
-  }, [client])
-
-  useEffect(() => {
-    loadNfts()
-  }, [loadNfts])
-
   return (
     <CollectionWrapper>
       <CollectionFilter isCollapse={isCollapse} setCollapse={setCollapse} />
@@ -190,12 +252,13 @@ export const Collection = () => {
                 pr='48px'
                 type='text'
                 placeholder='Search'
+                onKeyDown={handleSearch} 
               />
               <InputRightElement width='48px'>
                 <IconWrapper icon={<Search />} />
               </InputRightElement>
             </InputGroup>
-            <Select id='item_type'>
+            {/* <Select id='item_type'>
               <option>Single Items</option>
               <option>Bundles</option>
               <option>All Items</option>
@@ -212,7 +275,7 @@ export const Collection = () => {
               <option>Most Viewed</option>
               <option>Most Favorited</option>
               <option>Oldest</option>
-            </Select>
+            </Select> */}
             <ColumnCount className="desktop-section">
               <IconButton 
                 className={`column-type ${isLargeNFT?'active':''}`} 
@@ -258,6 +321,7 @@ export const Collection = () => {
           {tokens.map(token => (
             {token}
           ))}
+          {filter_status.length != filterCount && setFilterCount(filter_status.length)}
           {filter_status.map(fstatus => (
             <Tag
               borderRadius='full'
@@ -369,14 +433,14 @@ const SearchItem = styled('div', {
   
 })
 const FilterItem = styled('div', {
-  display: 'flex',
-  gap: '$4',
+  display: 'block',
   margin: '$4 0',
   ' >span':{
     background: '$backgroundColors$primary',
     color: '$textColors$primary',
     borderRadius: '$3',
     padding: '$4',
+    margin: '$2',
   }
 })
 const ColumnCount = styled('div', {
