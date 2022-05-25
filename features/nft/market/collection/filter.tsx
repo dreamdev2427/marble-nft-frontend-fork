@@ -13,7 +13,10 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
+
 import { useDispatch, useSelector } from "react-redux"
+import { State } from 'store/reducers'
+
 import { setUIData } from "store/actions/uiAction"
 import { setFilterData } from "store/actions/filterAction"
 import { 
@@ -33,24 +36,37 @@ import {
   FILTER_HELMET,
   FILTER_EARRING
 } from "store/types"
+import { Dispatch, AnyAction } from "redux"
 
 export const CollectionFilter = ({ isCollapse, setCollapse}) => {
   const dispatch = useDispatch()
   
-  const uiListData = useSelector((state) => state.uiData)
+  const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
 
-  const filterData = useSelector((state) => state.filterData)
+  const filterData = useSelector((state: State) => state.filterData)
   const { filter_status } = filterData
   useEffect(() => {
     if (isCollapse){
       if (nft_column_count >= 5)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count + 1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count + 1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count + 1
+        }
+      )
     }else{
       if (nft_column_count <= 3)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count -1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count -1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count - 1
+        }
+      )
     }
   }, [dispatch, isCollapse])
   
@@ -91,7 +107,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_BUY_NOW), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >
@@ -105,7 +127,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_ON_AUCTION), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >
@@ -119,7 +147,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_NEW), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >
@@ -133,7 +167,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_HAS_OFFERS), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >
@@ -156,6 +196,7 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
             <Conditions className="grid">
               {FILTER_ACCESSORIES.map((item, index) => (
                 <Button
+                  key={`accessories${index}`}
                   variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
@@ -163,7 +204,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                     }else{
                       filter_status.splice(filter_status.indexOf(item.id), 1)
                     }
-                    dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
                     return false
                   }}
                 >
@@ -187,6 +234,7 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
             <Conditions className="grid">
               {FILTER_BACKGROUND.map((item, index) => (
                 <Button
+                  key={`background${index}`}
                   variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
@@ -194,7 +242,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                     }else{
                       filter_status.splice(filter_status.indexOf(item.id), 1)
                     }
-                    dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
                     return false
                   }}
                 >
@@ -218,6 +272,7 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
             <Conditions className="grid">
               {FILTER_CLOTHES.map((item, index) => (
                 <Button
+                  key={`clothes${index}`}
                   variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
@@ -225,7 +280,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                     }else{
                       filter_status.splice(filter_status.indexOf(item.id), 1)
                     }
-                    dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
                     return false
                   }}
                 >
@@ -249,6 +310,7 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
             <Conditions className="grid">
               {FILTER_EARRING.map((item, index) => (
                 <Button
+                  key={`earring${index}`}
                   variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
@@ -256,7 +318,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                     }else{
                       filter_status.splice(filter_status.indexOf(item.id), 1)
                     }
-                    dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
                     return false
                   }}
                 >
@@ -280,6 +348,7 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
             <Conditions className="grid">
               {FILTER_EXPRESSIONS.map((item, index) => (
                 <Button
+                  key={`expressions${index}`}
                   variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
@@ -287,7 +356,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                     }else{
                       filter_status.splice(filter_status.indexOf(item.id), 1)
                     }
-                    dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
                     return false
                   }}
                 >
@@ -311,6 +386,7 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
             <Conditions className="grid">
               {FILTER_EYES.map((item, index) => (
                 <Button
+                  key={`eyes${index}`}
                   variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
@@ -318,7 +394,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                     }else{
                       filter_status.splice(filter_status.indexOf(item.id), 1)
                     }
-                    dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
                     return false
                   }}
                 >
@@ -342,6 +424,7 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
             <Conditions className="grid">
               {FILTER_HELMET.map((item, index) => (
                 <Button
+                  key={`helmet${index}`}
                   variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
@@ -349,7 +432,13 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                     }else{
                       filter_status.splice(filter_status.indexOf(item.id), 1)
                     }
-                    dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
                     return false
                   }}
                 >

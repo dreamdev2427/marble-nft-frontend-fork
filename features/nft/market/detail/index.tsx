@@ -27,7 +27,7 @@ interface DetailParams {
 
 export const NFTDetail = () => {
   const [nft, setNft] = useState<NftInfo>(
-    {'tokenId': 'aaa1', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'FEWOCiOUS x ComplexCon', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' }
+    {'tokenId': 'aaa1', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'FEWOCiOUS x ComplexCon', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' }
   )
   return (
     <Nft className="nft-info">
@@ -35,8 +35,8 @@ export const NFTDetail = () => {
           <img src={nft.image}/>
         </NftUriTag>
         <NftInfoTag className="nft-detail">
-          <h2 className="nft-title">{nft.title}</h2>
-          <a className="nft-link" href="#">{nft.title}</a>
+          <h2 className="nft-title">{nft.name}</h2>
+          <a className="nft-link" href="#">{nft.name}</a>
           <NftMeta className="nft-meta">
             <Button className="nft-meta-link"
               as="a"

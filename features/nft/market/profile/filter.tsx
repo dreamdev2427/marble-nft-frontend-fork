@@ -14,6 +14,7 @@ import {
   AccordionIcon,
 } from '@chakra-ui/react'
 import { useDispatch, useSelector } from "react-redux"
+import { State } from 'store/reducers'
 import { setUIData } from "store/actions/uiAction"
 import { setFilterData } from "store/actions/filterAction"
 import { 
@@ -30,20 +31,32 @@ import {
 export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
   const dispatch = useDispatch()
   
-  const uiListData = useSelector((state) => state.uiData)
+  const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
 
-  const filterData = useSelector((state) => state.filterData)
+  const filterData = useSelector((state: State) => state.filterData)
   const { filter_status } = filterData
   useEffect(() => {
     if (isCollapse){
       if (nft_column_count >= 5)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count + 1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count + 1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count + 1
+        }
+      )
     }else{
       if (nft_column_count <= 3)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count -1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count -1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count - 1
+        }
+      )
     }
   }, [dispatch, isCollapse])
   
@@ -84,7 +97,13 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_BUY_NOW), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >
@@ -98,7 +117,13 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_ON_AUCTION), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >
@@ -112,7 +137,13 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_NEW), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >
@@ -126,7 +157,13 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
                   }else{
                     filter_status.splice(filter_status.indexOf(FILTER_STATUS_HAS_OFFERS), 1)
                   }
-                  dispatch(setFilterData(FILTER_STATUS, filter_status))
+                  //setFilterData(FILTER_STATUS, filter_status)
+                  dispatch(
+                    {
+                      type: FILTER_STATUS,
+                      payload: filter_status,
+                    }
+                  )
                   return false
                 }}
               >

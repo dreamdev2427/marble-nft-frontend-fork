@@ -2,13 +2,14 @@ import React from 'react'
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 
-import { AppLayout } from '/components/Layout/AppLayout'
-import { PageHeader } from '/components/Layout/PageHeader'
-import { Collection, CollectionTab } from '/features/nft/market/collection'
+import { AppLayout } from 'components/Layout/AppLayout'
+import { PageHeader } from 'components/Layout/PageHeader'
+import { Collection, CollectionTab } from 'features/nft/market/collection'
 import { styled, theme } from 'components/theme'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 import { useDispatch, useSelector } from "react-redux";
+import { State } from 'store/reducers'
 import { setUIData } from "store/actions/uiAction";
 import { setFilterData } from "store/actions/filterAction";
 import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS } from "store/types";
@@ -30,10 +31,10 @@ export default function Home() {
   const borderColor = theme.borderColors.default
   const dispatch = useDispatch()
   
-  const uiListData = useSelector((state) => state.uiData)
+  const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
 
-  const filterData = useSelector((state) => state.filterData)
+  const filterData = useSelector((state: State) => state.filterData)
   const { filter_status } = filterData
 
   const handleTabsChange = (index) => {
@@ -41,8 +42,20 @@ export default function Home() {
   }
   
   useEffect(() => {
-    dispatch(setUIData(NFT_COLUMN_COUNT, DEFAULT_NFT_COLUMN_COUNT))
-    dispatch(setFilterData(FILTER_STATUS, DEFAULT_FILTER_STATUS))
+    //setUIData(NFT_COLUMN_COUNT, DEFAULT_NFT_COLUMN_COUNT)
+    dispatch(
+      {
+        type: NFT_COLUMN_COUNT,
+        payload: DEFAULT_NFT_COLUMN_COUNT
+      }
+    )
+    //setFilterData(FILTER_STATUS, DEFAULT_FILTER_STATUS)
+    dispatch(
+      {
+        type: FILTER_STATUS,
+        payload: filter_status,
+      }
+    )
   }, [dispatch]);
   useEffect(() => {
     (async () => {

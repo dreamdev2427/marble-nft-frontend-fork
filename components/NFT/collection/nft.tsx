@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from 'next/link'
 import { NftCollection } from "services/nft";
 import { styled } from 'components/theme'
-
+import { Image } from '@chakra-ui/react'
 interface NftCollectionProps {
   readonly collections: NftCollection[];
   readonly activeCategoryId: number;
@@ -17,11 +17,14 @@ export function NftCollectionTable({ collections, activeCategoryId }: NftCollect
         (activeCategoryId == 0 || collection.cat_ids.split(",").indexOf(activeCategoryId.toString()) != -1) && (
           <Link href={`/collection/${collection.slug}`} passHref key={idx}>
           <CollectionDiv className="collection" key={idx}>
-            <ImgDiv>
-            <img className="nft-img-url" src={collection.image}/>
+            <ImgDiv className="nft-img-div">
+              <Image src={collection.image} alt="NFT Image"/>
             </ImgDiv>
-            <BannerDiv>
-            <img className="nft-banner-url" src={collection.banner_image}/>
+            <BannerDiv className="nft-banner-div">
+              <Image 
+                src={collection.banner_image} 
+                alt="NFT Banner Image"
+              />
             </BannerDiv>
             <TextDiv>
             <h2>{collection.name}</h2>

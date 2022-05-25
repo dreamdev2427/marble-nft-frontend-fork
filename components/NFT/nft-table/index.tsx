@@ -6,16 +6,18 @@ import { NftCard } from "../nft-card";
 import { NftInfo } from "services/nft";
 import { styled } from 'components/theme'
 import { useDispatch, useSelector } from "react-redux";
+import { State } from 'store/reducers'
 
 interface NftTableProps {
   readonly data: NftInfo[]
+  readonly collectionName: string
 }
 
-export function NftTable({ data }: NftTableProps) {
+export function NftTable({ data, collectionName }: NftTableProps) {
   const dispatch = useDispatch()
-  const uiListData = useSelector((state) => state.uiData)
+  const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
-  const filterData = useSelector((state) => state.filterData)
+  const filterData = useSelector((state: State) => state.filterData)
   const { filter_status } = filterData
   useEffect(() => {
     
@@ -29,7 +31,7 @@ export function NftTable({ data }: NftTableProps) {
           _hover={{
             transform: "scale(1.05)"
           }}>
-          <a href={`/nft/${nft.tokenId}`}>
+          <a href={`/${collectionName}/${nft.tokenId}`}>
           <NftCard nft={nft} />
           </a>  
         </LinkBox>
