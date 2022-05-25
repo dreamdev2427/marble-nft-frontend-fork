@@ -1,10 +1,5 @@
 import {
-  Box,
-  chakra,
-  Divider,
-  Flex,
-  Image,
-  Text,
+  Image
 } from "@chakra-ui/react";
 import * as React from "react";
 import { styled } from 'components/theme'
@@ -21,8 +16,8 @@ interface NftCardProps {
 export function NftCard({ nft }: NftCardProps): JSX.Element {
   return (
     <NftCardDiv className="nft-card">
-      <ImgDiv>
-        <img className="nft-img-url" src={nft.image}/>
+      <ImgDiv className="nft-img-url">
+        <Image src={nft.image} alt="NFT Image"/>
       </ImgDiv>
       <TextDiv className="nft-card-info">
         <h2>{nft.name}</h2>

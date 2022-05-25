@@ -10,6 +10,9 @@ import {
   valueFormatter18,
   valueFormatter6,
 } from 'util/conversion'
+import {
+  Image
+} from "@chakra-ui/react";
 
 interface NftCardProps {
   readonly nft: NftInfo;
@@ -20,7 +23,7 @@ export function NftPrice({ nft }: NftCardProps): JSX.Element {
   const dollarPrice = parseFloat(nft.price) * tokenDollarPrice[0]
   return (
     <PriceDiv>
-      <img className="token-icon" src="https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/juno.png"/>
+      <Image alt="Token Icon" className="token-icon" src="https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/juno.png"/>
       <span className="token-balance">{nft.price} JUNO</span>
       <span className="nft-price">(${dollarValueFormatterWithDecimals(dollarPrice)})</span>
     </PriceDiv>

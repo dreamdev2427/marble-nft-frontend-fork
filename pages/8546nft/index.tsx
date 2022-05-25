@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { useState } from "react";
 import { styled } from 'components/theme'
 import { AppLayout } from 'components/Layout/AppLayout'
 import NFTToken from 'features/nft'
@@ -10,8 +11,9 @@ import {
 import theme from "theme"
 
 const NFT: NextPage = () => {
+  const [fullWidth, setFullWidth] = useState(false);
   return (
-    <AppLayout>
+    <AppLayout fullWidth={fullWidth}>
       <Container className="middle mauto">
         <ChakraProvider theme={theme}>
           <SdkProvider config={config}>

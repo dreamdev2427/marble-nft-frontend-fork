@@ -1,6 +1,7 @@
-import { NFT_COLUMN_COUNT, UI_ERROR } from "../types";
+import { Dispatch, AnyAction } from "redux"
+import { NFT_COLUMN_COUNT, UI_ERROR } from "../types"
 
-export const setUIData = (action, data) => async (dispatch) => {
+export const setUIData = (action: string, data: number) => async (dispatch: Dispatch<AnyAction>) => {
   try {
     switch (action){
       case NFT_COLUMN_COUNT:

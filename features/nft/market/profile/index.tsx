@@ -27,6 +27,8 @@ import {
   TagCloseButton,
 } from '@chakra-ui/react'
 import { useDispatch, useSelector } from "react-redux"
+import { State } from 'store/reducers'
+
 import { setUIData } from "store/actions/uiAction"
 import { setFilterData } from "store/actions/filterAction"
 import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS, FILTER_STATUS_TXT } from "store/types"
@@ -85,44 +87,68 @@ export const MyCollectedNFTs = () => {
   const [isLargeNFT, setLargeNFT] = useState(true)
   const [nfts, setNfts] = useState<NftInfo[]>(
     [
-      {'tokenId': 'aaa1', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa2', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa3', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa4', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa5', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa6', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa7', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa8', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa9', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa10', 'address': '', 'image': '/nft/mynft.jpg', 'title': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa1', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa2', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa3', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa4', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa5', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa6', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa7', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa8', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa9', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
+      {'tokenId': 'aaa10', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
     ]
   )
   const dispatch = useDispatch()
-  const uiListData = useSelector((state) => state.uiData)
+  const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
   
-  const filterData = useSelector((state) => state.filterData)
+  const filterData = useSelector((state: State) => state.filterData)
   const { filter_status } = filterData
 
   const closeFilterStatusButton = (fstatus) => {
     console.log(filter_status)
     filter_status.splice(filter_status.indexOf(fstatus), 1)
-    dispatch(setFilterData(FILTER_STATUS, filter_status))
+    //setFilterData(FILTER_STATUS, filter_status)
+    dispatch(
+      {
+        type: FILTER_STATUS,
+        payload: filter_status,
+      }
+    )
     return true
   }
   const closeFilterAllStatusButtons = () => {
-    dispatch(setFilterData(FILTER_STATUS, []))
+    //setFilterData(FILTER_STATUS, [])
+    dispatch(
+      {
+        type: FILTER_STATUS,
+        payload: []
+      }
+    )
     return true
   }
   useEffect(() => {
     if (isLargeNFT){
       if (nft_column_count <= 3)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count - 1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count - 1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count - 1
+        }
+      )
     }else{
       if (nft_column_count >= 5)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count +1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count +1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count + 1
+        }
+      )
     }
     
   }, [dispatch, isLargeNFT])
@@ -246,7 +272,7 @@ export const MyCollectedNFTs = () => {
             return (<div>{token}</div>)
           })}
         </FilterItem>
-        <NftTable data={nfts}/>
+        <NftTable data={nfts} collectionName="marblenauts"/>
       </NftList>
     </CollectionWrapper>
   )

@@ -38,7 +38,7 @@ export const FooterBar = () => {
             className="footer-desc"
             css={{ color: '$textColors$secondary', padding: '$space$10 0' }}
           >
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Loeam's standard dummy text ever since the and scrambled it to make a type specimen book.
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Loeam&apos;s standard dummy text ever since the and scrambled it to make a type specimen book.
           </Text>
           <StyledDivForFooter>
             <Button

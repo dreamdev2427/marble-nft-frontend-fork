@@ -68,7 +68,7 @@ export const Account = () => {
 
       const contract = CW721(config.contract).use(client);
       const result = await contract.tokens(user, undefined, maxItemsPerPage);
-      setNfts(await getNftsInfo(result.tokens, contract));
+      //setNfts(await getNftsInfo(result.tokens, contract));
     })();
   }, [client, user]);
 
@@ -86,7 +86,7 @@ export const Account = () => {
         nft.price = formatPrice(off.list_price);
         return nft;
       });
-      setNftSale(items);
+      //setNftSale(items);
     })();
   }, [client, user]);
 

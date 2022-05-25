@@ -29,6 +29,7 @@ import {
   filter,
 } from '@chakra-ui/react'
 import { useDispatch, useSelector } from "react-redux"
+import { State } from 'store/reducers'
 import { setUIData } from "store/actions/uiAction"
 import { setFilterData } from "store/actions/filterAction"
 import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS, FILTER_STATUS_TXT } from "store/types"
@@ -79,21 +80,33 @@ export const Collection = () => {
   const [hasMore, setHasMore] = useState(false)
 
   const dispatch = useDispatch()
-  const uiListData = useSelector((state) => state.uiData)
+  const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
   
-  const filterData = useSelector((state) => state.filterData)
+  const filterData = useSelector((state: State) => state.filterData)
   const { filter_status } = filterData
   const [searchVal, setSearchVal] = useState("")
   
   const closeFilterStatusButton = (fstatus) => {
     console.log(filter_status)
     filter_status.splice(filter_status.indexOf(fstatus), 1)
-    dispatch(setFilterData(FILTER_STATUS, filter_status))
+    //setFilterData(FILTER_STATUS, filter_status)
+    dispatch(
+      {
+        type: FILTER_STATUS,
+        payload: filter_status,
+      }
+    )
     return true
   }
   const closeFilterAllStatusButtons = () => {
-    dispatch(setFilterData(FILTER_STATUS, []))
+    //setFilterData(FILTER_STATUS, [])
+    dispatch(
+      {
+        type: FILTER_STATUS,
+        payload: []
+      }
+    )
     return true
   }
   const handleSearch = (event) => {
@@ -228,11 +241,23 @@ export const Collection = () => {
     if (isLargeNFT){
       if (nft_column_count <= 3)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count - 1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count - 1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count - 1
+        }
+      )
     }else{
       if (nft_column_count >= 5)
         return
-      dispatch(setUIData(NFT_COLUMN_COUNT, nft_column_count +1))
+      //setUIData(NFT_COLUMN_COUNT, nft_column_count +1)
+      dispatch(
+        {
+          type: NFT_COLUMN_COUNT,
+          payload: nft_column_count + 1
+        }
+      )
     }
     
   }, [dispatch, isLargeNFT])
@@ -349,7 +374,7 @@ export const Collection = () => {
           loader={<h3> Loading...</h3>}
           endMessage={<h4></h4>}
         >
-        <NftTable data={nfts}/>
+        <NftTable data={nfts} collectionName={name}/>
         </InfiniteScroll>
       </NftList>
     </CollectionWrapper>

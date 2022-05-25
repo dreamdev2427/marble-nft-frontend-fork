@@ -64,7 +64,7 @@ export const Gallery = () => {
     }
 
     setPages(pages);
-    setNfts(items);
+    //setNfts(items);
     setTotalTokens(numTokens);
   }, [client, pages]);
 
@@ -78,7 +78,7 @@ export const Gallery = () => {
 
   const bodyContent = (
     <>
-      <NftTable data={nfts} />
+      {/* <NftTable data={nfts} /> */}
       <Pagination onChangePage={handlePage} total={totalTokens} step={pageSize} />
     </>
   )

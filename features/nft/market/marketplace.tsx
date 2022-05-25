@@ -14,10 +14,11 @@ import theme from "theme"
 
 const NFT: NextPage = () => {
   return (
-    <AppLayout>
+    <>
+    {/* <AppLayout>
       <ChakraProvider theme={theme}>
 
-        <SdkProvider config={config}>
+        <SdkProvider config={config}> */}
 
           {/* <Router><Route
         exact
@@ -47,10 +48,11 @@ const NFT: NextPage = () => {
     </Router>*/}
           {/* <Create /> */}
           {/* <Landing /> */}
-          <Gallery />
+          {/* <Gallery />
         </SdkProvider>
       </ChakraProvider>
-    </AppLayout>
+    </AppLayout> */}
+    </>
   )
 }
 
