@@ -26,15 +26,15 @@ export function NftTable({ data, collectionName }: NftTableProps) {
   return (
     <NftGrid className={`nft-grid column${nft_column_count}`}>
       {data.map(nft => (
-        <LinkBox as="picture" key={nft.tokenId}
-          transition="transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0s"
-          _hover={{
-            transform: "scale(1.05)"
-          }}>
-          <a href={`/${collectionName}/${nft.tokenId}`}>
-          <NftCard nft={nft} />
-          </a>  
-        </LinkBox>
+        <Link href={`/${collectionName}/${nft.tokenId}`} passHref key={nft.tokenId}>
+          <LinkBox as="picture" 
+            transition="transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0s"
+            _hover={{
+              transform: "scale(1.05)"
+            }}>
+            <NftCard nft={nft} />
+          </LinkBox>
+        </Link>  
       ))}
     </NftGrid>
   );
