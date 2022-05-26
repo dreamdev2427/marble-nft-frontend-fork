@@ -7,9 +7,12 @@ import { styled } from 'components/theme'
 import { useRouter } from 'next/router'
 
 export default function Home() {
-  const { asPath, pathname } = useRouter();
-  const id = asPath.replace('/nft/', '')
+  const { asPath, pathname } = useRouter()
+  const id = asPath.split("/")[2]
+  const collection = asPath.split("/")[1]
+  console.log("asPath:", collection, id)
   const [fullWidth, setFullWidth] = useState(false);
+
   return (
 
     <AppLayout fullWidth={fullWidth}>
@@ -19,7 +22,7 @@ export default function Home() {
           subtitle=""
           align="left"
         />
-        <NFTDetail/>
+        <NFTDetail collection={collection} id={id}/>
       </Container>
     </AppLayout>
   )
