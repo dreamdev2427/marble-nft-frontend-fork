@@ -19,9 +19,9 @@ const pageSize = 15;
 
 
 export const Explore = () => {
-  const fetcher = (url) => fetch(url).then((res) => res.json());
-  const { data } = useSWR('/api/readfiles', fetcher);
-  console.log("nft collections:", data)
+  //const fetcher = (url) => fetch(url).then((res) => res.json());
+  //const { data } = useSWR('/api/readfiles', fetcher);
+  const data = ["marblenauts"]
   const [nftcategories, setNftCategories] = useState<NftCategory[]>(
     []
   )
@@ -53,7 +53,7 @@ export const Explore = () => {
       
     })();
 
-  }, [data])
+  }, [])
 
   return (
     <ExploreWrapper>
