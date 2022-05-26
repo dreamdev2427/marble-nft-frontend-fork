@@ -22,13 +22,32 @@ import {
 } from '@chakra-ui/react'
 
 interface DetailParams {
-  readonly id: string;
+  readonly collection: string
+  readonly id: string
 }
 
-export const NFTDetail = () => {
+export const NFTDetail = ({ collection, id}) => {
   const [nft, setNft] = useState<NftInfo>(
-    {'tokenId': 'aaa1', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'FEWOCiOUS x ComplexCon', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' }
+    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': 'bbb', 'price': '0', 'total': 2, 'collectionName': collection }
   )
+  useEffect(() => {
+    (async () => {
+      if (id === undefined || id == "[id]")
+        return false
+      let nftPath = ""
+      if (id > 2){
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id
+      }else{
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id + '.json'
+      }
+
+      if (nftPath != ""){
+        let res_nft = await fetch(nftPath)
+        let nft = await res_nft.json()
+        setNft({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection})
+      }
+    })();
+  }, [collection, id]);
   return (
     <Nft className="nft-info">
         <NftUriTag className="nft-uri">
