@@ -11,17 +11,18 @@ export default function Home() {
   const id = asPath.split("/")[2]
   const collection = asPath.split("/")[1]
   console.log("asPath:", collection, id)
-  const [fullWidth, setFullWidth] = useState(false);
+  const [fullWidth, setFullWidth] = useState(true);
 
   return (
 
     <AppLayout fullWidth={fullWidth}>
-      <Container className="middle mauto">
-        <PageHeader
+      <PageHeader
           title="NFT"
           subtitle=""
-          align="left"
+          align="center"
         />
+      <Container className="middle mauto">
+        
         <NFTDetail collection={collection} id={id}/>
       </Container>
     </AppLayout>
