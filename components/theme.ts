@@ -92,6 +92,7 @@ export const { theme, styled, css } = createStitches({
       23: '80px',
       24: '86px',
       25: '367px',
+      26: '430px',
     },
     rowGap: {
       1: '8px',
@@ -120,6 +121,7 @@ export const { theme, styled, css } = createStitches({
       13: '13px',
       14: '16px',
       15: '20px',
+      16: '75px',
     },
     fontWeights: {
       bold: 700,
@@ -150,6 +152,7 @@ export const { theme, styled, css } = createStitches({
       24: '86px',
       25: '367px',
       26: '330px',
+      27: '430px',
     },
     borderWidths: {
       1: '1px',

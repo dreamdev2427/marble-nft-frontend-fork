@@ -13,8 +13,10 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from '@chakra-ui/react'
+
 import { useDispatch, useSelector } from "react-redux"
 import { State } from 'store/reducers'
+
 import { setUIData } from "store/actions/uiAction"
 import { setFilterData } from "store/actions/filterAction"
 import { 
@@ -25,10 +27,18 @@ import {
   FILTER_STATUS_ON_AUCTION,
   FILTER_STATUS_NEW,
   FILTER_STATUS_HAS_OFFERS,
-  FILTER_STATUS_TXT
+  FILTER_STATUS_TXT,
+  FILTER_ACCESSORIES,
+  FILTER_BACKGROUND,
+  FILTER_CLOTHES,
+  FILTER_EXPRESSIONS,
+  FILTER_EYES,
+  FILTER_HELMET,
+  FILTER_EARRING
 } from "store/types"
+import { Dispatch, AnyAction } from "redux"
 
-export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
+export const CollectionFilter = ({ isCollapse, setCollapse}) => {
   const dispatch = useDispatch()
   
   const uiListData = useSelector((state: State) => state.uiData)
@@ -78,7 +88,7 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
         </Button>
       </header>
       <Accordion defaultIndex={[]} allowMultiple className={`${isCollapse?'hide':''}`}>
-        <AccordionItem>
+        <AccordionItem className='hide'>
           <h4 className="filter-item">
             <AccordionButton>
               <Box flex='1' textAlign='left'>
@@ -177,18 +187,270 @@ export const CollectionFilter = ({ isCollapse ,setCollapse }) => {
           <h4 className="filter-item">
             <AccordionButton>
               <Box flex='1' textAlign='left'>
-                Section 2 title
+                Accessories
               </Box>
               <AccordionIcon />
             </AccordionButton>
           </h4>
           <AccordionPanel pb={4}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat.
+            <Conditions className="grid">
+              {FILTER_ACCESSORIES.map((item, index) => (
+                <Button
+                  key={`accessories${index}`}
+                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  onClick={() => {
+                    if (filter_status.indexOf(item.id) == -1){
+                      filter_status.push(item.id)
+                    }else{
+                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                    }
+                    //dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
+                    return false
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Conditions>
           </AccordionPanel>
         </AccordionItem>
+
+        <AccordionItem>
+          <h4 className="filter-item">
+            <AccordionButton>
+              <Box flex='1' textAlign='left'>
+                Background
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h4>
+          <AccordionPanel pb={4}>
+            <Conditions className="grid">
+              {FILTER_BACKGROUND.map((item, index) => (
+                <Button
+                  key={`background${index}`}
+                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  onClick={() => {
+                    if (filter_status.indexOf(item.id) == -1){
+                      filter_status.push(item.id)
+                    }else{
+                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                    }
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
+                    return false
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Conditions>
+          </AccordionPanel>
+        </AccordionItem>
+        
+        <AccordionItem>
+          <h4 className="filter-item">
+            <AccordionButton>
+              <Box flex='1' textAlign='left'>
+                Clothes
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h4>
+          <AccordionPanel pb={4}>
+            <Conditions className="grid">
+              {FILTER_CLOTHES.map((item, index) => (
+                <Button
+                  key={`clothes${index}`}
+                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  onClick={() => {
+                    if (filter_status.indexOf(item.id) == -1){
+                      filter_status.push(item.id)
+                    }else{
+                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                    }
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
+                    return false
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Conditions>
+          </AccordionPanel>
+        </AccordionItem>
+        
+        <AccordionItem>
+          <h4 className="filter-item">
+            <AccordionButton>
+              <Box flex='1' textAlign='left'>
+                Earring
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h4>
+          <AccordionPanel pb={4}>
+            <Conditions className="grid">
+              {FILTER_EARRING.map((item, index) => (
+                <Button
+                  key={`earring${index}`}
+                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  onClick={() => {
+                    if (filter_status.indexOf(item.id) == -1){
+                      filter_status.push(item.id)
+                    }else{
+                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                    }
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
+                    return false
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Conditions>
+          </AccordionPanel>
+        </AccordionItem>
+
+        <AccordionItem>
+          <h4 className="filter-item">
+            <AccordionButton>
+              <Box flex='1' textAlign='left'>
+                Expressions
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h4>
+          <AccordionPanel pb={4}>
+            <Conditions className="grid">
+              {FILTER_EXPRESSIONS.map((item, index) => (
+                <Button
+                  key={`expressions${index}`}
+                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  onClick={() => {
+                    if (filter_status.indexOf(item.id) == -1){
+                      filter_status.push(item.id)
+                    }else{
+                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                    }
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
+                    return false
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Conditions>
+          </AccordionPanel>
+        </AccordionItem>
+        
+        <AccordionItem>
+          <h4 className="filter-item">
+            <AccordionButton>
+              <Box flex='1' textAlign='left'>
+                Eyes
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h4>
+          <AccordionPanel pb={4}>
+            <Conditions className="grid">
+              {FILTER_EYES.map((item, index) => (
+                <Button
+                  key={`eyes${index}`}
+                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  onClick={() => {
+                    if (filter_status.indexOf(item.id) == -1){
+                      filter_status.push(item.id)
+                    }else{
+                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                    }
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
+                    return false
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Conditions>
+          </AccordionPanel>
+        </AccordionItem>
+
+        <AccordionItem>
+          <h4 className="filter-item">
+            <AccordionButton>
+              <Box flex='1' textAlign='left'>
+                Helmet
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h4>
+          <AccordionPanel pb={4}>
+            <Conditions className="grid">
+              {FILTER_HELMET.map((item, index) => (
+                <Button
+                  key={`helmet${index}`}
+                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  onClick={() => {
+                    if (filter_status.indexOf(item.id) == -1){
+                      filter_status.push(item.id)
+                    }else{
+                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                    }
+                    //setFilterData(FILTER_STATUS, filter_status)
+                    dispatch(
+                      {
+                        type: FILTER_STATUS,
+                        payload: filter_status,
+                      }
+                    )
+                    return false
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Conditions>
+          </AccordionPanel>
+        </AccordionItem>
+
+        
+
       </Accordion>
     </FilterWrapper>
   )

@@ -2,6 +2,7 @@ import React from 'react'
 import { Text } from '../Text'
 import Head from 'next/head'
 import { APP_NAME } from '../../util/constants'
+import { styled } from '../theme'
 
 export const PageHeader = ({ title, subtitle, align='center' }) => {
   return (
@@ -11,6 +12,11 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
           {APP_NAME} — {title}
         </title>
       </Head>
+      <Banner className="banner-section">
+        <StyledContainer className="middle mauto">
+        {title}
+        </StyledContainer>
+      </Banner>
       <Text
         variant="header"
         className={`page-title ${title=="NFT"?"nft-title":""}`}
@@ -30,3 +36,13 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
     </>
   )
 }
+const Banner = styled('div', {
+  height: '$27',
+
+})
+const StyledContainer = styled('div', {
+  lineHeight: '$space$26',
+  color: '$textColors$white',
+  fontWeight: 'bold',
+  fontSize: '$16'
+})
