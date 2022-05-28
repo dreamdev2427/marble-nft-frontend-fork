@@ -207,6 +207,9 @@ button {
   
 }
 div{
+  .banner-section{
+    background: url(/nft/banner.jpg) no-repeat;
+  }
   .main-section{
     margin-top: 100px;
     padding: 0 32px;
@@ -375,6 +378,16 @@ div{
         }
       }
     }
+    .nft-card{
+      .nft-card-info{
+        .token-balance{
+          font-size: 18px;
+        }
+        .nft-price{
+          font-size: 16px;
+        }
+      }
+    }
     
   }
   .wrap-header{
@@ -396,7 +409,7 @@ div{
   div{
     .main-section{
       &.fullWidth{
-        padding: 0 1rem;
+        padding: 0;
       }
       .collections{
         gap: 32px;
@@ -414,6 +427,20 @@ div{
       margin: 0 auto;
       .middle{
         width: 100%;
+      }
+      .nft-card{
+        .nft-card-info{
+          .price-section{
+            gap: 2px;
+            .token-balance{
+              font-size: 14px;
+            }
+            .nft-price{
+              font-size: 13px;
+            }
+          }
+          
+        }
       }
     }
   }
@@ -453,6 +480,7 @@ div{
       margin: 0 auto;
       .middle{
         width: 100%;
+        padding: 0 1rem;
       }
     }
   }
@@ -482,11 +510,18 @@ div{
     font-size: 16px;
   }
   div{
+    .banner-section{
+      div{
+        font-size: 35px;
+        text-align: center;
+      }
+    }
     .container{
       width: 100%;
       margin: 0 auto;
       .middle{
         width: 100%;
+        padding: 0 1rem;
       }
       .mint-section{
         flex-direction: column-reverse;
@@ -759,6 +794,14 @@ div{
 }
 @media screen and (max-width: 767px) {
   div{
+    .banner-section{
+      background: url(/nft/mobile-banner.jpg) no-repeat;
+      height: 231px;
+      background-size: cover;
+      div{
+        line-height: 231px;
+      }
+    }
     .main-section{
       padding: 0 16px;
       .collections{
@@ -858,6 +901,7 @@ div{
     
   }
   div{
+    
     .main-section{
       .nft-grid{
         &.column3{

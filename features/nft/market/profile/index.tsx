@@ -189,7 +189,7 @@ export const MyCollectedNFTs = () => {
                 <IconWrapper icon={<Search />} />
               </InputRightElement>
             </InputGroup>
-            <Select id='item_type' placeholder='Single Items'>
+            {/* <Select id='item_type' placeholder='Single Items'>
               <option>Single Items</option>
               <option>Bundles</option>
               <option>All Items</option>
@@ -206,7 +206,7 @@ export const MyCollectedNFTs = () => {
               <option>Most Viewed</option>
               <option>Most Favorited</option>
               <option>Oldest</option>
-            </Select>
+            </Select> */}
             <ColumnCount className="desktop-section">
               <IconButton 
                 className={`column-type ${isLargeNFT?'active':''}`} 

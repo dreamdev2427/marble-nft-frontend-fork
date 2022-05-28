@@ -6,14 +6,14 @@ import { styled } from 'components/theme'
 import { useState } from "react";
 
 export default function Home() {
-  const [fullWidth, setFullWidth] = useState(false);
+  const [fullWidth, setFullWidth] = useState(true);
   return (
     <AppLayout fullWidth={fullWidth}>
+      <PageHeader
+        title="Explore Collections"
+        subtitle=""
+      />
       <Container className="middle mauto">
-        <PageHeader
-          title="Explore Collections"
-          subtitle=""
-        />
         <Explore/>
       </Container>
     </AppLayout>
