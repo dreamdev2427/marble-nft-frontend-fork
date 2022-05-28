@@ -9,7 +9,7 @@ import { useConnectWallet } from '../../hooks/useConnectWallet'
 import { useRecoilState } from 'recoil'
 import { walletState, WalletStatusType } from '../../state/atoms/walletAtoms'
 import { useRouter } from 'next/router'
-import { UpRightArrow, Exchange, Presale, Open, Dao, NFTs, Dash, NewDash, Airdrop, Astronaut, Nav } from '../../icons'
+import { Exchange, Search, User, Open, ArrowDown, Astronaut, Nav } from '../../icons'
 import { IconWrapper } from '../IconWrapper'
 import { ConnectedWalletButton } from '../ConnectedWalletButton'
 
@@ -32,7 +32,8 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
   const { pathname } = useRouter()
   const getActiveStylesIfActive = (path) =>
     pathname === path || (pathname.indexOf("/collection/") != -1 && path.indexOf("/collection/") != -1)? { borderBottom: '3px solid $white', background: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 100%)" } : {borderBottom: '3px solid transparent', background: 'transparent' }
-
+  
+  const isActive = (path) => (pathname === path ? 'active' : '')
   const StyledImageForLogoText = styled('img', {
     borderRadius: '0%',
   })
@@ -48,57 +49,43 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </StyledDivForLogo>
           </Link>
           <StyledListForLinks className="top-menu-links">
-            <Link href="/" passHref>
-              <Button className="top-menu"
-                as="a"
-                variant="ghost"
-                css={getActiveStylesIfActive('/')}
-              >
-                Explore
-              </Button>
-            </Link>
-            {/* <Link href={{
-              pathname: '/collection/[slug]',
-              query: { slug: 'active' },
-            }} passHref>
-              <Button className="top-menu"
-                as="a"
-                variant="ghost"
-                css={getActiveStylesIfActive('/collection/')}
-              >
-                Collection
-              </Button>
-            </Link> */}
-            { Boolean(key?.name) &&
-            <Link href={{
-              pathname: '/profile',
-              query: { key: key, user: key.name },
-            }} passHref>
-              <Button className="top-menu"
-                as="a"
-                variant="ghost"
-                css={getActiveStylesIfActive('/profile')}
-              >
-                Profile
-              </Button>
-            </Link>
-            }
-            {/* <Link
-              href={{
-                pathname: '/nft',
-                query: { id: 824 },
-              }}
-              passHref
-            >
-              <Button className="top-menu"
-                as="a"
-                variant="ghost"
-                css={getActiveStylesIfActive('/nft')}
-              >
-              NFT
-              </Button>
-            </Link> */}
-
+            <div className="dropdown">
+              <button className="dropbtn">
+                NFT Marketplace
+                <ArrowDown />
+              </button>
+              <div className="dropdown-content">
+                <Link href="/" passHref>
+                  <a className="dropdown-item">
+                    <Search />
+                    <span className={isActive('/')}>
+                    Explore
+                    </span>
+                  </a>
+                </Link>
+                { Boolean(key?.name) &&
+                <Link href={{
+                  pathname: '/profile',
+                  query: { key: key, user: key.name },
+                }} passHref>
+                  <a className="dropdown-item">
+                    <User />
+                    <span className={isActive('/profile')}>
+                    Profile
+                    </span>
+                  </a>
+                </Link>
+                }
+                <Link href="/collection/marblenauts" passHref>
+                  <a className="dropdown-item">
+                    <Astronaut />
+                    <span className={isActive('/collection/[name]')}>
+                      The Marblenauts
+                    </span>
+                  </a>
+                </Link>
+              </div>
+            </div>
           </StyledListForLinks>
           <IconWrapper
             className="mobile-nav"
@@ -129,19 +116,6 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               Explore
             </Button>
           </Link>
-          {/* <Link href={{
-              pathname: '/collection/[slug]',
-              query: { slug: 'active' },
-            }}  passHref>
-            <Button className="top-menu"
-              as="a"
-              variant="ghost"
-              iconCenter={<IconWrapper icon={<UpRightArrow />} />}
-              css={getActiveStylesIfActive('/collection/')}
-            >
-              Collection
-            </Button>
-          </Link> */}
           { Boolean(key?.name) &&
           <Link href={{
               pathname: '/profile',
@@ -157,22 +131,16 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </Button>
           </Link>
           }
-          {/* <Link
-            href={{
-              pathname: '/nft',
-              query: { id: 824 },
-            }}
-            passHref
-          >
+          <Link href="/collection/marblenauts" passHref>
             <Button className="top-menu"
               as="a"
               variant="ghost"
               iconCenter={<IconWrapper icon={<Astronaut />} />}
-              css={getActiveStylesIfActive('/nft')}
+              css={getActiveStylesIfActive('/collection/marblenauts')}
             >
-            NFT
+              The Marblenauts
             </Button>
-          </Link> */}
+          </Link>
           <ConnectedWalletButton
             connected={Boolean(key?.name)}
             walletName={key?.name}
@@ -190,7 +158,6 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
 const StyledWrapper = styled('div', {
   color: '$colors$white',
   backgroundColor: '$black',
-  overflow: 'auto',
   borderRight: '1px solid $borderColors$inactive',
 })
 

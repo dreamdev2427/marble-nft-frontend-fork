@@ -26,6 +26,7 @@ export function NftTable({ data, collectionName }: NftTableProps) {
   return (
     <NftGrid className={`nft-grid column${nft_column_count}`}>
       {data.map(nft => (
+        //<Link href="https://app.marbledao.finance/marblenauts-nft" passHref key={nft.tokenId}>
         <Link href={`/${collectionName}/${nft.tokenId}`} passHref key={nft.tokenId}>
           <LinkBox as="picture" 
             transition="transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0s"
