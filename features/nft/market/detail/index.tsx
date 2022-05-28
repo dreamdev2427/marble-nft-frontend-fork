@@ -5,11 +5,13 @@ import { Button } from 'components/Button'
 import { IconWrapper } from 'components/IconWrapper'
 import { NftPrice } from 'components/NFT/nft-card/price'
 import { User, CopyNft, Heart, Clock, Package, Credit } from 'icons'
-import { Link as ReactRouterLink, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import Link from 'next/link'
 import {
   NftInfo,
 } from "services/nft"
 import {
+  Image,
   Table,
   Thead,
   Tbody,
@@ -51,11 +53,11 @@ export const NFTDetail = ({ collection, id}) => {
   return (
     <Nft className="nft-info">
         <NftUriTag className="nft-uri">
-          <img src={nft.image}/>
+          <Image src={nft.image} alt="NFT Image"/>
         </NftUriTag>
         <NftInfoTag className="nft-detail">
           <h2 className="nft-title">{nft.name}</h2>
-          <a className="nft-link" href="#">{nft.name}</a>
+          <Link href={`/collection/${nft.collectionName}`} passHref>{nft.collectionName}</Link>
           <NftMeta className="nft-meta">
             <Button className="nft-meta-link"
               as="a"
@@ -117,6 +119,7 @@ export const NFTDetail = ({ collection, id}) => {
               </ButtonGroup>
             </PriceTag>
           </NftBuyOfferTag>
+{/*           
           <NftOfferTag className="nft-offer">
             <TableTitle className="offer-title">
               <IconWrapper icon={<Package />} />Offers
@@ -177,7 +180,7 @@ export const NFTDetail = ({ collection, id}) => {
                 </Tbody>
               </Table>
             </TableContainer>
-          </NftOfferTag>
+          </NftOfferTag> */}
         </NftInfoTag>
         
     </Nft>

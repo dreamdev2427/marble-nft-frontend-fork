@@ -94,6 +94,8 @@ const TextDiv = styled('div', {
   },
   ' p':{
     color: '$textColors$secondary',
+  },
+  ' a':{
+    wordBreak: 'break-word',
   }
-  
 })
