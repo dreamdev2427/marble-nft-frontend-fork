@@ -17,12 +17,10 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { State } from 'store/reducers'
 
-import { setUIData } from "store/actions/uiAction"
-import { setFilterData } from "store/actions/filterAction"
 import { 
   NFT_COLUMN_COUNT, 
   UI_ERROR, 
-  FILTER_STATUS,
+  PROFILE_STATUS,
   FILTER_STATUS_BUY_NOW,
   FILTER_STATUS_ON_AUCTION,
   FILTER_STATUS_NEW,
@@ -44,8 +42,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
   const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
 
-  const filterData = useSelector((state: State) => state.filterData)
-  const { filter_status } = filterData
+  const profileData = useSelector((state: State) => state.profileData)
+  const { profile_status } = profileData
   useEffect(() => {
     if (isCollapse){
       if (nft_column_count >= 5)
@@ -100,18 +98,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
           <AccordionPanel pb={4}>
             <Conditions className="grid">
               <Button 
-                variant={`${filter_status.indexOf(FILTER_STATUS_BUY_NOW) != -1?'primary':'secondary'}`}
+                variant={`${profile_status.indexOf(FILTER_STATUS_BUY_NOW) != -1?'primary':'secondary'}`}
                 onClick={() => {
-                  if (filter_status.indexOf(FILTER_STATUS_BUY_NOW) == -1){
-                    filter_status.push(FILTER_STATUS_BUY_NOW)
+                  if (profile_status.indexOf(FILTER_STATUS_BUY_NOW) == -1){
+                    profile_status.push(FILTER_STATUS_BUY_NOW)
                   }else{
-                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_BUY_NOW), 1)
+                    profile_status.splice(profile_status.indexOf(FILTER_STATUS_BUY_NOW), 1)
                   }
-                  //setFilterData(FILTER_STATUS, filter_status)
+                  //setFilterData(PROFILE_STATUS, profile_status)
                   dispatch(
                     {
-                      type: FILTER_STATUS,
-                      payload: filter_status,
+                      type: PROFILE_STATUS,
+                      payload: profile_status,
                     }
                   )
                   return false
@@ -120,18 +118,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                 {FILTER_STATUS_TXT[FILTER_STATUS_BUY_NOW]}
               </Button>
               <Button
-                variant={`${filter_status.indexOf(FILTER_STATUS_ON_AUCTION) != -1?'primary':'secondary'}`}
+                variant={`${profile_status.indexOf(FILTER_STATUS_ON_AUCTION) != -1?'primary':'secondary'}`}
                 onClick={() => {
-                  if (filter_status.indexOf(FILTER_STATUS_ON_AUCTION) == -1){
-                    filter_status.push(FILTER_STATUS_ON_AUCTION)
+                  if (profile_status.indexOf(FILTER_STATUS_ON_AUCTION) == -1){
+                    profile_status.push(FILTER_STATUS_ON_AUCTION)
                   }else{
-                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_ON_AUCTION), 1)
+                    profile_status.splice(profile_status.indexOf(FILTER_STATUS_ON_AUCTION), 1)
                   }
-                  //setFilterData(FILTER_STATUS, filter_status)
+                  //setFilterData(PROFILE_STATUS, profile_status)
                   dispatch(
                     {
-                      type: FILTER_STATUS,
-                      payload: filter_status,
+                      type: PROFILE_STATUS,
+                      payload: profile_status,
                     }
                   )
                   return false
@@ -140,18 +138,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                 {FILTER_STATUS_TXT[FILTER_STATUS_ON_AUCTION]}
               </Button>
               <Button
-                variant={`${filter_status.indexOf(FILTER_STATUS_NEW) != -1?'primary':'secondary'}`}
+                variant={`${profile_status.indexOf(FILTER_STATUS_NEW) != -1?'primary':'secondary'}`}
                 onClick={() => {
-                  if (filter_status.indexOf(FILTER_STATUS_NEW) == -1){
-                    filter_status.push(FILTER_STATUS_NEW)
+                  if (profile_status.indexOf(FILTER_STATUS_NEW) == -1){
+                    profile_status.push(FILTER_STATUS_NEW)
                   }else{
-                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_NEW), 1)
+                    profile_status.splice(profile_status.indexOf(FILTER_STATUS_NEW), 1)
                   }
-                  //setFilterData(FILTER_STATUS, filter_status)
+                  //setProfileData(PROFILE_STATUS, profile_status)
                   dispatch(
                     {
-                      type: FILTER_STATUS,
-                      payload: filter_status,
+                      type: PROFILE_STATUS,
+                      payload: profile_status,
                     }
                   )
                   return false
@@ -160,18 +158,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
                 {FILTER_STATUS_TXT[FILTER_STATUS_NEW]}
               </Button>
               <Button
-                variant={`${filter_status.indexOf(FILTER_STATUS_HAS_OFFERS) != -1?'primary':'secondary'}`}
+                variant={`${profile_status.indexOf(FILTER_STATUS_HAS_OFFERS) != -1?'primary':'secondary'}`}
                 onClick={() => {
-                  if (filter_status.indexOf(FILTER_STATUS_HAS_OFFERS) == -1){
-                    filter_status.push(FILTER_STATUS_HAS_OFFERS)
+                  if (profile_status.indexOf(FILTER_STATUS_HAS_OFFERS) == -1){
+                    profile_status.push(FILTER_STATUS_HAS_OFFERS)
                   }else{
-                    filter_status.splice(filter_status.indexOf(FILTER_STATUS_HAS_OFFERS), 1)
+                    profile_status.splice(profile_status.indexOf(FILTER_STATUS_HAS_OFFERS), 1)
                   }
-                  //setFilterData(FILTER_STATUS, filter_status)
+                  //setProfileData(PROFILE_STATUS, profile_status)
                   dispatch(
                     {
-                      type: FILTER_STATUS,
-                      payload: filter_status,
+                      type: PROFILE_STATUS,
+                      payload: profile_status,
                     }
                   )
                   return false
@@ -197,18 +195,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_ACCESSORIES.map((item, index) => (
                 <Button
                   key={`accessories${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant={`${profile_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
-                    if (filter_status.indexOf(item.id) == -1){
-                      filter_status.push(item.id)
+                    if (profile_status.indexOf(item.id) == -1){
+                      profile_status.push(item.id)
                     }else{
-                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                      profile_status.splice(profile_status.indexOf(item.id), 1)
                     }
-                    //dispatch(setFilterData(FILTER_STATUS, filter_status))
+                    //dispatch(setProfileData(PROFILE_STATUS, profile_status))
                     dispatch(
                       {
-                        type: FILTER_STATUS,
-                        payload: filter_status,
+                        type: PROFILE_STATUS,
+                        payload: profile_status,
                       }
                     )
                     return false
@@ -235,18 +233,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_BACKGROUND.map((item, index) => (
                 <Button
                   key={`background${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant={`${profile_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
-                    if (filter_status.indexOf(item.id) == -1){
-                      filter_status.push(item.id)
+                    if (profile_status.indexOf(item.id) == -1){
+                      profile_status.push(item.id)
                     }else{
-                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                      profile_status.splice(profile_status.indexOf(item.id), 1)
                     }
-                    //setFilterData(FILTER_STATUS, filter_status)
+                    //setProfileData(PROFILE_STATUS, profile_status)
                     dispatch(
                       {
-                        type: FILTER_STATUS,
-                        payload: filter_status,
+                        type: PROFILE_STATUS,
+                        payload: profile_status,
                       }
                     )
                     return false
@@ -273,18 +271,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_CLOTHES.map((item, index) => (
                 <Button
                   key={`clothes${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant={`${profile_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
-                    if (filter_status.indexOf(item.id) == -1){
-                      filter_status.push(item.id)
+                    if (profile_status.indexOf(item.id) == -1){
+                      profile_status.push(item.id)
                     }else{
-                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                      profile_status.splice(profile_status.indexOf(item.id), 1)
                     }
-                    //setFilterData(FILTER_STATUS, filter_status)
+                    //setProfileData(PROFILE_STATUS, profile_status)
                     dispatch(
                       {
-                        type: FILTER_STATUS,
-                        payload: filter_status,
+                        type: PROFILE_STATUS,
+                        payload: profile_status,
                       }
                     )
                     return false
@@ -311,18 +309,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_EARRING.map((item, index) => (
                 <Button
                   key={`earring${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant={`${profile_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
-                    if (filter_status.indexOf(item.id) == -1){
-                      filter_status.push(item.id)
+                    if (profile_status.indexOf(item.id) == -1){
+                      profile_status.push(item.id)
                     }else{
-                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                      profile_status.splice(profile_status.indexOf(item.id), 1)
                     }
-                    //setFilterData(FILTER_STATUS, filter_status)
+                    //setProfileData(PROFILE_STATUS, profile_status)
                     dispatch(
                       {
-                        type: FILTER_STATUS,
-                        payload: filter_status,
+                        type: PROFILE_STATUS,
+                        payload: profile_status,
                       }
                     )
                     return false
@@ -349,18 +347,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_EXPRESSIONS.map((item, index) => (
                 <Button
                   key={`expressions${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant={`${profile_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
-                    if (filter_status.indexOf(item.id) == -1){
-                      filter_status.push(item.id)
+                    if (profile_status.indexOf(item.id) == -1){
+                      profile_status.push(item.id)
                     }else{
-                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                      profile_status.splice(profile_status.indexOf(item.id), 1)
                     }
-                    //setFilterData(FILTER_STATUS, filter_status)
+                    //setProfileData(PROFILE_STATUS, profile_status)
                     dispatch(
                       {
-                        type: FILTER_STATUS,
-                        payload: filter_status,
+                        type: PROFILE_STATUS,
+                        payload: profile_status,
                       }
                     )
                     return false
@@ -387,18 +385,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_EYES.map((item, index) => (
                 <Button
                   key={`eyes${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant={`${profile_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
-                    if (filter_status.indexOf(item.id) == -1){
-                      filter_status.push(item.id)
+                    if (profile_status.indexOf(item.id) == -1){
+                      profile_status.push(item.id)
                     }else{
-                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                      profile_status.splice(profile_status.indexOf(item.id), 1)
                     }
-                    //setFilterData(FILTER_STATUS, filter_status)
+                    //setProfileData(PROFILE_STATUS, profile_status)
                     dispatch(
                       {
-                        type: FILTER_STATUS,
-                        payload: filter_status,
+                        type: PROFILE_STATUS,
+                        payload: profile_status,
                       }
                     )
                     return false
@@ -425,18 +423,18 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_HELMET.map((item, index) => (
                 <Button
                   key={`helmet${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant={`${profile_status.indexOf(item.id) != -1?'primary':'secondary'}`}
                   onClick={() => {
-                    if (filter_status.indexOf(item.id) == -1){
-                      filter_status.push(item.id)
+                    if (profile_status.indexOf(item.id) == -1){
+                      profile_status.push(item.id)
                     }else{
-                      filter_status.splice(filter_status.indexOf(item.id), 1)
+                      profile_status.splice(profile_status.indexOf(item.id), 1)
                     }
-                    //setFilterData(FILTER_STATUS, filter_status)
+                    //setProfileData(PROFILE_STATUS, profile_status)
                     dispatch(
                       {
-                        type: FILTER_STATUS,
-                        payload: filter_status,
+                        type: PROFILE_STATUS,
+                        payload: profile_status,
                       }
                     )
                     return false

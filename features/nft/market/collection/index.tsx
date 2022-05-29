@@ -145,6 +145,8 @@ export const Collection = () => {
       let i = 0
       let nftIndex = 0
       let isPageEnd = false
+      if (traits.length == 0)
+        isPageEnd = true
       while (!isPageEnd){
         let nftPath = ""
         //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
