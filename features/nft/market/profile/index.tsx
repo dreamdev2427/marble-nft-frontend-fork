@@ -13,7 +13,7 @@ import {
 import { useRecoilValue } from 'recoil'
 import { CW721, Marble, useSdk } from 'services/nft'
 import { walletState } from 'state/atoms/walletAtoms'
-
+import InfiniteScroll from "react-infinite-scroll-component"
 import { 
   ChakraProvider, 
   Tab, 
@@ -29,9 +29,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { State } from 'store/reducers'
 
-import { setUIData } from "store/actions/uiAction"
-import { setFilterData } from "store/actions/filterAction"
-import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS, FILTER_STATUS_TXT } from "store/types"
+import { NFT_COLUMN_COUNT, UI_ERROR, PROFILE_STATUS, FILTER_STATUS_TXT } from "store/types"
 
 const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
 const PUBLIC_CW721_OWNER = process.env.NEXT_PUBLIC_CW721_OWNER || ''
@@ -81,52 +79,56 @@ export const ProfileTab = ({index}) => {
     </TabWrapper>
   )
 }
+let nftCurrentIndex = 0
+let collectionSlug = ""
 export const MyCollectedNFTs = () => {  
+  const pageCount = 10
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
   const [isLargeNFT, setLargeNFT] = useState(true)
   const [nfts, setNfts] = useState<NftInfo[]>(
-    [
-      {'tokenId': 'aaa1', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa2', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa3', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa4', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa5', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa6', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa7', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa8', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa9', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-      {'tokenId': 'aaa10', 'address': '', 'image': '/nft/mynft.jpg', 'name': 'Paint Drop #3514(1 Paint)', 'user': 'bbb', 'price': '0.598', 'total': 2, 'collectionName': 'Fewocious x FewoWorld' },
-    ]
+    []
   )
+  const [filterCount, setFilterCount] = useState(0)
+  const [searchVal, setSearchVal] = useState("")
+  const [hasMore, setHasMore] = useState(false)
+
   const dispatch = useDispatch()
   const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
   
-  const filterData = useSelector((state: State) => state.filterData)
-  const { filter_status } = filterData
+  const profileData = useSelector((state: State) => state.profileData)
+  const { profile_status } = profileData
+  console.log("my profile status:", profile_status)
+  const { client } = useSdk()
+  const { address, client: signingClient } = useRecoilValue(walletState)
+  const [tokens, setNFTIds] = useState([])
 
   const closeFilterStatusButton = (fstatus) => {
-    console.log(filter_status)
-    filter_status.splice(filter_status.indexOf(fstatus), 1)
-    //setFilterData(FILTER_STATUS, filter_status)
+    profile_status.splice(profile_status.indexOf(fstatus), 1)
+    //setProfileData(PROFILE_STATUS, profile_status)
     dispatch(
       {
-        type: FILTER_STATUS,
-        payload: filter_status,
+        type: PROFILE_STATUS,
+        payload: profile_status,
       }
     )
     return true
   }
   const closeFilterAllStatusButtons = () => {
-    //setFilterData(FILTER_STATUS, [])
+    //setProfileData(PROFILE_STATUS, [])
     dispatch(
       {
-        type: FILTER_STATUS,
+        type: PROFILE_STATUS,
         payload: []
       }
     )
     return true
+  }
+  const handleSearch = (event) => {
+    if (event.key.toLowerCase() === "enter") {
+      setSearchVal(event.target.value)
+    }
   }
   useEffect(() => {
     if (isLargeNFT){
@@ -153,25 +155,140 @@ export const MyCollectedNFTs = () => {
     
   }, [dispatch, isLargeNFT])
 
-  const { client } = useSdk()
-  const { address, client: signingClient } = useRecoilValue(walletState)
-  const [tokens, setNFTIds] = useState([""])
+  
 
-  const loadNfts = useCallback(async () => {
+  const loadNfts = useCallback(async (pstatus) => {
     if (!client) return
+    //console.log("Param", pstatus)
+    //console.log("effect profile status:", profile_status)
+
     const marbleContract = Marble(PUBLIC_CW721_CONTRACT).use(client)
     const contractConfig = await marbleContract.getConfig()
-    console.log("cw721:", contractConfig.cw721_address)
+    // console.log("cw721:", contractConfig.cw721_address)
     const contract = CW721(contractConfig.cw721_address).use(client)
+    // console.log("My Address:", address)
     const nftTokens = await contract.tokens(PUBLIC_CW721_OWNER)
-    console.log("nftTokens 0:", nftTokens.tokens[0])
-    console.log(await contract.nftInfo(nftTokens.tokens[0]))
+    // console.log("nftTokens 0:", nftTokens.tokens[0])
+    // console.log(await contract.nftInfo(nftTokens.tokens[0]))
     setNFTIds(nftTokens.tokens)
+    collectionSlug = "marblenauts"
+    let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/all-traits.json')
+    let all_traits = await res_traits.json()
+    let traits = []
+    
+    for (let i = 0; i < nftTokens.tokens.length; i++){
+      if (pstatus.length == 0 
+        || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Accessories) != -1
+        || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Background) != -1
+        || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Clothes) != -1
+        || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Earring) != -1
+        || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Expressions) != -1
+        || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Eyes) != -1
+        || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Helmet) != -1
+      ){
+        traits.push(all_traits[parseInt(nftTokens.tokens[i])])
+      }
+    }
+    let nftsForProfile = []
+    let hasMoreFlag = false
+    let i = 0
+    let nftIndex = 0
+    let isPageEnd = false
+    if (traits == undefined || traits.length == 0){
+      isPageEnd = true
+    }
+    while (!isPageEnd){
+      let nftPath = ""
+      //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
+      if (traits[i].tokenId > 2){
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/' + traits[i].tokenId
+      }else{
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/' + traits[i].tokenId + '.json'
+      }
+      if (nftPath != ""){
+        let res_nft = await fetch(nftPath)
+        let nft = await res_nft.json()
+        if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
+          nftsForProfile.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+          hasMoreFlag = true
+          nftIndex++
+          if (nftIndex == pageCount){
+            isPageEnd = true
+          }
+        }
+      }
+      i++;
+      if (i == traits.length){
+        isPageEnd = true
+      }
+    }
+    nftCurrentIndex = i
+    setNfts(nftsForProfile)
+    setHasMore(hasMoreFlag)
   }, [client])
 
   useEffect(() => {
-    loadNfts()
-  }, [loadNfts])
+    console.log("ue profile status", profile_status)
+    loadNfts(profile_status)
+  }, [loadNfts, filterCount, searchVal])
+
+  const getMoreNfts = async () => {
+    collectionSlug = "marblenauts"
+    let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/all-traits.json')
+    let all_traits = await res_traits.json()
+    let traits = []
+    for (let i = 0; i < tokens.length; i++){
+      if (profile_status.length == 0 
+        || profile_status.indexOf(all_traits[parseInt(tokens[i])].Accessories) != -1
+        || profile_status.indexOf(all_traits[parseInt(tokens[i])].Background) != -1
+        || profile_status.indexOf(all_traits[parseInt(tokens[i])].Clothes) != -1
+        || profile_status.indexOf(all_traits[parseInt(tokens[i])].Earring) != -1
+        || profile_status.indexOf(all_traits[parseInt(tokens[i])].Expressions) != -1
+        || profile_status.indexOf(all_traits[parseInt(tokens[i])].Eyes) != -1
+        || profile_status.indexOf(all_traits[parseInt(tokens[i])].Helmet) != -1
+      ){
+        traits.push(all_traits[parseInt(tokens[i])])
+      }
+    }
+    let nftsForProfile = []
+    let hasMoreFlag = false
+
+    let i = nftCurrentIndex
+    let nftIndex = 0
+    let isPageEnd = false
+    if (traits == undefined || i == traits.length){
+      isPageEnd = true
+    }
+    while (!isPageEnd){
+      let nftPath = ""
+      //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
+      if (traits[i].tokenId > 2){
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/' + traits[i].tokenId
+      }else{
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/' + traits[i].tokenId + '.json'
+      }
+      if (nftPath != ""){
+        let res_nft = await fetch(nftPath)
+        let nft = await res_nft.json()
+        if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
+          nftsForProfile.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+          hasMoreFlag = true
+          nftIndex++
+          if (nftIndex == pageCount){
+            isPageEnd = true
+          }
+        }
+      }
+      i++;
+      if (i == traits.length){
+        isPageEnd = true
+      }
+    }
+    nftCurrentIndex = i
+    console.log("More nftCurrentIndex", nftCurrentIndex)
+    setNfts((nft)=>[...nft, ...nftsForProfile])
+    setHasMore(hasMoreFlag)
+  }
 
   return (
     <CollectionWrapper>
@@ -184,6 +301,7 @@ export const MyCollectedNFTs = () => {
                 pr='48px'
                 type='text'
                 placeholder='Search'
+                onKeyDown={handleSearch} 
               />
               <InputRightElement width='48px'>
                 <IconWrapper icon={<Search />} />
@@ -249,7 +367,8 @@ export const MyCollectedNFTs = () => {
           </ChakraProvider>
         </SearchItem>
         <FilterItem>
-          {filter_status.map(fstatus => (
+          {profile_status.length != filterCount && setFilterCount(profile_status.length)}
+          {profile_status.map(fstatus => (
             <Tag
               borderRadius='full'
               variant='solid'
@@ -259,7 +378,7 @@ export const MyCollectedNFTs = () => {
               <TagCloseButton onClick={()=>closeFilterStatusButton(fstatus)}/>
             </Tag>
           ))}
-          {filter_status.length > 0 &&
+          {profile_status.length > 0 &&
             <Tag
               borderRadius='full' 
               variant='solid'
@@ -268,11 +387,16 @@ export const MyCollectedNFTs = () => {
               <TagCloseButton onClick={()=>closeFilterAllStatusButtons()}/>
             </Tag>
           }
-          {tokens.length > 0 && tokens.map((token)=>{
-            return (<div>{token}</div>)
-          })}
         </FilterItem>
-        <NftTable data={nfts} collectionName="marblenauts"/>
+        <InfiniteScroll
+          dataLength={nfts.length}
+          next={getMoreNfts}
+          hasMore={hasMore}
+          loader={<h3> Loading...</h3>}
+          endMessage={<h4></h4>}
+        >
+          <NftTable data={nfts} collectionName={collectionSlug}/>
+        </InfiniteScroll>
       </NftList>
     </CollectionWrapper>
   )

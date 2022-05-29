@@ -226,4 +226,4 @@ export const FILTER_HELMET = [
   }
 ]
 
-
+export const PROFILE_STATUS            = "PROFILE_STATUS"
