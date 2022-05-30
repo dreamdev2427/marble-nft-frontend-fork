@@ -131,7 +131,7 @@ export const Account = () => {
                         transform: "scale(1.05)"
                       }}>
                       <LinkOverlay as={ReactRouterLink} to={getNftPath(nft.tokenId)}>
-                        <NftCard nft={nft} />
+                        <NftCard nft={nft} slug="mablenauts" type="sell"/>
                       </LinkOverlay>
                     </LinkBox>
                   ))}
@@ -146,7 +146,7 @@ export const Account = () => {
                         transform: "scale(1.05)"
                       }}>
                       <LinkOverlay as={ReactRouterLink} to={getNftPath(nft.tokenId)}>
-                        <NftCard nft={nft} />
+                        <NftCard nft={nft} slug="mablenauts" type="sell" />
                       </LinkOverlay>
                     </LinkBox>
                   ))}
