@@ -120,9 +120,9 @@ const Container = styled('div', {
   '&.profile-tab':{
     maxWidth: '1600px',
     width: '100%',
-    paddingLeft: '$25',
+    //paddingLeft: '$25',
     '>div':{
-      justifyContent: 'space-around',
+      //justifyContent: 'space-around',
     }
   }
 })

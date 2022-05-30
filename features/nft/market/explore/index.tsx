@@ -44,7 +44,7 @@ export const Explore = () => {
           collection.banner_image = collection.image
           collection.slug = data[i]
           collection.creator = collection.owner
-          collection.cat_ids = "1,2"
+          collection.cat_ids = "1"
           collections.push(collection)
         }
       }

@@ -11,9 +11,11 @@ import { NftPrice } from './price'
 import Link from 'next/link'
 interface NftCardProps {
   readonly nft: NftInfo;
+  readonly slug: string;
+  readonly type: string; 
 }
 
-export function NftCard({ nft }: NftCardProps): JSX.Element {
+export function NftCard({ nft, slug, type }: NftCardProps): JSX.Element {
   return (
     <NftCardDiv className="nft-card">
       <ImgDiv className="nft-img-url">
@@ -24,6 +26,7 @@ export function NftCard({ nft }: NftCardProps): JSX.Element {
         <h5>{nft.collectionName}</h5>
         <p className="price-title">Current Price</p>
         <NftPrice nft={nft}/>
+        {type=='buy'&&
         <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
           <Button className="btn-buy btn-default"
             css={{
@@ -38,6 +41,22 @@ export function NftCard({ nft }: NftCardProps): JSX.Element {
             Buy Now
           </Button>
         </Link>
+        }
+        {type=='sell'&&
+          <Button className="btn-sell btn-default disabled"
+            css={{
+              'background': '$black',
+              'color': '$white',
+              'stroke': '$white',
+            }}
+            iconLeft={<IconWrapper icon={<Credit />} />}
+            variant="primary"
+            size="large"
+            disabled={true}
+          >
+            Sell Soon
+          </Button>
+        }
       </TextDiv>
     </NftCardDiv>
   );
@@ -59,7 +78,7 @@ const ImgDiv = styled('div', {
   }
 })
 const TextDiv = styled('div', {
-  padding: '$16',
+  padding: '$4 $12 $12 $12',
   ' h2':{
     fontWeight: 'bold',
   },
@@ -74,14 +93,20 @@ const TextDiv = styled('div', {
   },
   ' p':{
     '&.price-title':{
-      marginTop: '$12',
+      marginTop: '$4',
       color: '$link',
     },
     color: '$textColors$disabled',
   },
   ' .btn-buy':{
-    marginTop: '$12',
-    padding: '$10 $12',
+    marginTop: '$4',
+    padding: '$4 $12',
     fontWeight: 'normal',
+  },
+  ' .btn-sell':{
+    '&.disabled':{
+      background: '$backgroundColors$tertiary',
+      color: '$gray',
+    }
   }
 })

@@ -80,7 +80,7 @@ const BannerDiv = styled('div', {
     }
 })
 const TextDiv = styled('div', {
-  padding: '0 $16 $16 $16',
+  padding: '0 $16 $8 $16',
   ' h2':{
     
   },

@@ -21,7 +21,7 @@ export default function Home() {
   const router = useRouter()
   const query = router.query
   const { asPath, pathname } = useRouter();
-  const name = asPath.replace('/collection/', '')
+  const slug = asPath.replace('/collection/', '')
   const [collectionName, setCollectionName] = useState("")
   const [collectionDescription, setCollectionDescription] = useState("")
 
@@ -59,16 +59,16 @@ export default function Home() {
   }, [dispatch]);
   useEffect(() => {
     (async () => {
-      console.log("name", name)
-      if (name === undefined || name == "[name]")
+      console.log("name", slug)
+      if (slug === undefined || slug == "[name]")
         return false
-      let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/Collection Metadata.json')
+      let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/Collection Metadata.json')
       let collection = await res_collection.json()
       setCollectionName(collection.name)
       setCollectionDescription(collection.description)
     })();
 
-  }, [name])
+  }, [slug])
   return (
     <AppLayout fullWidth={fullWidth}>
       <PageHeader
@@ -84,7 +84,7 @@ export default function Home() {
         <TabPanels>
           <TabPanel>
             <Container className="middle mauto">
-              <Collection />
+              <Collection slug={slug} name={collectionName}/>
             </Container>
           </TabPanel>
           <TabPanel>

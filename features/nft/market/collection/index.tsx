@@ -62,13 +62,15 @@ export const CollectionTab = ({index}) => {
   )
 }
 let nftCurrentIndex = 0
-export const Collection = () => {  
-  
+interface CollectionProps {
+  readonly slug: string
+  readonly name: string
+}
+export const Collection = ({slug, name}: CollectionProps) => {  
   const pageCount = 10
   const router = useRouter()
   const query = router.query
   const { asPath, pathname } = useRouter();
-  const name = asPath.replace('/collection/', '')
 
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
@@ -116,14 +118,11 @@ export const Collection = () => {
   }
   useEffect(() => {
     (async () => {
-      console.log("name", name)
-      if (name === undefined || name == "[name]")
+      if (slug === undefined || slug == "[name]")
         return false
       //getMoreNfts()
       setNfts([])
-      console.log("filter_status:", filter_status)
-      console.log("call effect nfts:", nfts.length)
-      let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
+      let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/all-traits.json')
       let all_traits = await res_traits.json()
       let traits = []
       for (let i = 0; i < all_traits.length; i++){
@@ -151,9 +150,9 @@ export const Collection = () => {
         let nftPath = ""
         //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
         if (traits[i].tokenId > 2){
-          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
+          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId
         }else{
-          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
+          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId + '.json'
         }
         if (nftPath != ""){
           let res_nft = await fetch(nftPath)
@@ -178,12 +177,12 @@ export const Collection = () => {
       setHasMore(hasMoreFlag)
     })();
 
-  }, [name, filterCount, searchVal])
+  }, [slug, filterCount, searchVal])
 
   const getMoreNfts = async () => {
-    if (name === undefined || name == "[name]" || !hasMore)
+    if (slug === undefined || slug == "[name]" || !hasMore)
       return false
-    let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/all-traits.json')
+    let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/all-traits.json')
     let all_traits = await res_traits.json()
     let traits = []
     for (let i = 0; i < all_traits.length; i++){
@@ -210,11 +209,11 @@ export const Collection = () => {
     }
     while (!isPageEnd){
       let nftPath = ""
-      //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
+      //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId)) {
       if (traits[i].tokenId > 2){
-        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId
       }else{
-        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId + '.json'
+        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId + '.json'
       }
       if (nftPath != ""){
         let res_nft = await fetch(nftPath)
@@ -376,7 +375,7 @@ export const Collection = () => {
           loader={<h3> Loading...</h3>}
           endMessage={<h4></h4>}
         >
-        <NftTable data={nfts} collectionName={name}/>
+        <NftTable data={nfts} slug={slug} type="buy"/>
         </InfiniteScroll>
       </NftList>
     </CollectionWrapper>
