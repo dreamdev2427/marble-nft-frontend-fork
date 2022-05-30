@@ -874,6 +874,16 @@ div{
         text-align: center;
       }
     }
+    .mobile-section{
+      &.filter-section{
+        .filter-item{
+          padding: 0px;
+        }
+        .grid{
+          padding: 0px;
+        }
+      }
+    }
     .collections{
       .collection{
         >div{

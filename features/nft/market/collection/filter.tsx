@@ -197,7 +197,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_ACCESSORIES.map((item, index) => (
                 <Button
                   key={`accessories${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant="secondary"
+                  className={`${filter_status.indexOf(item.id) != -1?'active':'default'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
                       filter_status.push(item.id)
@@ -235,7 +236,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_BACKGROUND.map((item, index) => (
                 <Button
                   key={`background${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant="secondary"
+                  className={`${filter_status.indexOf(item.id) != -1?'active':'default'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
                       filter_status.push(item.id)
@@ -273,7 +275,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_CLOTHES.map((item, index) => (
                 <Button
                   key={`clothes${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant="secondary"
+                  className={`${filter_status.indexOf(item.id) != -1?'active':'default'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
                       filter_status.push(item.id)
@@ -311,7 +314,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_EARRING.map((item, index) => (
                 <Button
                   key={`earring${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant="secondary"
+                  className={`${filter_status.indexOf(item.id) != -1?'active':'default'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
                       filter_status.push(item.id)
@@ -349,7 +353,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_EXPRESSIONS.map((item, index) => (
                 <Button
                   key={`expressions${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant="secondary"
+                  className={`${filter_status.indexOf(item.id) != -1?'active':'default'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
                       filter_status.push(item.id)
@@ -387,7 +392,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_EYES.map((item, index) => (
                 <Button
                   key={`eyes${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant="secondary"
+                  className={`${filter_status.indexOf(item.id) != -1?'active':'default'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
                       filter_status.push(item.id)
@@ -425,7 +431,8 @@ export const CollectionFilter = ({ isCollapse, setCollapse}) => {
               {FILTER_HELMET.map((item, index) => (
                 <Button
                   key={`helmet${index}`}
-                  variant={`${filter_status.indexOf(item.id) != -1?'primary':'secondary'}`}
+                  variant="secondary"
+                  className={`${filter_status.indexOf(item.id) != -1?'active':'default'}`}
                   onClick={() => {
                     if (filter_status.indexOf(item.id) == -1){
                       filter_status.push(item.id)
@@ -498,10 +505,24 @@ const FilterWrapper = styled('div', {
 const Conditions = styled('div', {
   '&.grid':{
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr 1fr 1fr',
     gridGap: '$2',
     padding: '$8',
-    
+    ' button':{
+      border:'$borderWidths$1 solid $borderColors$default',
+      borderRadius: '$2',
+      fontSize: '12px',
+      padding: '$sizes$4 0px',
+    },
+    ' .default':{
+      color: '$textColors$tertiary',
+      background: 'transparent',
+      fontWeight: 'normal',
+    },
+    ' .active':{
+      background: '$backgroundColors$tertiary',
+      fontWeight: 'bold',
+    }
   }
 })
 
