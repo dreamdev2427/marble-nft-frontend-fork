@@ -64,6 +64,12 @@ button {
 //   line-height: inherit;
 //   text-align: inherit;
 // }
+
+.span-mark{
+  border-radius: 8px;
+  margin-left: 8px;
+  padding: 2px 8px;
+}
 .dropbtn {
   color: white;
   font-style: normal;
@@ -90,7 +96,7 @@ button {
   display: none;
   position: absolute;
   background-color: #fff;
-  min-width: 222px;
+  min-width: 295px;
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.05);
   border-radius: 0px 0px 20px 20px;
 
@@ -162,6 +168,9 @@ button {
       margin-left: 100px;
       a{
         row-gap: 8px;
+        font-size: 20px;
+        font-weight: 500;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       }
     }
     .desktop-icon{display: none;}
@@ -171,7 +180,6 @@ button {
 
   .top-menu{
     border-radius: 0px;
-    margin-bottom: 1px;
     font-family: sans-serif;
     font-size: 14px;
     font-weight: normal;
@@ -255,11 +263,12 @@ div{
       .collection{
         >div{
           h2{
-            margin-top: 16px;
-            margin-bottom: 8px;
+            margin-top: 8px;
+            margin-bottom: 0px;
           }
           h5{
             margin-top: 0px;
+            margin-bottom: 12px;
           }
         }
         .nft-img-div{
@@ -299,7 +308,7 @@ div{
   padding: 1rem 3rem;
 }
 .footer{
-  padding: 40px 32px 32px 32px;
+  padding: 40px 32px 0 32px;
   .footer-logo{width: 243px;}
   .footer-desc{width: 420px;}
   .bottom-section{
@@ -308,8 +317,7 @@ div{
     
   }
   .footer-section{
-    display: block;
-    padding: 32px 0;
+    display: flex;
     .copyright{
       text-align: center;
       p{
@@ -698,7 +706,7 @@ div{
   div{
     .footer{
       margin-top: 48px;
-      padding: 40px 0px 16px 0px;
+      padding: 16px 0px 0px 0px;
       .container{
         padding-left: 16px;
         padding-right: 16px;
@@ -730,15 +738,16 @@ div{
     }
     
     .bottom-section{
-      flex-direction: column;
       border: 0px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
+      flex-direction: column;
+      border: 0;
+      padding-bottom: 0px;
       .bottom-desc-section{
         align-items: center;
-        margin: 0rem 0 2rem 0;
         grid-column-start: 1;
         grid-column-end: 4;
+        border-bottom: 1px solid rgb(25 29 32 / 20%);
       }
       .desktop-section{
         display: none;
@@ -746,14 +755,14 @@ div{
       
       
       .bottom-community-section{
-        
+        border-bottom: 1px solid rgba(25,29,32,.2);
       }
       .bottom-quick-section{
         grid-column-start: 1;
         grid-column-end: 4;
       }
       .bottom-company-section{
-        
+        border-bottom: 1px solid rgba(25,29,32,.2);
       }
       .collapse-header{
         display: flex;
@@ -771,7 +780,7 @@ div{
     .footer-section{
       flex-direction: column-reverse;
       align-items: center;
-      padding-bottom: 2rem;
+      padding-bottom: 0;
       .copyright{
         text-align: left;
         padding-top: 12px;

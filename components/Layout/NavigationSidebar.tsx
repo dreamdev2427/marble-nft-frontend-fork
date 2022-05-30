@@ -49,9 +49,18 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </StyledDivForLogo>
           </Link>
           <StyledListForLinks className="top-menu-links">
+            <Link href="/dashboard" passHref>
+              <Button className="top-menu"
+                as="a"
+                variant="ghost"
+                css={getActiveStylesIfActive('/dashboard')}
+              >
+                Dashboard
+              </Button>
+            </Link>
             <div className="dropdown">
               <button className="dropbtn">
-                NFT Marketplace
+                NFT Marketplace<span className="span-mark">Beta</span>
                 <ArrowDown />
               </button>
               <div className="dropdown-content">
@@ -180,6 +189,9 @@ const StyledListForLinks = styled('div', {
   display: 'flex',
   rowGap: '$space$2',
   flexDirection: 'row',
+  ' .span-mark':{
+    border: '2px solid $white'
+  }
 })
 
 

@@ -41,7 +41,7 @@ export const ProfileTab = ({index}) => {
             as="a"
             variant="ghost"
           >
-            All
+            Owned
         </Button>
       </Tab>
       <Tab>
@@ -52,7 +52,7 @@ export const ProfileTab = ({index}) => {
             Created
         </Button>
       </Tab>
-      <Tab>
+      <Tab className="hide">
         <Button className={`tab-link ${index==2?'active':''}`}
             as="a"
             variant="ghost"
@@ -60,7 +60,7 @@ export const ProfileTab = ({index}) => {
             Favorite
         </Button>
       </Tab>
-      <Tab>
+      <Tab className="hide">
         <Button className={`tab-link ${index==3?'active':''}`}
             as="a"
             variant="ghost"
@@ -68,7 +68,7 @@ export const ProfileTab = ({index}) => {
             Activity
         </Button>
       </Tab>
-      <Tab>
+      <Tab className="hide">
         <Button className={`tab-link ${index==4?'active':''}`}
             as="a"
             variant="ghost"
@@ -172,6 +172,8 @@ export const MyCollectedNFTs = () => {
     // console.log(await contract.nftInfo(nftTokens.tokens[0]))
     setNFTIds(nftTokens.tokens)
     collectionSlug = "marblenauts"
+    let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/Collection Metadata.json')
+    let collection = await res_collection.json()
     let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/all-traits.json')
     let all_traits = await res_traits.json()
     let traits = []
@@ -209,7 +211,7 @@ export const MyCollectedNFTs = () => {
         let res_nft = await fetch(nftPath)
         let nft = await res_nft.json()
         if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
-          nftsForProfile.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+          nftsForProfile.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection.name})
           hasMoreFlag = true
           nftIndex++
           if (nftIndex == pageCount){
@@ -271,7 +273,7 @@ export const MyCollectedNFTs = () => {
         let res_nft = await fetch(nftPath)
         let nft = await res_nft.json()
         if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
-          nftsForProfile.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+          nftsForProfile.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collectionSlug})
           hasMoreFlag = true
           nftIndex++
           if (nftIndex == pageCount){
@@ -395,7 +397,7 @@ export const MyCollectedNFTs = () => {
           loader={<h3> Loading...</h3>}
           endMessage={<h4></h4>}
         >
-          <NftTable data={nfts} collectionName={collectionSlug}/>
+          <NftTable data={nfts} slug={collectionSlug} type="sell"/>
         </InfiniteScroll>
       </NftList>
     </CollectionWrapper>
