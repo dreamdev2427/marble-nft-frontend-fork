@@ -40,11 +40,11 @@ export function NftSection({ title }: NftSectionProps): JSX.Element {
         </Button>
       </Flex>
       <Grid templateColumns="repeat(5, 1fr)" gap={10}>
-        <NftCard nft={randomNft()} />
-        <NftCard nft={randomNft()} />
-        <NftCard nft={randomNft()} />
-        <NftCard nft={randomNft()} />
-        <NftCard nft={randomNft()} />
+        <NftCard nft={randomNft()} slug="marblenuats" type="buy"/>
+        <NftCard nft={randomNft()} slug="marblenuats" type="buy" />
+        <NftCard nft={randomNft()} slug="marblenuats" type="buy" />
+        <NftCard nft={randomNft()} slug="marblenuats" type="buy" />
+        <NftCard nft={randomNft()} slug="marblenuats" type="buy" />
       </Grid>
     </Box>
   );
