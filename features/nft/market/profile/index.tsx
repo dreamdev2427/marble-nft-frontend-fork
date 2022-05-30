@@ -479,7 +479,7 @@ const SearchItem = styled('div', {
   
 })
 const FilterItem = styled('div', {
-  display: 'flex',
+  display: 'block',
   gap: '$4',
   margin: '$4 0',
   ' >span':{
@@ -487,6 +487,7 @@ const FilterItem = styled('div', {
     color: '$textColors$primary',
     borderRadius: '$3',
     padding: '$4',
+    margin: '0 $2 $1 0',
   }
 })
 const ColumnCount = styled('div', {

@@ -467,7 +467,7 @@ const FilterItem = styled('div', {
     color: '$textColors$primary',
     borderRadius: '$3',
     padding: '$4',
-    margin: '$2',
+    margin: '0 $2 $1 0',
   }
 })
 const ColumnCount = styled('div', {
