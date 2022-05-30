@@ -99,7 +99,6 @@ export const MyCollectedNFTs = () => {
   
   const profileData = useSelector((state: State) => state.profileData)
   const { profile_status } = profileData
-  console.log("my profile status:", profile_status)
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
   const [tokens, setNFTIds] = useState([])
@@ -169,7 +168,7 @@ export const MyCollectedNFTs = () => {
     // console.log("My Address:", address)
     const nftTokens = await contract.tokens(PUBLIC_CW721_OWNER)
     // console.log("nftTokens 0:", nftTokens.tokens[0])
-    // console.log(await contract.nftInfo(nftTokens.tokens[0]))
+    console.log(await contract.nftInfo(nftTokens.tokens[0]))
     setNFTIds(nftTokens.tokens)
     collectionSlug = "marblenauts"
     let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/Collection Metadata.json')

@@ -122,6 +122,8 @@ export const Collection = ({slug, name}: CollectionProps) => {
         return false
       //getMoreNfts()
       setNfts([])
+      let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/Collection Metadata.json')
+      let collection = await res_collection.json()
       let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/all-traits.json')
       let all_traits = await res_traits.json()
       let traits = []
@@ -158,7 +160,7 @@ export const Collection = ({slug, name}: CollectionProps) => {
           let res_nft = await fetch(nftPath)
           let nft = await res_nft.json()
           if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
-            nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+            nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection.name})
             hasMoreFlag = true
             nftIndex++
             if (nftIndex == pageCount){
@@ -182,6 +184,8 @@ export const Collection = ({slug, name}: CollectionProps) => {
   const getMoreNfts = async () => {
     if (slug === undefined || slug == "[name]" || !hasMore)
       return false
+    let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/Collection Metadata.json')
+    let collection = await res_collection.json()
     let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/all-traits.json')
     let all_traits = await res_traits.json()
     let traits = []
@@ -219,7 +223,7 @@ export const Collection = ({slug, name}: CollectionProps) => {
         let res_nft = await fetch(nftPath)
         let nft = await res_nft.json()
         if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
-          nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': name})
+          nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection.name})
           hasMoreFlag = true
           nftIndex++
           if (nftIndex == pageCount){
