@@ -13,9 +13,6 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
         </title>
       </Head>
       <Banner className="banner-section">
-        <StyledContainer className="middle mauto">
-        {title}
-        </StyledContainer>
       </Banner>
       <Text
         variant="header"
@@ -37,7 +34,7 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
   )
 }
 const Banner = styled('div', {
-  height: '$27',
+  height: '$25',
 
 })
 const StyledContainer = styled('div', {
