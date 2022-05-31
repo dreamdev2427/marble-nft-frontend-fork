@@ -24,7 +24,7 @@ export function NftPrice({ nft }: NftCardProps): JSX.Element {
   return (
     <PriceDiv className="price-section">
       <Image alt="Token Icon" className="token-icon" src="https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/juno.png"/>
-      <span className="token-balance"><nobr>{nft.price} JUNO</nobr></span>
+      <span className="token-balance">{nft.price}&nbsp;JUNO</span>
       <span className="nft-price">(${dollarValueFormatterWithDecimals(dollarPrice)})</span>
     </PriceDiv>
   );
