@@ -12,24 +12,25 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
           {APP_NAME} — {title}
         </title>
       </Head>
-      {/*<Banner className="banner-section">
-      </Banner>*/}
-      <Text
-        variant="header"
-        className={`page-title ${title=="NFT"?"nft-title":""}`}
-        css={{ marginTop: '40px', padding: '30px 0 25px', fontSize: '$12', textAlign: `${align}` }}
-      >
-        {title}
-      </Text>
-      {subtitle!=""&&
-      <Text
-        variant="body"
-        className="page-subtitle"
-        css={{ paddingBottom: '48px', fontSize: '$8', textAlign: 'center', maxWidth:'970px', margin:'0 auto', color:'$textColors$secondary' }}
-      >
-        {subtitle}
-      </Text>
-      }
+      <Banner className="banner-section">
+        <Text
+          variant="header"
+          className={`page-title ${title=="NFT"?"nft-title":""}`}
+          css={{ fontSize: '$12', textAlign: `${align}` }}
+        >
+          {title}
+        </Text>
+        {subtitle!=""&&
+        <Text
+          variant="body"
+          className="page-subtitle"
+          css={{ paddingTop: '1rem', fontSize: '$8', textAlign: 'center', maxWidth:'970px', margin:'0 auto', color:'$textColors$secondary' }}
+        >
+          {subtitle}
+        </Text>
+        }
+      </Banner>
+      
     </>
   )
 }
