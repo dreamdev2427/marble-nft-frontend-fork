@@ -298,6 +298,7 @@ div{
         max-width: 100%;
         .middle{
           max-width: 1600px;
+          padding: 0px;
         }
       }
     }
@@ -361,7 +362,7 @@ div{
 }
 
 
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1664px) {
   .container{
     width: 100%;
     margin: 0 auto;
@@ -379,6 +380,20 @@ div{
       }
     }
   }
+  div{
+    .fullWidth{
+      &.main-section{
+        padding: 0px;
+        .container{
+          max-width: 100%;
+          .middle{
+            padding: 0 32px;
+          }
+        }
+      }
+    }
+  }
+  
 }
 
 @media screen and (max-width: 1400px) {
