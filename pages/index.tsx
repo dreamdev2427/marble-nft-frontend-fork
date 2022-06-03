@@ -10,8 +10,8 @@ export default function Home() {
   return (
     <AppLayout fullWidth={fullWidth}>
       <PageHeader
-        title="Explore Collections"
-        subtitle=""
+        title="Collections"
+        subtitle="The NFT collections on Marble Marketplace."
       />
       <Container className="middle mauto">
         <Explore/>
@@ -21,5 +21,5 @@ export default function Home() {
 }
 
 const Container = styled('div', {
-  
+
 })

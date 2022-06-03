@@ -12,12 +12,12 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
           {APP_NAME} — {title}
         </title>
       </Head>
-      <Banner className="banner-section">
-      </Banner>
+      {/*<Banner className="banner-section">
+      </Banner>*/}
       <Text
         variant="header"
         className={`page-title ${title=="NFT"?"nft-title":""}`}
-        css={{ marginTop: '40px', padding: '40px 0 25px', fontSize: '$12', textAlign: `${align}` }}
+        css={{ marginTop: '40px', padding: '30px 0 25px', fontSize: '$12', textAlign: `${align}` }}
       >
         {title}
       </Text>
