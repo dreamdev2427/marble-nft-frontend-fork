@@ -66,20 +66,6 @@ export const NFTDetail = ({ collection, id}) => {
             >
               Owned by
             </Button>
-            <Button className="nft-meta-link"
-              as="a"
-              variant="ghost"
-              iconLeft={<IconWrapper icon={<CopyNft />} />}
-            >
-              1001
-            </Button>
-            <Button className="nft-meta-link"
-              as="a"
-              variant="ghost"
-              iconLeft={<IconWrapper icon={<Heart />} />}
-            >
-              Favorites
-            </Button>
           </NftMeta>
           <NftBuyOfferTag className="nft-buy-offer">
             <NftSale className="disabled">
