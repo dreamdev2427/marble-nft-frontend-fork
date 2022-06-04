@@ -85,7 +85,7 @@ export const NFTDetail = ({ collection, id}) => {
               iconLeft={<IconWrapper icon={<User />} />}
               title={nft.user}
             >
-              Owned by {nft.user}
+              <span className="owner-address">Owned by {nft.user}</span>
             </Button>
           </NftMeta>
           <NftBuyOfferTag className="nft-buy-offer">
@@ -225,6 +225,12 @@ const NftMeta = styled('div', {
         width: '20px',
         height: '20px',
       }
+    },
+    '.owner-address': {
+      overflowWrap: 'break-word',
+      width: '100%',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     }
   }
 })

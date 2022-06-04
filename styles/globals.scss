@@ -400,6 +400,7 @@ div{
         padding: 0px;
         .container{
           max-width: 100%;
+          padding: 0px;
           .middle{
             padding: 0 32px;
           }
@@ -653,9 +654,9 @@ div{
       .mobile-icon{display: flex;fill: #6af900;}
       .desktop-icon{display: none;}
       .connect-wallet{
-        padding-bottom: 16px;flex-grow: unset;
-        display: none;
+        padding-bottom: 16px;
         flex-grow: unset;
+        margin-left: 0px;
         >div{
           padding: 0px;
           border: 0px;

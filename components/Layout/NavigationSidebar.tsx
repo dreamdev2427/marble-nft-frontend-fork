@@ -356,13 +356,6 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             Old DAO
           </Button>
         </Link>
-          <ConnectedWalletButton
-            connected={Boolean(key?.name)}
-            walletName={key?.name}
-            onConnect={() => connectWallet(null)}
-            onDisconnect={resetWalletConnection}
-
-          />
         </StyledListForLinks>
       </MobileMenu>
     </>
