@@ -81,24 +81,22 @@ const DropZone = ({ data, dispatch }) => {
     console.log("files:", files);
     files.forEach((file) => formData.append("file", file));
     let url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
-    return axios
-        .post(url, formData, {
-            maxBodyLength: Infinity, //this is needed to prevent axios from erroring out with large files
-            headers: {
-                'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-                pinata_api_key: "73f00590e2e07bf89b89",
-                pinata_secret_api_key: "7ac2b137f8cd8226f5afe2cd22586823ebb1ce00e6019de8bce35c1584b87c1b"
-            }
-        })
-        .then(function (response) {
-            //handle response here
-            debugger;
-            console.log(response);
+    // return axios
+    //     .post(url, formData, {
+    //         maxBodyLength: Infinity, //this is needed to prevent axios from erroring out with large files
+    //         headers: {
+    //             'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+    //             pinata_api_key: "73f00590e2e07bf89b89",
+    //             pinata_secret_api_key: "7ac2b137f8cd8226f5afe2cd22586823ebb1ce00e6019de8bce35c1584b87c1b"
+    //         }
+    //     })
+    //     .then(function (response) {
+    //         debugger;
+    //         console.log(response);
 
-        })
-        .catch(function (error) {
-            //handle error here
-        });
+    //     })
+    //     .catch(function (error) {
+    //     });
 
     // Upload the files as a POST request to the server using fetch
     // Note: /api/fileupload is not a real endpoint, it is just an example
