@@ -277,6 +277,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             Explore NFTs
           </Button>
         </Link>
+        { Boolean(key?.name) &&
         <Link href={{
             pathname: '/profile',
             query: { key: key, user: key.bech32Address },
@@ -291,6 +292,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             Profile NFTs
           </Button>
         </Link>
+        }
         <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
           <Button
             className="top-menu"
@@ -378,7 +380,6 @@ const StyledMenuContainer = styled('div', {
   flexDirection: 'column',
   position: 'relative',
   zIndex: '$1',
-  paddingTop: '$10',
   ' a':{
     color: '$colors$white',
     display: 'flex',
@@ -403,7 +404,6 @@ const StyledListForLinks = styled('div', {
 const StyledDivForLogo = styled('div', {
   columnGap: '$space$4',
   alignItems: 'center',
-  paddingBottom: '$8',
   '& [data-logo]': {
     marginBottom: '$2',
   },

@@ -85,7 +85,7 @@ export const NFTDetail = ({ collection, id}) => {
               iconLeft={<IconWrapper icon={<User />} />}
               title={nft.user}
             >
-              Owned by {nft.user.length > 10 ?nft.user.substr(0, 10) + '...' : nft.user}
+              Owned by {nft.user}
             </Button>
           </NftMeta>
           <NftBuyOfferTag className="nft-buy-offer">
