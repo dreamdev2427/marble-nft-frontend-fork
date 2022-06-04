@@ -70,6 +70,7 @@ export const ConnectedWalletButton = ({
 
         <StyledDivForActions className={`wallet-action ${openWallet ? 'open' :'close'}`}>
           <StyledDivForInlineActions>
+            {/*
             <Button
               variant="ghost"
               size="small"
@@ -77,7 +78,9 @@ export const ConnectedWalletButton = ({
                 navigator.clipboard.writeText(address)
               }}
               icon={<IconWrapper icon={<Copy />} />}
+
             />
+            */}
             <Button
               variant="ghost"
               size="small"
@@ -103,7 +106,7 @@ const ConnectWalletContainer = styled('div', {
   textAlign: 'center',
   'button':{
     border: '1px solid $colors$white',
-    padding: '$4 $12 $4',
+    padding: '$6 $12 $6',
   }
 })
 
@@ -112,7 +115,7 @@ const StyledDivForActions = styled('div', {
   position: 'absolute',
     right: 0,
     top: 0,
-    padding: '0 $6 0 $8',
+    padding: '0',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -121,7 +124,7 @@ const StyledDivForActions = styled('div', {
     background:
       'linear-gradient(to right, $colors$white0 0%, $colors$white95 5%, $colors$white)',
     borderRadius: '$2',
-    opacity: 0,
+    opacity: 1,
     transition: 'opacity .1s ease-out',})
 
 const StyledDivForInlineActions = styled('div', {
@@ -136,17 +139,17 @@ const StyledWalletContainer = styled('div', {
 })
 
 const StyledWalletButton = styled('div', {
-  position: 'center',
+  position: 'relative',
   transition: 'background-color .1s ease-out, border .1s ease-out',
   display: 'flex',
   alignItems: 'center',
   columnGap: '$space$6',
-  padding: '$4 $10 $4',
+  marginBottom: '$9',
+  padding: '$4 $12 $4',
   borderRadius: '$3',
   textAlign: 'center',
   border: '1px solid $colors$white',
   '&:hover': {
-    border: '1px solid $borderColors$focus',
     [`${StyledDivForActions}`]: {
       opacity: 1,
     },

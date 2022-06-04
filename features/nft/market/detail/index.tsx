@@ -57,21 +57,21 @@ export const NFTDetail = ({ collection, id}) => {
         </NftUriTag>
         <NftInfoTag className="nft-detail">
           <h2 className="nft-title">{nft.name}</h2>
-          <Link href={`/collection/${nft.collectionName}`} passHref>{nft.collectionName}</Link>
+          <Link href={`/collection/${nft.collectionName}`} passHref>The Marblenauts</Link>
           <NftMeta className="nft-meta">
             <Button className="nft-meta-link"
               as="a"
               variant="ghost"
               iconLeft={<IconWrapper icon={<User />} />}
             >
-              Owners
+              Owned by 
             </Button>
             <Button className="nft-meta-link"
               as="a"
               variant="ghost"
               iconLeft={<IconWrapper icon={<CopyNft />} />}
             >
-              Total
+              1001
             </Button>
             <Button className="nft-meta-link"
               as="a"
@@ -84,7 +84,7 @@ export const NFTDetail = ({ collection, id}) => {
           <NftBuyOfferTag className="nft-buy-offer">
             <NftSale className="disabled">
               <IconWrapper icon={<Clock />}/>
-              Sale ends May 13, 2022 at 8:03am IST 
+              This section is under development
             </NftSale>
             <PriceTag>
               <label className="price-lbl">Current Price</label>
@@ -99,7 +99,7 @@ export const NFTDetail = ({ collection, id}) => {
                   iconLeft={<IconWrapper icon={<Credit />} />}
                   variant="primary"
                   size="large"
-                  
+
                 >
                   Buy Now
                 </Button>
@@ -112,14 +112,14 @@ export const NFTDetail = ({ collection, id}) => {
                   iconLeft={<IconWrapper icon={<Credit />} />}
                   variant="primary"
                   size="large"
-                  
+
                 >
                   Make Offer
                 </Button>
               </ButtonGroup>
             </PriceTag>
           </NftBuyOfferTag>
-{/*           
+{/*
           <NftOfferTag className="nft-offer">
             <TableTitle className="offer-title">
               <IconWrapper icon={<Package />} />Offers
@@ -182,7 +182,7 @@ export const NFTDetail = ({ collection, id}) => {
             </TableContainer>
           </NftOfferTag> */}
         </NftInfoTag>
-        
+
     </Nft>
   );
 }
@@ -297,7 +297,7 @@ const NftOfferTag = styled('div', {
       color: '$link',
     }
   }
-  
+
 })
 const TableTitle = styled('div', {
   display: 'flex',
