@@ -11,7 +11,7 @@ export const NewDash = (props: SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path d="M36,30H12V12H36Zm-4-8.8H28l-3,3.06-4-7.15L18,21.2H16M24,30v6m-6,0H30" stroke="black" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"></path>
+      <path d="M36,30H12V12H36Zm-4-8.8H28l-3,3.06-4-7.15L18,21.2H16M24,30v6m-6,0H30" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"></path>
     </svg>
   )
 }

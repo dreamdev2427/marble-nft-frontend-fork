@@ -17,12 +17,12 @@ export default function Home() {
 
     <AppLayout fullWidth={fullWidth}>
       <PageHeader
-          title="NFT"
+          title=""
           subtitle=""
           align="center"
         />
       <Container className="middle mauto">
-        
+
         <NFTDetail collection={collection} id={id}/>
       </Container>
     </AppLayout>
@@ -30,5 +30,5 @@ export default function Home() {
 }
 
 const Container = styled('div', {
-  
+
 })

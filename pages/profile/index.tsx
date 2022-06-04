@@ -38,7 +38,7 @@ export default function Home() {
 
   const borderColor = theme.borderColors.default
   const dispatch = useDispatch()
-  
+
   const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
 
@@ -48,7 +48,7 @@ export default function Home() {
   const handleTabsChange = (index) => {
     setTabIndex(index)
   }
-  
+
   useEffect(() => {
     //setUIData(NFT_COLUMN_COUNT, DEFAULT_NFT_COLUMN_COUNT)
     dispatch(
@@ -71,7 +71,7 @@ export default function Home() {
       <SdkProvider config={config}>
       <PageHeader
         title="Profile"
-        subtitle=""
+        subtitle="Enjoy your place in the Marble ecosystem. Soon, you can customize it."
       />
       { Boolean(key?.name) &&
       <Tabs index={tabIndex} onChange={handleTabsChange}>
