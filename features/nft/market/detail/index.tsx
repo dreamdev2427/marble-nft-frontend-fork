@@ -64,7 +64,7 @@ export const NFTDetail = ({ collection, id}) => {
               variant="ghost"
               iconLeft={<IconWrapper icon={<User />} />}
             >
-              Owned by 
+              Owned by
             </Button>
             <Button className="nft-meta-link"
               as="a"
@@ -90,6 +90,7 @@ export const NFTDetail = ({ collection, id}) => {
               <label className="price-lbl">Current Price</label>
               <NftPrice nft={nft}/>
               <ButtonGroup>
+              <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
                 <Button className="btn-buy btn-default"
                   css={{
                     'background': '$black',
@@ -102,7 +103,8 @@ export const NFTDetail = ({ collection, id}) => {
 
                 >
                   Buy Now
-                </Button>
+                  </Button>
+                  </Link>
                 <Button className="btn-offer btn-default"
                   css={{
                     'background': '$white',
@@ -114,7 +116,7 @@ export const NFTDetail = ({ collection, id}) => {
                   size="large"
 
                 >
-                  Make Offer
+                  Soon Offer
                 </Button>
               </ButtonGroup>
             </PriceTag>

@@ -14,7 +14,6 @@ import {
   User,
   UpRightArrow,
   ArrowDown,
-  Educate,
   Exchange,
   Presale,
   Open,
