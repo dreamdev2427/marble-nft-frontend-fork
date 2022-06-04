@@ -93,30 +93,30 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                   <span className={isActive('/')}>Swap</span>
                 </a>
               </Link>
-              <Link href="https://app.marbledao.finance//transfer" passHref>
+              <Link href="https://app.marbledao.finance/transfer" passHref>
                 <a className="dropdown-item">
                   <UpRightArrow />
-                  <span className={isActive('https://app.marbledao.finance//transfer')}>Transfer</span>
+                  <span className={isActive('https://app.marbledao.finance/transfer')}>Transfer</span>
                 </a>
               </Link>
-              <Link href="https://app.marbledao.finance//pools" passHref>
+              <Link href="https://app.marbledao.finance/pools" passHref>
                 <a className="dropdown-item">
                   <Open />
-                  <span className={isActive('https://app.marbledao.finance//pools')}>Liquidity</span>
+                  <span className={isActive('https://app.marbledao.finance/pools')}>Liquidity</span>
                 </a>
               </Link>
-              <Link href="https://app.marbledao.finance//presale-claim" passHref>
+              <Link href="https://app.marbledao.finance/presale-claim" passHref>
                 <a className="dropdown-item">
                   <Airdrop />
-                  <span className={isActive('https://app.marbledao.finance//presale-claim')}>
+                  <span className={isActive('https://app.marbledao.finance/presale-claim')}>
                     Presale Claim
                   </span>
                 </a>
               </Link>
-              <Link href="https://app.marbledao.finance//early-lp" passHref>
+              <Link href="https://app.marbledao.finance/early-lp" passHref>
                 <a className="dropdown-item">
                   <Ellipse />
-                  <span className={isActive('https://app.marbledao.finance//early-lp')}>
+                  <span className={isActive('https://app.marbledao.finance/early-lp')}>
                     Early LPers
                   </span>
                 </a>
