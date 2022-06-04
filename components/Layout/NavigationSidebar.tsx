@@ -9,7 +9,23 @@ import { useConnectWallet } from '../../hooks/useConnectWallet'
 import { useRecoilState } from 'recoil'
 import { walletState, WalletStatusType } from '../../state/atoms/walletAtoms'
 import { useRouter } from 'next/router'
-import { Exchange, Search, User, Open, ArrowDown, Astronaut, Nav } from '../../icons'
+import {
+  Search, 
+  User,
+  UpRightArrow,
+  ArrowDown,
+  Educate,
+  Exchange,
+  Presale,
+  Open,
+  Dao,
+  NFTs,
+  Dash,
+  NewDash,
+  Airdrop,
+  Astronaut,
+  Ellipse,
+  Nav, } from '../../icons'
 import { IconWrapper } from '../IconWrapper'
 import { ConnectedWalletButton } from '../ConnectedWalletButton'
 
@@ -49,52 +65,143 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </StyledDivForLogo>
           </Link>
           <StyledListForLinks className="top-menu-links">
+          <div className="dropdown">
             <Link href="/dashboard" passHref>
-              <Button className="top-menu"
-                as="a"
-                variant="ghost"
-                css={getActiveStylesIfActive('/dashboard')}
-              >
-                Dashboard
-              </Button>
-            </Link>
-            <div className="dropdown">
               <button className="dropbtn">
-                NFT Marketplace<span className="span-mark">Beta</span>
-                <ArrowDown />
+                  Dashboard
+                    <NewDash />
               </button>
-              <div className="dropdown-content">
-                <Link href="/" passHref>
-                  <a className="dropdown-item">
-                    <Search />
-                    <span className={isActive('/')}>
-                    Explore
-                    </span>
-                  </a>
-                </Link>
-                { Boolean(key?.name) &&
-                <Link href={{
-                  pathname: '/profile',
-                  query: { key: key, user: key.name },
-                }} passHref>
-                  <a className="dropdown-item">
-                    <User />
-                    <span className={isActive('/profile')}>
-                    Profile
-                    </span>
-                  </a>
-                </Link>
-                }
-                <Link href="/collection/marblenauts" passHref>
-                  <a className="dropdown-item">
-                    <Astronaut />
-                    <span className={isActive('/collection/[name]')}>
-                      The Marblenauts
-                    </span>
-                  </a>
-                </Link>
-              </div>
+            </Link>
+          </div>
+          <div className="dropdown">
+            <button className="dropbtn">
+              DeFi
+              <ArrowDown />
+            </button>
+            <div className="dropdown-content">
+              <Link href="/" passHref>
+                <a className="dropdown-item">
+                  <Exchange />
+                  <span className={isActive('/')}>Swap</span>
+                </a>
+              </Link>
+              <Link href="/transfer" passHref>
+                <a className="dropdown-item">
+                  <UpRightArrow />
+                  <span className={isActive('/transfer')}>Transfer</span>
+                </a>
+              </Link>
+              <Link href="/pools" passHref>
+                <a className="dropdown-item">
+                  <Open />
+                  <span className={isActive('/pools')}>Liquidity</span>
+                </a>
+              </Link>
+              <Link href="/presale-claim" passHref>
+                <a className="dropdown-item">
+                  <Airdrop />
+                  <span className={isActive('/presale-claim')}>
+                    Presale Claim
+                  </span>
+                </a>
+              </Link>
+              <Link href="/early-lp" passHref>
+                <a className="dropdown-item">
+                  <Ellipse />
+                  <span className={isActive('/early-lp')}>
+                    Early LPers
+                  </span>
+                </a>
+              </Link>
             </div>
+          </div>
+          <div className="dropdown">
+                    <button className="dropbtn">
+                      NFT Marketplace<span className="span-mark">Beta</span>
+                      <ArrowDown />
+                    </button>
+                    <div className="dropdown-content">
+                      <Link href="/" passHref>
+                        <a className="dropdown-item">
+                          <Search />
+                          <span className={isActive('/')}>
+                          Explore
+                          </span>
+                        </a>
+                      </Link>
+                      { Boolean(key?.name) &&
+                      <Link href={{
+                        pathname: '/profile',
+                        query: { key: key, user: key.name },
+                      }} passHref>
+                        <a className="dropdown-item">
+                          <User />
+                          <span className={isActive('/profile')}>
+                          Profile
+                          </span>
+                        </a>
+                      </Link>
+                      }
+                      <Link href="/collection/marblenauts" passHref>
+                        <a className="dropdown-item">
+                          <Astronaut />
+                          <span className={isActive('/collection/[name]')}>
+                            The Marblenauts
+                          </span>
+                        </a>
+                      </Link>
+                    </div>
+                  </div>
+          <div className="dropdown">
+            <button className="dropbtn">
+              Airdrop
+              <ArrowDown />
+            </button>
+            <div className="dropdown-content">
+              <Link
+                href="https://app.marbledao.finance/airdrop"
+                passHref
+              >
+                <a className="dropdown-item">
+                  <span className={isActive('/airdrop')}>Marble GovDrop</span>
+                </a>
+              </Link>
+              <Link
+                href="https://app.marbledao.finance/block-airdrop"
+                passHref
+              >
+                <a className="dropdown-item">
+                  <span className={isActive('/block-airdrop')}>Block Drop</span>
+                </a>
+              </Link>
+            </div>
+          </div>
+          <div className="dropdown">
+            <button className="dropbtn">
+              Governance
+              <ArrowDown />
+            </button>
+            <div className="dropdown-content">
+              <Link
+                href="https://daodao.zone/dao/juno1zz3gc2p9ntzgjt8dh4dfqnlptdynxlgd4j7u2lutwdg5xwlm4pcqyxnecp"
+                passHref
+              >
+                <a className="dropdown-item" target="__blank">
+                  <Dao />
+                  <span>New DAO</span>
+                </a>
+              </Link>
+              <Link
+                href="https://daodao.zone/dao/juno1ay840g97ngja9k0f9lnywqxwk49245snw69kpwz0ry9qv99q367q3m4x8v"
+                passHref
+              >
+                <a className="dropdown-item" target="__blank">
+                  <Dao />
+                  <span>Old DAO</span>
+                </a>
+              </Link>
+            </div>
+          </div>
           </StyledListForLinks>
           <IconWrapper
             className="mobile-nav"
@@ -175,6 +282,7 @@ const StyledMenuContainer = styled('div', {
   flexDirection: 'column',
   position: 'relative',
   zIndex: '$2',
+  paddingTop: '$10',
   ' a':{
     color: '$colors$white',
     display: 'flex',
@@ -199,6 +307,7 @@ const StyledListForLinks = styled('div', {
 const StyledDivForLogo = styled('div', {
   columnGap: '$space$4',
   alignItems: 'center',
+  paddingBottom: '$8',
   '& [data-logo]': {
     marginBottom: '$2',
   },
