@@ -71,10 +71,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               <StyledImageForLogoText className="logo-img" src="/images/logotext.svg" />
             </StyledDivForLogo>
           </Link>
-          
+
           <StyledListForLinks className="top-menu-links">
           <div className="dropdown">
-            <Link href="/dashboard" passHref>
+            <Link href="https://app.marbledao.finance/dashboard" passHref>
               <button className="dropbtn">
                   Dashboard
                     <NewDash />
@@ -87,36 +87,36 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               <ArrowDown />
             </button>
             <div className="dropdown-content">
-              <Link href="/" passHref>
+              <Link href="https://app.marbledao.finance/" passHref>
                 <a className="dropdown-item">
                   <Exchange />
                   <span className={isActive('/')}>Swap</span>
                 </a>
               </Link>
-              <Link href="/transfer" passHref>
+              <Link href="https://app.marbledao.finance//transfer" passHref>
                 <a className="dropdown-item">
                   <UpRightArrow />
-                  <span className={isActive('/transfer')}>Transfer</span>
+                  <span className={isActive('https://app.marbledao.finance//transfer')}>Transfer</span>
                 </a>
               </Link>
-              <Link href="/pools" passHref>
+              <Link href="https://app.marbledao.finance//pools" passHref>
                 <a className="dropdown-item">
                   <Open />
-                  <span className={isActive('/pools')}>Liquidity</span>
+                  <span className={isActive('https://app.marbledao.finance//pools')}>Liquidity</span>
                 </a>
               </Link>
-              <Link href="/presale-claim" passHref>
+              <Link href="https://app.marbledao.finance//presale-claim" passHref>
                 <a className="dropdown-item">
                   <Airdrop />
-                  <span className={isActive('/presale-claim')}>
+                  <span className={isActive('https://app.marbledao.finance//presale-claim')}>
                     Presale Claim
                   </span>
                 </a>
               </Link>
-              <Link href="/early-lp" passHref>
+              <Link href="https://app.marbledao.finance//early-lp" passHref>
                 <a className="dropdown-item">
                   <Ellipse />
-                  <span className={isActive('/early-lp')}>
+                  <span className={isActive('https://app.marbledao.finance//early-lp')}>
                     Early LPers
                   </span>
                 </a>
@@ -150,7 +150,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                         </a>
                       </Link>
                       }
-                      <Link href="/collection/marblenauts" passHref>
+                      <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
                         <a className="dropdown-item">
                           <Astronaut />
                           <span className={isActive('/collection/[name]')}>
@@ -245,24 +245,24 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             Swap
           </Button>
         </Link>
-        <Link href="/transfer" passHref>
+        <Link href="https://app.marbledao.finance/transfer" passHref>
           <Button
             className="top-menu"
             as="a"
             variant="ghost"
             iconCenter={<IconWrapper icon={<UpRightArrow />} />}
-            css={getActiveStylesIfActive('/transfer')}
+            css={getActiveStylesIfActive('https://app.marbledao.finance/transfer')}
           >
             Transfer
           </Button>
         </Link>
-        <Link href="/pools" passHref>
+        <Link href="https://app.marbledao.finance/pools" passHref>
           <Button
             className="top-menu"
             as="a"
             variant="ghost"
             iconCenter={<IconWrapper icon={<Open />} />}
-            css={getActiveStylesIfActive('/pools')}
+            css={getActiveStylesIfActive('https://app.marbledao.finance/pools')}
           >
             Liquidity
           </Button>
@@ -289,35 +289,35 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             Profile NFTs
           </Button>
         </Link>
-        <Link href="/marblenauts-nft" passHref>
+        <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
           <Button
             className="top-menu"
             as="a"
             variant="ghost"
             iconCenter={<IconWrapper icon={<Astronaut />} />}
-            css={getActiveStylesIfActive('/marblenauts-nft')}
+            css={getActiveStylesIfActive('https://app.marbledao.finance/marblenauts-nft')}
           >
             The Marblenauts NFTs
           </Button>
         </Link>
-        <Link href="/airdrop" passHref>
+        <Link href="https://app.marbledao.finance/airdrop" passHref>
           <Button
             className="top-menu"
             as="a"
             variant="ghost"
             iconCenter={<IconWrapper icon={<Airdrop />} />}
-            css={getActiveStylesIfActive('/airdrop')}
+            css={getActiveStylesIfActive('https://app.marbledao.finance/airdrop')}
           >
             Marble GovDrop
           </Button>
         </Link>
-        <Link href="/block-airdrop" passHref>
+        <Link href="https://app.marbledao.finance/block-airdrop" passHref>
           <Button
             className="top-menu"
             as="a"
             variant="ghost"
             iconCenter={<IconWrapper icon={<Airdrop />} />}
-            css={getActiveStylesIfActive('/block-airdrop')}
+            css={getActiveStylesIfActive('https://app.marbledao.finance/block-airdrop')}
           >
             BLOCK Airdrop
           </Button>
