@@ -57,12 +57,21 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
     <>
       <StyledWrapper className={`wrap-header ${openNav ? 'open' :''}`}>
         <StyledMenuContainer className="wrap-menu container">
+        <IconWrapper
+          className="mobile-nav"
+            type="button"
+            icon={<Nav />}
+            onClick={() => {
+              setOpenNav(!openNav)
+            }}
+          />
 
           <Link href="/" passHref>
             <StyledDivForLogo as="a">
               <StyledImageForLogoText className="logo-img" src="/images/logotext.svg" />
             </StyledDivForLogo>
           </Link>
+          
           <StyledListForLinks className="top-menu-links">
           <div className="dropdown">
             <Link href="/dashboard" passHref>
@@ -202,14 +211,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </div>
           </div>
           </StyledListForLinks>
-          <IconWrapper
-            className="mobile-nav"
-              type="button"
-              icon={<Nav />}
-              onClick={() => {
-                setOpenNav(!openNav)
-              }}
-            />
+
           <ConnectedWalletButton
             connected={Boolean(key?.name)}
             walletName={key?.name}
@@ -220,6 +222,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
         </StyledMenuContainer>
       </StyledWrapper>
       <MobileMenu className={`mobile-menu ${openNav ? 'open' :''}`}>
+
         <StyledListForLinks className={`top-menu-links ${openNav ? 'open' :''}`}>
         <Link href="https://app.marbledao.finance/dashboard" passHref>
           <Button className="top-menu"
