@@ -136,7 +136,7 @@ const StyledWalletContainer = styled('div', {
 })
 
 const StyledWalletButton = styled('div', {
-  position: 'relative',
+  position: 'center',
   transition: 'background-color .1s ease-out, border .1s ease-out',
   display: 'flex',
   alignItems: 'center',

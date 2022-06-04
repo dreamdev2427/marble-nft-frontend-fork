@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil'
 import { walletState, WalletStatusType } from '../../state/atoms/walletAtoms'
 import { useRouter } from 'next/router'
 import {
-  Search, 
+  Search,
   User,
   UpRightArrow,
   ArrowDown,
@@ -222,41 +222,134 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
       </StyledWrapper>
       <MobileMenu className={`mobile-menu ${openNav ? 'open' :''}`}>
         <StyledListForLinks className={`top-menu-links ${openNav ? 'open' :''}`}>
-          <Link href="/" passHref>
-            <Button className="top-menu"
-              as="a"
-              variant="ghost"
-              iconCenter={<IconWrapper icon={<Exchange />} />}
-              css={getActiveStylesIfActive('/')}
-            >
-              Explore
-            </Button>
-          </Link>
-          { Boolean(key?.name) &&
-          <Link href={{
-              pathname: '/profile',
-              query: { key: key, user: key.name },
-            }}  passHref>
-            <Button className="top-menu"
-              as="a"
-              variant="ghost"
-              iconCenter={<IconWrapper icon={<Open />} />}
-              css={getActiveStylesIfActive('/pools')}
-            >
-              Profile
-            </Button>
-          </Link>
-          }
-          <Link href="/collection/marblenauts" passHref>
-            <Button className="top-menu"
-              as="a"
-              variant="ghost"
-              iconCenter={<IconWrapper icon={<Astronaut />} />}
-              css={getActiveStylesIfActive('/collection/marblenauts')}
-            >
-              The Marblenauts
-            </Button>
-          </Link>
+        <Link href="https://app.marbledao.finance/dashboard" passHref>
+          <Button className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<NewDash />} />}
+            css={getActiveStylesIfActive('https://app.marbledao.finance/dashboard')}
+          >
+            Dashboard
+          </Button>
+        </Link>
+        <Link href="https://app.marbledao.finance" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Exchange />} />}
+            css={getActiveStylesIfActive('https://app.marbledao.finance')}
+          >
+            Swap
+          </Button>
+        </Link>
+        <Link href="/transfer" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<UpRightArrow />} />}
+            css={getActiveStylesIfActive('/transfer')}
+          >
+            Transfer
+          </Button>
+        </Link>
+        <Link href="/pools" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Open />} />}
+            css={getActiveStylesIfActive('/pools')}
+          >
+            Liquidity
+          </Button>
+        </Link>
+        <Link href="/" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Astronaut />} />}
+            css={getActiveStylesIfActive('/')}
+          >
+            Explore NFTs
+          </Button>
+        </Link>
+        <Link href="/profile" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Astronaut />} />}
+            css={getActiveStylesIfActive('/profile')}
+          >
+            Profile NFTs
+          </Button>
+        </Link>
+        <Link href="/marblenauts-nft" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Astronaut />} />}
+            css={getActiveStylesIfActive('/marblenauts-nft')}
+          >
+            The Marblenauts NFTs
+          </Button>
+        </Link>
+        <Link href="/airdrop" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Airdrop />} />}
+            css={getActiveStylesIfActive('/airdrop')}
+          >
+            Marble GovDrop
+          </Button>
+        </Link>
+        <Link href="/block-airdrop" passHref>
+          <Button
+            className="top-menu"
+            as="a"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Airdrop />} />}
+            css={getActiveStylesIfActive('/block-airdrop')}
+          >
+            BLOCK Airdrop
+          </Button>
+        </Link>
+        <Link
+          href="https://daodao.zone/dao/juno1zz3gc2p9ntzgjt8dh4dfqnlptdynxlgd4j7u2lutwdg5xwlm4pcqyxnecp"
+          passHref
+        >
+          <Button
+            className="top-menu"
+            as="a"
+            target="__blank"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Dao />} />}
+            css={getActiveStylesIfActive('/dao')}
+          >
+            New DAO
+          </Button>
+        </Link>
+        <Link
+          href="https://daodao.zone/dao/juno1ay840g97ngja9k0f9lnywqxwk49245snw69kpwz0ry9qv99q367q3m4x8v"
+          passHref
+        >
+          <Button
+            className="top-menu"
+            as="a"
+            target="__blank"
+            variant="ghost"
+            iconCenter={<IconWrapper icon={<Dao />} />}
+            css={getActiveStylesIfActive('/dao')}
+          >
+            Old DAO
+          </Button>
+        </Link>
           <ConnectedWalletButton
             connected={Boolean(key?.name)}
             walletName={key?.name}
@@ -265,7 +358,6 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
 
           />
         </StyledListForLinks>
-
       </MobileMenu>
     </>
   )
@@ -281,7 +373,7 @@ const StyledMenuContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   position: 'relative',
-  zIndex: '$2',
+  zIndex: '$1',
   paddingTop: '$10',
   ' a':{
     color: '$colors$white',
