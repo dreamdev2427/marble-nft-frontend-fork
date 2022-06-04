@@ -77,7 +77,7 @@ button {
   font-size: 18px !important;
   line-height: 26px;
   padding: 12px;
-  height: 65px;
+  height: 80px;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -261,7 +261,7 @@ div{
   .container{
     width: 100%;
     margin: 0 auto;
-    max-width: 1600px;
+    max-width: 1680px;
 
     .collections{
       display: grid;
@@ -299,7 +299,7 @@ div{
       .container{
         max-width: 100%;
         .middle{
-          max-width: 1600px;
+          max-width: 1680px;
           padding: 0px;
         }
       }
@@ -309,8 +309,21 @@ div{
     display: none;
   }
 }
-
-
+.dropzone-main {
+  min-height: 92vh;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dropzone-title {
+  margin: 0 0 3rem 0;
+  line-height: 1.15;
+  font-size: 4rem;
+  text-align: center;
+}
 .mauto{
   margin: 0 auto;
 }
@@ -364,7 +377,7 @@ div{
 }
 
 
-@media screen and (max-width: 1664px) {
+@media screen and (max-width: 1744px) {
   .container{
     width: 100%;
     margin: 0 auto;

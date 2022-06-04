@@ -74,6 +74,7 @@ const StyledContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  padding: '0 40px',
 })
 
 const StyledBackground = styled('div', {
@@ -82,14 +83,17 @@ zIndex: '1',
 display: 'flex',
 flexDirection: 'column',
 justifyContent: 'space-between',
+padding: '0 40px',
 })
 
 const StyledFooter = styled('div', {
 position: 'relative',
 zIndex: '1',
 display: 'flex',
+marginTop: '100px',
 flexDirection: 'column',
 justifyContent: 'space-between',
+padding: '40px 0 0 0',
 backgroundColor: '$backgroundColors$footer',
 })
 
@@ -99,6 +103,7 @@ const StyledFooterWrapper = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  padding: '0 40px',
 })
 const StyledBottom = styled('div', {
 position: 'relative',
