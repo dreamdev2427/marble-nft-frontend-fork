@@ -30,7 +30,7 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
         </Text>
         }
       </Banner>
-      
+
     </>
   )
 }

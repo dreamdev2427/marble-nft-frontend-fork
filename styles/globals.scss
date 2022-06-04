@@ -108,7 +108,7 @@ button {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    
+
     &:hover {
       background-color: #f1f1f1
     }
@@ -198,8 +198,8 @@ button {
         height: 24px;
       }
     }
-    
-    
+
+
   }
   .connect-wallet{
     margin-left: auto;
@@ -213,7 +213,7 @@ button {
       }
     }
   }
-  
+
 }
 div{
   .banner-section{
@@ -260,7 +260,7 @@ div{
     width: 100%;
     margin: 0 auto;
     max-width: 1600px;
-      
+
     .collections{
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -282,7 +282,7 @@ div{
           img{
             width: 100%;
           }
-          
+
         }
       }
     }
@@ -322,7 +322,7 @@ div{
   .bottom-section{
     padding-bottom: 2rem;
     justify-content: space-between;
-    
+
   }
   .footer-section{
     display: flex;
@@ -366,7 +366,7 @@ div{
   .container{
     width: 100%;
     margin: 0 auto;
-    
+
   }
   .wrap-header{
     .wrap-menu{
@@ -393,7 +393,7 @@ div{
       }
     }
   }
-  
+
 }
 
 @media screen and (max-width: 1400px) {
@@ -418,7 +418,7 @@ div{
         }
       }
     }
-    
+
   }
   .wrap-header{
     .wrap-menu{
@@ -432,7 +432,7 @@ div{
       }
     }
   }
-  
+
 }
 
 @media screen and (max-width: 1200px) {
@@ -469,12 +469,12 @@ div{
               font-size: 13px;
             }
           }
-          
+
         }
       }
     }
   }
-  
+
   .logo-img{width: 180px;}
   .wrap-header{
     padding: 0 1rem;
@@ -493,7 +493,7 @@ div{
       }
     }
   }
-  
+
   .footer-desc{width: 90%;}
 }
 
@@ -514,7 +514,7 @@ div{
       }
     }
   }
-  
+
   .wrap-header{
     .wrap-menu{
       .top-menu-links{
@@ -581,7 +581,7 @@ div{
           .filter-wrapper{
             display: block;
             width: 100%;
-  
+
             >header{
               display: none;
             }
@@ -590,17 +590,17 @@ div{
                 padding-top: 0px;
                 padding-bottom: 0px;
               }
-              
+
             }
           }
         }
-        
+
         a{
           width: 32px;
           height: 32px;
         }
       }
-      
+
       .search-item{
         flex-direction: column;
         .chakra-select__wrapper{
@@ -619,7 +619,7 @@ div{
       }
     }
   }
-  
+
   .wrap-header{
     &.open{
       /*position: absolute;*/
@@ -678,14 +678,14 @@ div{
           }
         }
         .wallet-action{
-          
+
           &.open {
             opacity: 1;
           }
         }
       }
     }
-    
+
   }
   .mobile-menu{
     &.open{
@@ -724,7 +724,7 @@ div{
 
 
   }
-  
+
   div{
     .footer{
       margin-top: 48px;
@@ -748,7 +748,7 @@ div{
 
   .container{
     p{
-      
+
       font-size: 0.8rem;
       &.page-title{
         font-size: 25px;
@@ -758,7 +758,7 @@ div{
     a{
       font-size: 0.8rem;
     }
-    
+
     .bottom-section{
       border: 0px;
       display: flex;
@@ -774,8 +774,8 @@ div{
       .desktop-section{
         display: none;
       }
-      
-      
+
+
       .bottom-community-section{
         border-bottom: 1px solid rgba(25,29,32,.2);
       }
@@ -821,7 +821,7 @@ div{
       }
     }
   }
-  
+
 }
 @media screen and (max-width: 767px) {
   div{
@@ -868,7 +868,7 @@ div{
                 border-radius: 8px;
               }
             }
-            
+
           }
           .nft-offer{
             .offer-title{
@@ -895,7 +895,7 @@ div{
       }
     }
   }
-  
+
 
 }
 @media screen and (max-width: 480px) {
@@ -939,10 +939,10 @@ div{
         }
       }
     }
-    
+
   }
   div{
-    
+
     .main-section{
       .nft-grid{
         &.column3{
@@ -983,7 +983,7 @@ div{
                 font-size: 16px;
               }
             }
-            
+
           }
         }
       }
@@ -991,5 +991,5 @@ div{
   }
 }
 @media screen and (max-width: 400px) {
-  
+
 }
