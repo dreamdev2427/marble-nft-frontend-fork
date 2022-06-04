@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { styled } from 'components/theme'
 import { Button } from 'components/Button'
 import { IconWrapper } from 'components/IconWrapper'
@@ -9,7 +9,12 @@ import { useHistory, useParams } from "react-router-dom";
 import Link from 'next/link'
 import {
   NftInfo,
+  CW721, 
+  Marble,
+  useSdk
 } from "services/nft"
+import { walletState } from 'state/atoms/walletAtoms'
+import { useRecoilValue } from 'recoil'
 import {
   Image,
   Table,
@@ -27,29 +32,44 @@ interface DetailParams {
   readonly collection: string
   readonly id: string
 }
-
+const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
 export const NFTDetail = ({ collection, id}) => {
+  const { client } = useSdk()
+  const { address, client: signingClient } = useRecoilValue(walletState)
   const [nft, setNft] = useState<NftInfo>(
-    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': 'bbb', 'price': '0', 'total': 2, 'collectionName': collection }
+    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': collection }
   )
-  useEffect(() => {
-    (async () => {
-      if (id === undefined || id == "[id]")
-        return false
-      let nftPath = ""
-      if (id > 2){
-        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id
-      }else{
-        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id + '.json'
-      }
 
-      if (nftPath != ""){
-        let res_nft = await fetch(nftPath)
-        let nft = await res_nft.json()
-        setNft({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection})
-      }
-    })();
-  }, [collection, id]);
+  const loadNft = useCallback(async () => {
+    console.log("call init load nft", client)
+    if (!client) return
+    
+    if (id === undefined || id == "[id]")
+      return false
+    
+    const marbleContract = Marble(PUBLIC_CW721_CONTRACT).use(client)
+    console.log("marbleContract:", marbleContract)
+    const contractConfig = await marbleContract.getConfig()
+    // console.log("cw721:", contractConfig.cw721_address)
+    const contract = CW721(contractConfig.cw721_address).use(client)
+    const ownerAddress = await contract.ownerOf(id)
+    let nftPath = ""
+    if (id > 2){
+      nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id
+    }else{
+      nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id + '.json'
+    }
+
+    if (nftPath != ""){
+      let res_nft = await fetch(nftPath)
+      let nft = await res_nft.json()
+      setNft({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': ownerAddress, 'price': '8', 'total': 2, 'collectionName': collection})
+    }
+  }, [client])
+  useEffect(() => {
+    console.log("init:", collection, id)
+    loadNft()
+  }, [loadNft, collection, id]);
   return (
     <Nft className="nft-info">
         <NftUriTag className="nft-uri">
@@ -63,8 +83,9 @@ export const NFTDetail = ({ collection, id}) => {
               as="a"
               variant="ghost"
               iconLeft={<IconWrapper icon={<User />} />}
+              title={nft.user}
             >
-              Owned by
+              Owned by {nft.user.length > 10 ?nft.user.substr(0, 10) + '...' : nft.user}
             </Button>
           </NftMeta>
           <NftBuyOfferTag className="nft-buy-offer">

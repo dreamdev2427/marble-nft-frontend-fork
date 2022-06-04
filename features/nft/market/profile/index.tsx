@@ -7,11 +7,8 @@ import { Activity, Grid, Search, ColumnBig, ColumnSmall, Sidebar, ArrowLeft } fr
 import { CollectionFilter } from "./filter"
 import { NftTable } from "components/NFT"
 
-import {
-  NftInfo,
-} from "services/nft"
 import { useRecoilValue } from 'recoil'
-import { CW721, Marble, useSdk } from 'services/nft'
+import { NftInfo, CW721, Marble, useSdk } from 'services/nft'
 import { walletState } from 'state/atoms/walletAtoms'
 import InfiniteScroll from "react-infinite-scroll-component"
 import { 
@@ -166,9 +163,17 @@ export const MyCollectedNFTs = () => {
     // console.log("cw721:", contractConfig.cw721_address)
     const contract = CW721(contractConfig.cw721_address).use(client)
     // console.log("My Address:", address)
-    const nftTokens = await contract.tokens(PUBLIC_CW721_OWNER)
-    // console.log("nftTokens 0:", nftTokens.tokens[0])
+    //const nftTokens = await contract.tokens(PUBLIC_CW721_OWNER)
+    const nftTokens = await contract.tokens(address)
+    console.log("nftTokens:", nftTokens.tokens.length)
+    if (nftTokens.tokens.length == 0){
+      setNfts([])
+      setHasMore(false)
+      return;
+    }
+      
     console.log(await contract.nftInfo(nftTokens.tokens[0]))
+    console.log(await contract.ownerOf(nftTokens.tokens[0]))
     setNFTIds(nftTokens.tokens)
     collectionSlug = "marblenauts"
     let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/Collection Metadata.json')

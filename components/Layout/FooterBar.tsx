@@ -30,7 +30,7 @@ export const FooterBar = () => {
         <ContainerForColumn className="bottom-desc-section">
           <Link href="/" passHref>
             <StyledImage
-              src="/images/logo-footer.png"
+              src="/images/logotext-black.svg"
               className="footer-logo"
             />
           </Link>

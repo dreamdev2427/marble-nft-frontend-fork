@@ -77,7 +77,7 @@ button {
   font-size: 18px !important;
   line-height: 26px;
   padding: 12px;
-  height: 65px;
+  height: 80px;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -260,7 +260,7 @@ div{
   .container{
     width: 100%;
     margin: 0 auto;
-    max-width: 1600px;
+    max-width: 1680px;
 
     .collections{
       display: grid;
@@ -298,7 +298,7 @@ div{
       .container{
         max-width: 100%;
         .middle{
-          max-width: 1600px;
+          max-width: 1680px;
           padding: 0px;
         }
       }
@@ -376,7 +376,7 @@ div{
 }
 
 
-@media screen and (max-width: 1664px) {
+@media screen and (max-width: 1744px) {
   .container{
     width: 100%;
     margin: 0 auto;

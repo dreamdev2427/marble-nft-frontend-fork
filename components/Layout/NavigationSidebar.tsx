@@ -52,12 +52,19 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
   const StyledImageForLogoText = styled('img', {
     borderRadius: '0%',
   })
-
+  console.log("Key", key)
   return (
     <>
       <StyledWrapper className={`wrap-header ${openNav ? 'open' :''}`}>
         <StyledMenuContainer className="wrap-menu container">
-
+          <IconWrapper
+            className="mobile-nav"
+              type="button"
+              icon={<Nav />}
+              onClick={() => {
+                setOpenNav(!openNav)
+              }}
+          />
           <Link href="/" passHref>
             <StyledDivForLogo as="a">
               <StyledImageForLogoText className="logo-img" src="/images/logotext.svg" />
@@ -115,42 +122,42 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </div>
           </div>
           <div className="dropdown">
-                    <button className="dropbtn">
-                      NFT Marketplace<span className="span-mark">Beta</span>
-                      <ArrowDown />
-                    </button>
-                    <div className="dropdown-content">
-                      <Link href="/" passHref>
-                        <a className="dropdown-item">
-                          <Search />
-                          <span className={isActive('/')}>
-                          Explore
-                          </span>
-                        </a>
-                      </Link>
-                      { Boolean(key?.name) &&
-                      <Link href={{
-                        pathname: '/profile',
-                        query: { key: key, user: key.name },
-                      }} passHref>
-                        <a className="dropdown-item">
-                          <User />
-                          <span className={isActive('/profile')}>
-                          Profile
-                          </span>
-                        </a>
-                      </Link>
-                      }
-                      <Link href="/collection/marblenauts" passHref>
-                        <a className="dropdown-item">
-                          <Astronaut />
-                          <span className={isActive('/collection/[name]')}>
-                            The Marblenauts
-                          </span>
-                        </a>
-                      </Link>
-                    </div>
-                  </div>
+              <button className="dropbtn">
+                NFT Marketplace<span className="span-mark">Beta</span>
+                <ArrowDown />
+              </button>
+              <div className="dropdown-content">
+                <Link href="/" passHref>
+                  <a className="dropdown-item">
+                    <Search />
+                    <span className={isActive('/')}>
+                    Explore
+                    </span>
+                  </a>
+                </Link>
+                { Boolean(key?.name) &&
+                <Link href={{
+                  pathname: '/profile',
+                  query: { key: key, user: key.bech32Address },
+                }} passHref>
+                  <a className="dropdown-item">
+                    <User />
+                    <span className={isActive('/profile')}>
+                    Profile
+                    </span>
+                  </a>
+                </Link>
+                }
+                <Link href="/collection/marblenauts" passHref>
+                  <a className="dropdown-item">
+                    <Astronaut />
+                    <span className={isActive('/collection/[name]')}>
+                      The Marblenauts
+                    </span>
+                  </a>
+                </Link>
+              </div>
+            </div>
           <div className="dropdown">
             <button className="dropbtn">
               Airdrop
@@ -202,14 +209,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             </div>
           </div>
           </StyledListForLinks>
-          <IconWrapper
-            className="mobile-nav"
-              type="button"
-              icon={<Nav />}
-              onClick={() => {
-                setOpenNav(!openNav)
-              }}
-            />
+          
           <ConnectedWalletButton
             connected={Boolean(key?.name)}
             walletName={key?.name}
@@ -275,7 +275,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             Explore NFTs
           </Button>
         </Link>
-        <Link href="/profile" passHref>
+        <Link href={{
+            pathname: '/profile',
+            query: { key: key, user: key.bech32Address },
+          }} passHref>
           <Button
             className="top-menu"
             as="a"
