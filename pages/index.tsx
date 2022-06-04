@@ -11,7 +11,7 @@ export default function Home() {
     <AppLayout fullWidth={fullWidth}>
       <PageHeader
         title="Collections"
-        subtitle="The NFT collections on Marble Marketplace."
+        subtitle="The Marble Marketplace is the bridge the physical and digital world."
       />
       <Container className="middle mauto">
         <Explore/>

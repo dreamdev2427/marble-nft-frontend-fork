@@ -17,38 +17,33 @@
     },
     {
       "id": 3,
-      "name": "Sport",
-      "slug": "sport"
-    },
-    {
-      "id": 4,
       "name": "Music",
       "slug": "music"
     },
     {
+      "id": 4,
+      "name": "Painting",
+      "slug": "Painting"
+    },
+    {
       "id": 5,
+      "name": "Video",
+      "slug": "video"
+    },
+    {
+      "id": 6,
       "name": "Photography",
       "slug": "photography"
     },
     {
-      "id": 6,
+      "id": 7,
       "name": "Sports",
       "slug": "sports"
-    },
-    {
-      "id": 7,
-      "name": "Trading Cards",
-      "slug": "trading_cards"
     },
     {
       "id": 8,
       "name": "Utility",
       "slug": "utility"
-    },
-    {
-      "id": 9,
-      "name": "Virtual Worlds",
-      "slug": "virtual_worlds"
     }
   ]
 }

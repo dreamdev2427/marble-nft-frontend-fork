@@ -32,7 +32,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
   const { pathname } = useRouter()
   const getActiveStylesIfActive = (path) =>
     pathname === path || (pathname.indexOf("/collection/") != -1 && path.indexOf("/collection/") != -1)? { borderBottom: '3px solid $white', background: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.22) 100%)" } : {borderBottom: '3px solid transparent', background: 'transparent' }
-  
+
   const isActive = (path) => (pathname === path ? 'active' : '')
   const StyledImageForLogoText = styled('img', {
     borderRadius: '0%',
@@ -42,10 +42,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
     <>
       <StyledWrapper className={`wrap-header ${openNav ? 'open' :''}`}>
         <StyledMenuContainer className="wrap-menu container">
-          
+
           <Link href="/" passHref>
             <StyledDivForLogo as="a">
-              <StyledImageForLogoText className="logo-img" src="/images/logotext.png" />
+              <StyledImageForLogoText className="logo-img" src="/images/logotext.svg" />
             </StyledDivForLogo>
           </Link>
           <StyledListForLinks className="top-menu-links">
@@ -110,7 +110,7 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             onConnect={() => connectWallet(null)}
             onDisconnect={resetWalletConnection}
           />
-          
+
         </StyledMenuContainer>
       </StyledWrapper>
       <MobileMenu className={`mobile-menu ${openNav ? 'open' :''}`}>
@@ -155,10 +155,10 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             walletName={key?.name}
             onConnect={() => connectWallet(null)}
             onDisconnect={resetWalletConnection}
-            
+
           />
         </StyledListForLinks>
-        
+
       </MobileMenu>
     </>
   )

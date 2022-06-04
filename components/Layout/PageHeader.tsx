@@ -12,7 +12,6 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
           {APP_NAME} — {title}
         </title>
       </Head>
-      <Banner className="banner-section">
         <Text
           variant="header"
           className={`page-title ${title=="NFT"?"nft-title":""}`}
@@ -24,13 +23,11 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
         <Text
           variant="body"
           className="page-subtitle"
-          css={{ paddingTop: '1rem', fontSize: '$8', textAlign: 'center', maxWidth:'970px', margin:'0 auto', color:'$textColors$secondary' }}
+          css={{ paddingTop: '1.5rem',paddingBottom: '2rem', fontSize: '$8', textAlign: 'center', maxWidth:'970px', margin:'0 auto', color:'$textColors$secondary' }}
         >
           {subtitle}
         </Text>
         }
-      </Banner>
-
     </>
   )
 }
