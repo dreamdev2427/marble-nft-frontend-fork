@@ -11,13 +11,13 @@ import { useRecoilValue } from 'recoil'
 import { NftInfo, CW721, Marble, useSdk } from 'services/nft'
 import { walletState } from 'state/atoms/walletAtoms'
 import InfiniteScroll from "react-infinite-scroll-component"
-import { 
-  ChakraProvider, 
-  Tab, 
-  Input, 
-  InputGroup, 
-  InputRightElement, 
-  Select, 
+import {
+  ChakraProvider,
+  Tab,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Select,
   IconButton,
   Tag,
   TagLabel,
@@ -78,7 +78,7 @@ export const ProfileTab = ({index}) => {
 }
 let nftCurrentIndex = 0
 let collectionSlug = ""
-export const MyCollectedNFTs = () => {  
+export const MyCollectedNFTs = () => {
   const pageCount = 10
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
@@ -93,7 +93,7 @@ export const MyCollectedNFTs = () => {
   const dispatch = useDispatch()
   const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
-  
+
   const profileData = useSelector((state: State) => state.profileData)
   const { profile_status } = profileData
   const { client } = useSdk()
@@ -148,10 +148,10 @@ export const MyCollectedNFTs = () => {
         }
       )
     }
-    
+
   }, [dispatch, isLargeNFT])
 
-  
+
 
   const loadNfts = useCallback(async (pstatus) => {
     if (!client) return
@@ -181,9 +181,9 @@ export const MyCollectedNFTs = () => {
     let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collectionSlug + '/all-traits.json')
     let all_traits = await res_traits.json()
     let traits = []
-    
+
     for (let i = 0; i < nftTokens.tokens.length; i++){
-      if (pstatus.length == 0 
+      if (pstatus.length == 0
         || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Accessories) != -1
         || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Background) != -1
         || pstatus.indexOf(all_traits[parseInt(nftTokens.tokens[i])].Clothes) != -1
@@ -244,7 +244,7 @@ export const MyCollectedNFTs = () => {
     let all_traits = await res_traits.json()
     let traits = []
     for (let i = 0; i < tokens.length; i++){
-      if (profile_status.length == 0 
+      if (profile_status.length == 0
         || profile_status.indexOf(all_traits[parseInt(tokens[i])].Accessories) != -1
         || profile_status.indexOf(all_traits[parseInt(tokens[i])].Background) != -1
         || profile_status.indexOf(all_traits[parseInt(tokens[i])].Clothes) != -1
@@ -307,7 +307,7 @@ export const MyCollectedNFTs = () => {
                 pr='48px'
                 type='text'
                 placeholder='Search'
-                onKeyDown={handleSearch} 
+                onKeyDown={handleSearch}
               />
               <InputRightElement width='48px'>
                 <IconWrapper icon={<Search />} />
@@ -332,10 +332,10 @@ export const MyCollectedNFTs = () => {
               <option>Oldest</option>
             </Select> */}
             <ColumnCount className="desktop-section">
-              <IconButton 
-                className={`column-type ${isLargeNFT?'active':''}`} 
-                aria-label='Search database' 
-                icon={<ColumnBig />} 
+              <IconButton
+                className={`column-type ${isLargeNFT?'active':''}`}
+                aria-label='Search database'
+                icon={<ColumnBig />}
                 onClick={() => {
                   if (isLargeNFT)
                     return
@@ -343,10 +343,10 @@ export const MyCollectedNFTs = () => {
                   return false
                 }}
               />
-              <IconButton 
-                className={`column-type ${!isLargeNFT?'active':''}`} 
-                aria-label='Search database' 
-                icon={<ColumnSmall />} 
+              <IconButton
+                className={`column-type ${!isLargeNFT?'active':''}`}
+                aria-label='Search database'
+                icon={<ColumnSmall />}
                 onClick={() => {
                   if (!isLargeNFT)
                     return
@@ -386,7 +386,7 @@ export const MyCollectedNFTs = () => {
           ))}
           {profile_status.length > 0 &&
             <Tag
-              borderRadius='full' 
+              borderRadius='full'
               variant='solid'
             >
               <TagLabel>Clear All</TagLabel>
@@ -426,7 +426,7 @@ const CollectionWrapper = styled('div', {
       }
     },
     ' a':{
-      
+
       textAlign: 'center',
       paddingBottom: '$8',
       '&.active':{
@@ -436,7 +436,7 @@ const CollectionWrapper = styled('div', {
   }
 })
 const TabWrapper = styled('div', {
-  
+
   display: 'flex',
   justifyContent: 'center',
   ' .tab-link': {
@@ -482,7 +482,7 @@ const SearchItem = styled('div', {
       width: '$26',
     }
   }
-  
+
 })
 const FilterItem = styled('div', {
   display: 'block',
@@ -513,7 +513,7 @@ const ColumnCount = styled('div', {
         ' rect': {
           fill: '$iconColors$primary'
         }
-      } 
+      }
     }
   }
 })

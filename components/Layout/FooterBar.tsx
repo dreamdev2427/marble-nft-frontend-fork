@@ -28,7 +28,7 @@ export const FooterBar = () => {
     <StyledFooter>
       <ContainerBottom className="bottom-section">
         <ContainerForColumn className="bottom-desc-section">
-          <Link href="/" passHref>
+          <Link href="https://nft.marbledao.finance" passHref>
             <StyledImage
               src="/images/logotext-black.svg"
               className="footer-logo"
