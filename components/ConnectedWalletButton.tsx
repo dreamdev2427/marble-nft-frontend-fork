@@ -144,7 +144,6 @@ const StyledWalletButton = styled('div', {
   display: 'flex',
   alignItems: 'center',
   columnGap: '$space$6',
-  marginBottom: '$9',
   padding: '$4 $12 $4',
   borderRadius: '$3',
   textAlign: 'center',
