@@ -78,7 +78,7 @@ export const NFTDetail = ({ collection, id}) => {
         <NftInfoTag className="nft-detail">
           <h2 className="nft-title">{nft.name}</h2>
           <Link href={`/collection/${nft.collectionName}`} passHref>The Marblenauts</Link>
-        {/*  <NftMeta className="nft-meta">
+          <NftMeta className="nft-meta">
             <Button className="nft-meta-link"
               as="a"
               variant="ghost"
@@ -87,7 +87,7 @@ export const NFTDetail = ({ collection, id}) => {
             >
               <span className="owner-address">Owned by {nft.user}</span>
             </Button>
-          </NftMeta>*/}
+          </NftMeta>
           <NftBuyOfferTag className="nft-buy-offer">
             <NftSale className="disabled">
               <IconWrapper icon={<Clock />}/>
