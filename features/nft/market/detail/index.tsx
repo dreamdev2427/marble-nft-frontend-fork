@@ -52,7 +52,7 @@ export const NFTDetail = ({ collection, id}) => {
     const contractConfig = await marbleContract.getConfig()
     // console.log("cw721:", contractConfig.cw721_address)
     const contract = CW721(contractConfig.cw721_address).use(client)
-    const ownerAddress = await contract.ownerOf(id)
+    const ownerAddress = await contract.ownerOf((id - 1).toString())
     let nftPath = ""
     if (id > 2){
       nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id
