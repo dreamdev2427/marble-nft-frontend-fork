@@ -9,7 +9,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Link from 'next/link'
 import {
   NftInfo,
-  CW721,
+  CW721, 
   Marble,
   useSdk
 } from "services/nft"
@@ -43,10 +43,10 @@ export const NFTDetail = ({ collection, id}) => {
   const loadNft = useCallback(async () => {
     console.log("call init load nft", client)
     if (!client) return
-
+    
     if (id === undefined || id == "[id]")
       return false
-
+    
     const marbleContract = Marble(PUBLIC_CW721_CONTRACT).use(client)
     console.log("marbleContract:", marbleContract)
     const contractConfig = await marbleContract.getConfig()
@@ -85,7 +85,7 @@ export const NFTDetail = ({ collection, id}) => {
               iconLeft={<IconWrapper icon={<User />} />}
               title={nft.user}
             >
-              Owned by {ownerAddress}
+              <span className="owner-address">Owned by {nft.user}</span>
             </Button>
           </NftMeta>
           <NftBuyOfferTag className="nft-buy-offer">
@@ -225,6 +225,12 @@ const NftMeta = styled('div', {
         width: '20px',
         height: '20px',
       }
+    },
+    '.owner-address': {
+      overflowWrap: 'break-word',
+      width: '100%',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     }
   }
 })

@@ -74,7 +74,7 @@ button {
   color: white;
   font-style: normal;
   font-weight: 500;
-  font-size: 18px !important;
+  font-size: 18px;
   line-height: 26px;
   padding: 12px;
   height: 100px;
@@ -385,7 +385,7 @@ div{
   .wrap-header{
     .wrap-menu{
       .top-menu-links{
-        /*margin-left: 50px;*/
+        margin-left: 50px;
         a {
           padding-left:12px;
           padding-right: 12px;
@@ -400,6 +400,7 @@ div{
         padding: 0px;
         .container{
           max-width: 100%;
+          padding: 0px;
           .middle{
             padding: 0 32px;
           }
@@ -437,7 +438,7 @@ div{
   .wrap-header{
     .wrap-menu{
       .top-menu-links{
-        /*margin-left: 10px;*/
+        margin-left: 10px;
         a {
           padding-left: 8px;
           padding-right: 8px;
@@ -494,7 +495,7 @@ div{
     padding: 0px;
     .wrap-menu{
       .top-menu-links{
-        /*margin-left: 10px;*/
+        margin-left: 20px;
         a {
           padding-left: 8px;
           padding-right: 8px;
@@ -503,7 +504,8 @@ div{
         }
       }
       button{
-        font-size: 0.7rem;
+        font-size: 16px;
+        padding: 12px 6px 12px 12px;
       }
     }
   }
@@ -653,9 +655,8 @@ div{
       .mobile-icon{display: flex;fill: #6af900;}
       .desktop-icon{display: none;}
       .connect-wallet{
-        padding-bottom: 16px;flex-grow: unset;
-        display: none;
         flex-grow: unset;
+        margin-left: 0px;
         >div{
           padding: 0px;
           border: 0px;
@@ -663,8 +664,8 @@ div{
 
           .mobile-icon{
             svg{
-              width: 24px;
-              height: 24px;
+              width: 32px;
+              height: 32px;
               color: #6af900;
             }
           }
@@ -693,7 +694,9 @@ div{
           }
         }
         .wallet-action{
-
+          button{
+            padding: 0px;
+          }
           &.open {
             opacity: 1;
           }
