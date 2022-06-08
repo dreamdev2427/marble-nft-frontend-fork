@@ -52,7 +52,6 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
   const StyledImageForLogoText = styled('img', {
     borderRadius: '0%',
   })
-  console.log("Key", key)
   return (
     <>
       <StyledWrapper className={`wrap-header ${openNav ? 'open' :''}`}>
@@ -145,6 +144,16 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                     <User />
                     <span className={isActive('/profile')}>
                     Profile
+                    </span>
+                  </a>
+                </Link>
+                }
+                { Boolean(key?.name) &&
+                <Link href="/collection/create" passHref>
+                  <a className="dropdown-item">
+                    <Astronaut />
+                    <span className={isActive('/collection/create')}>
+                    Create Collection
                     </span>
                   </a>
                 </Link>
@@ -292,6 +301,19 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
             Profile NFTs
           </Button>
         </Link>
+        }
+        { Boolean(key?.name) &&
+          <Link href="/collection/create" passHref>
+            <Button
+              className="top-menu"
+              as="a"
+              variant="ghost"
+              iconCenter={<IconWrapper icon={<Astronaut />} />}
+              css={getActiveStylesIfActive('/collection/create')}
+            >
+              Create Collection
+            </Button>
+          </Link>
         }
         <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
           <Button

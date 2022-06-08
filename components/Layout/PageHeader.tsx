@@ -15,7 +15,7 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
         <Text
           variant="header"
           className={`page-title ${title=="NFT"?"nft-title":""}`}
-          css={{ fontSize: '$12', textAlign: `${align}` }}
+          css={{ fontSize: '$12', lineHeight: '$5', textAlign: `${align}` }}
         >
           {title}
         </Text>

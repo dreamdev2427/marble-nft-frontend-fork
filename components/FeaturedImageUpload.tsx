@@ -11,17 +11,17 @@ import {
 const PUBLIC_PINATA_API_KEY = process.env.NEXT_PUBLIC_PINATA_API_KEY || ''
 const PUBLIC_PINATA_SECRET_API_KEY = process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY || ''
 const PUBLIC_PINATA_URL = process.env.NEXT_PUBLIC_PINATA_URL || ''
-const DropZone = ({ data, dispatch, item }) => {
-  const [ ipfsHash, setIpfsHash ] = useState("")
+const FeaturedImageUpload = ({ data, dispatch, item }) => {
+  const [ ipfsHashFIU, setIpfsHashFIU ] = useState("")
   // onDragEnter sets inDropZone to true
-  const handleDragEnter = (e) => {
+  const handleDragEnterFIU = (e) => {
     e.preventDefault()
     e.stopPropagation()
     dispatch({ type: "SET_IN_DROP_ZONE", inDropZone: true })
   }
 
   // onDragLeave sets inDropZone to false
-  const handleDragLeave = (e) => {
+  const handleDragLeaveFIU = (e) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -29,7 +29,7 @@ const DropZone = ({ data, dispatch, item }) => {
   }
 
   // onDragOver sets inDropZone to true
-  const handleDragOver = (e) => {
+  const handleDragOverFIU = (e) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -39,7 +39,7 @@ const DropZone = ({ data, dispatch, item }) => {
   }
 
   // onDrop sets inDropZone to false and adds files to fileList
-  const handleDrop = (e) => {
+  const handleDropFIU = (e) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -58,12 +58,12 @@ const DropZone = ({ data, dispatch, item }) => {
       dispatch({ type: "ADD_FILE_TO_LIST", files })
       // reset inDropZone to false
       dispatch({ type: "SET_IN_DROP_ZONE", inDropZone: false })
-      uploadFiles(files)
+      uploadFilesFIU(files)
     }
   }
 
   // handle file selection via input element
-  const handleFileSelect = (e) => {
+  const handleFileSelectFIU = (e) => {
     // get files from event on the input element as an array
     let files = [...e.target.files]
 
@@ -77,20 +77,21 @@ const DropZone = ({ data, dispatch, item }) => {
 
       // dispatch action to add selected file or files to fileList
       dispatch({ type: "ADD_FILE_TO_LIST", files })
-      uploadFiles(files)
+      uploadFilesFIU(files)
     }
   }
 
   // to handle file uploads
-  const uploadFiles = async(files) => {
+  const uploadFilesFIU = (files) => {
     // get the files from the fileList as an array
     // let files = data.fileList
     // initialize formData object
     const formData = new FormData()
     // loop over files and add to formData
+    console.log("FIU")
     files.forEach((file) => formData.append("file", file))
     let url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
-    let response = await axios
+    return axios
         .post(url, formData, {
             maxBodyLength: Infinity, //this is needed to prevent axios from erroring out with large files
             headers: {
@@ -99,22 +100,42 @@ const DropZone = ({ data, dispatch, item }) => {
                 pinata_secret_api_key: PUBLIC_PINATA_SECRET_API_KEY
             }
         })
-    
-    if (response.status == 200){
-      setIpfsHash(response.data.IpfsHash)
-      dispatch({ type: "SET_LOGO", logo: response.data.IpfsHash })
-    }
+        .then(function (response) {
+            console.log("FIU")
+            if (response.status == 200){
+              setIpfsHashFIU(response.data.IpfsHash)
+              dispatch({ type: "SET_FEATURED_IMAGE", featuredImage: response.data.IpfsHash })
+            }
+              
+        })
+        .catch(function (error) {
+        })
+
+    // Upload the files as a POST request to the server using fetch
+    // Note: /api/fileupload is not a real endpoint, it is just an example
+    // const response = await fetch("/api/fileupload", {
+    //   method: "POST",
+    //   body: formData,
+    // })
+
+    // //successful file upload
+    // if (response.ok) {
+    //   alert("Files uploaded successfully")
+    // } else {
+    //   // unsuccessful file upload
+    //   alert("Error uploading files")
+    // }
   }
 
   return (
     <ChakraProvider>
       <Container className={`${item}-section`}>
-        <DropzoneContainer className={ipfsHash!=""?"opacity02":""}>
+        <DropzoneContainer className={ipfsHashFIU!=""?"opacity02":""}>
           <div
-            onDrop={(e) => handleDrop(e)}
-            onDragOver={(e) => handleDragOver(e)}
-            onDragEnter={(e) => handleDragEnter(e)}
-            onDragLeave={(e) => handleDragLeave(e)}
+            onDrop={(e) => handleDropFIU(e)}
+            onDragOver={(e) => handleDragOverFIU(e)}
+            onDragEnter={(e) => handleDragEnterFIU(e)}
+            onDragLeave={(e) => handleDragLeaveFIU(e)}
           >
             <StyledImage>
               <NoImage/>
@@ -129,13 +150,13 @@ const DropZone = ({ data, dispatch, item }) => {
               <span className="line-through">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </p>
             <input
-              id="fileSelect"
+              id="fileSelectFIU"
               type="file"
               // multiple
               className={css.files}
-              onChange={(e) => handleFileSelect(e)}
+              onChange={(e) => handleFileSelectFIU(e)}
             />
-            <label htmlFor="fileSelect"><NoImage/>Choose Image</label>
+            <label htmlFor="fileSelectFIU"><NoImage/>Choose Image</label>
           </div>
           {/* Pass the selectect or dropped files as props */}
           {/* Only show upload button after selecting atleast 1 file */}
@@ -146,8 +167,8 @@ const DropZone = ({ data, dispatch, item }) => {
           )} */}
         </DropzoneContainer>
         <ImageContainer>
-          {ipfsHash!="" &&
-            <Image alt="Collection Logo Image" className="collection-logo-img" src={`${PUBLIC_PINATA_URL}${ipfsHash}`}/>
+          {ipfsHashFIU!="" &&
+            <Image alt="Collection Featured Image" className="collection-featured-img" src={`${PUBLIC_PINATA_URL}${ipfsHashFIU}`}/>
           }
         </ImageContainer>
       </Container>
@@ -218,4 +239,4 @@ const ImageContainer = styled('div', {
     maxHeight: '100%',
   }
 })
-export default DropZone
+export default FeaturedImageUpload

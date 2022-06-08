@@ -70,6 +70,7 @@ button {
   margin-left: 8px;
   padding: 2px 8px;
 }
+.line-through{text-decoration: line-through;}
 .dropbtn {
   color: white;
   font-style: normal;
@@ -216,6 +217,7 @@ button {
   }
 
 }
+
 div{
   .banner-section{
     background-repeat: no-repeat;
@@ -300,6 +302,20 @@ div{
         .middle{
           max-width: 1680px;
           padding: 0px;
+          .logo-featured-container{
+            display: flex;
+            gap: 32px;
+            .logo-section{
+              max-width: 350px;
+            }
+            .featured-section{
+              max-width: 600px;
+            }
+            
+          }
+          .collection-banner-section{
+            max-width: 1400px;
+          }
         }
       }
     }
@@ -308,26 +324,14 @@ div{
     display: none;
   }
 }
-.dropzone-main {
-  min-height: 92vh;
-  padding: 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.dropzone-title {
-  margin: 0 0 3rem 0;
-  line-height: 1.15;
-  font-size: 4rem;
-  text-align: center;
-}
 .mauto{
   margin: 0 auto;
 }
 .btn-default{
   padding: 1rem 3rem;
+}
+.required{
+  color: #FF141A;
 }
 .footer{
   padding: 40px 32px 0 32px;
