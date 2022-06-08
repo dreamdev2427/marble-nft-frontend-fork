@@ -11,6 +11,11 @@ export const colors = createColorPalette({
   error: '#ED5276',
   valid: '#53D0C9',
   gray: '#666666',
+  chakraborder: '#e2e8f0',
+  chakraicon: '#9f9f9f',
+  uploadborder: '#D0D0D0',
+  uploadicon: '#D4D4D4',
+  uploaddesc: '#2C404C',
   selected: '#292D32',
   link: '#165FCD',
   nft: '#5A5A5A',
@@ -64,6 +69,7 @@ export const { theme, styled, css } = createStitches({
       selected: '$colors$dark30',
       error: '$colors$error60',
       shadow: 'rgba(0, 0, 0, 0.05)',
+      themeSelected: '$colors$dark',
     },
 
     space: {
@@ -93,6 +99,7 @@ export const { theme, styled, css } = createStitches({
       24: '86px',
       25: '367px',
       26: '430px',
+      27: '-32px',
     },
     rowGap: {
       1: '8px',
@@ -146,6 +153,7 @@ export const { theme, styled, css } = createStitches({
       6: '20px',
       7: '24px',
       8: '32px',
+      9: '40px',
       10: '64px',
       22: '50px',
       23: '80px',
@@ -157,6 +165,7 @@ export const { theme, styled, css } = createStitches({
     borderWidths: {
       1: '1px',
       2: '2px',
+      3: '4px',
     },
     borderStyles: {},
     radii: {
