@@ -122,6 +122,7 @@ const StyledButton = styled('button', {
       true: {
         pointerEvents: 'none',
         cursor: 'not-allowed',
+        opacity: '0.3',
       },
       false: {},
     },

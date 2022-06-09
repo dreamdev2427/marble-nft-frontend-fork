@@ -23,7 +23,7 @@ export function NftPrice({ nft }: NftCardProps): JSX.Element {
   const dollarPrice = parseFloat(nft.price) * tokenDollarPrice[0]
   return (
     <PriceDiv className="price-section">
-      <Image alt="Token Icon" className="token-icon" src="https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/juno.png"/>
+      <Image alt="Token Icon" className="token-icon" src="/juno.png"/>
       <span className="token-balance">{nft.price}&nbsp;JUNO</span>
       <span className="nft-price">(${dollarValueFormatterWithDecimals(dollarPrice)})</span>
     </PriceDiv>
