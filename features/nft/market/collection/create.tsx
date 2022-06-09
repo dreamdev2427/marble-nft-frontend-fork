@@ -11,7 +11,7 @@ import {
   NftInfo,
   NftCategory,
   NftCollection,
-} from "services/nft";
+} from "services/nft"
 import { 
   ChakraProvider, 
   Input, 
@@ -28,8 +28,10 @@ import {
   useRadioGroup,
   useRadio,
   Switch,
-  Box
+  Box,
+  useToast
 } from '@chakra-ui/react'
+import { toast } from 'react-toastify'
 import DropZone from "components/DropZone"
 import FeaturedImageUpload from "components/FeaturedImageUpload"
 import BannerImageUpload from "components/BannerImageUpload"
@@ -38,11 +40,12 @@ const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
 const PUBLIC_PINATA_API_KEY = process.env.NEXT_PUBLIC_PINATA_API_KEY || ''
 const PUBLIC_PINATA_SECRET_API_KEY = process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY || ''
 const PUBLIC_PINATA_URL = process.env.NEXT_PUBLIC_PINATA_URL || ''
-
+let themeValue = "1"
 function RadioCard(props) {
   const { getInputProps, getCheckboxProps } = useRadio(props)
   const input = getInputProps()
   const checkbox = getCheckboxProps()
+  
   return (
     <Box as='label'>
       <input {...input} />
@@ -69,27 +72,73 @@ function RadioCard(props) {
 }
 export const CollectionCreate = () => {
   const router = useRouter()
+  //const toast = useToast()
   const [nftcategories, setNftCategories] = useState<NftCategory[]>(
     []
   )
+  const [isJsonUploading, setJsonUploading] = useState(false)
+  const [name, setName] = useState("")
+  const [slug, setSlug] = useState("")
+  const [description, setDescription] = useState("")
+  const [category, setCategory] = useState("0")
+  const [website, setWebsite] = useState("")
+  const [discord, setDiscord] = useState("")
+  const [instagram, setInstagram] = useState("")
+  const [medium, setMedium] = useState("")
+  const [telegram, setTelegram] = useState("")
+  const [earningFee, setEarningFee] = useState("")
+  const [explicit, setExplicit] = useState("")
+  const [collectionIpfsHash, setCollectionIpfsHash] = useState("")
+
+  const handleNameChange = (event) => {
+    setName(event.target.value)
+  }
+  const handleSlugChange = (event) => {
+    setSlug(event.target.value)
+  }
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value)
+  }
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value)
+  }
+  const handleWebsiteChange = (event) => {
+    setWebsite(event.target.value)
+  }
+  const handleDiscordChange = (event) => {
+    setDiscord(event.target.value)
+  }
+  const handleInstagramChange = (event) => {
+    setInstagram(event.target.value)
+  }
+  const handleMediumChange = (event) => {
+    setMedium(event.target.value)
+  }
+  const handleTelegramChange = (event) => {
+    setTelegram(event.target.value)
+  }
+  const handleEarningFeeChange = (event) => {
+    setEarningFee(event.target.value)
+  }
+
   // reducer function to handle state changes
   const reducer = (state, action) => {
     switch (action.type) {
       case "SET_IN_DROP_ZONE":
-        return { ...state, inDropZone: action.inDropZone };
+        return { ...state, inDropZone: action.inDropZone }
       case "ADD_FILE_TO_LIST":
-        return { ...state, fileList: state.fileList.concat(action.files) };
+        return { ...state, fileList: state.fileList.concat(action.files) }
       case "SET_LOGO":
-        
-        return { ...state, logo: state.logo};
-      case "SET_FEATURED_IMG":
-        return { ...state, featuredImage: state.featuredImage};
+        console.log("state logo", action.logo)
+        return { ...state, logo: action.logo}
+      case "SET_FEATURED_IMAGE":
+        return { ...state, featuredImage: action.featuredImage}
       case "SET_BANNER":
-        return { ...state, banner: state.banner};
+        return { ...state, banner: action.banner}
       default:
-        return state;
+        return state
     }
-  };
+  }
 
   // destructuring state and dispatch, initializing fileList to empty array
   const [data, dispatch] = useReducer(reducer, {
@@ -98,16 +147,15 @@ export const CollectionCreate = () => {
     logo: "",
     featuredImage: "",
     banner: "",
-  });
+  })
 
   const options = ['1', '2', '3']
-
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'template',
     defaultValue: '1',
     onChange: console.log,
   })
-
+  
   const group = getRootProps()
   
 
@@ -117,36 +165,92 @@ export const CollectionCreate = () => {
       let categories = await res_categories.json()
       setNftCategories(categories.categories)
       
-    })();
+    })()
 
   }, [])
   
-  const createCollection = (e) => {
+  const createCollection = async(e) => {
+    if (name == "")
+    {
+      toast.warning(
+        `Please input the collection name.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }    
+    if (data.logo == "")
+    {
+      toast.warning(
+        `Please upload a logo image.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }
+    
     const jsonData = {}
     jsonData["logo"] = data.logo
     jsonData["featuredImage"] = data.featuredImage
     jsonData["banner"] = data.banner
-    console.log(jsonData)
+    jsonData["name"] = name
+    jsonData["slug"] = slug
+    jsonData["description"] = description
+    jsonData["category"] = category
+    jsonData["website"] = website
+    jsonData["discord"] = discord
+    jsonData["instagram"] = instagram
+    jsonData["medium"] = medium
+    jsonData["telegram"] = telegram
+    jsonData["earningFee"] = earningFee
+    jsonData["network"] = "JUNO"
+    jsonData["tokens"] = ["JUNO"]
+    jsonData["themeValue"] = themeValue
+    jsonData["explicit"] = explicit
 
-    // let url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`
-    // return axios
-    //     .post(url, formData, {
-    //         maxBodyLength: Infinity, //this is needed to prevent axios from erroring out with large files
-    //         headers: {
-    //             'Content-Type': `application/json`,
-    //             pinata_api_key: PUBLIC_PINATA_API_KEY,
-    //             pinata_secret_api_key: PUBLIC_PINATA_SECRET_API_KEY
-    //         }
-    //     })
-    //     .then(function (response) {
-    //         console.log(response)
-    //         if (response.status == 200){
-              
-    //         }
-              
-    //     })
-    //     .catch(function (error) {
-    //     })
+    const pinataJson = {
+      "pinataMetadata": 
+      {
+        "name": name, 
+        keyvalues:
+        {
+          "slug": slug
+        }
+      }, 
+      "pinataContent": jsonData
+    }
+    console.log(pinataJson)
+    setJsonUploading(true)
+    let url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`
+    let response = await axios
+        .post(url, pinataJson, {
+            maxBodyLength: Infinity, //this is needed to prevent axios from erroring out with large files
+            headers: {
+                'Content-Type': `application/json`,
+                pinata_api_key: PUBLIC_PINATA_API_KEY,
+                pinata_secret_api_key: PUBLIC_PINATA_SECRET_API_KEY
+            }
+        })
+
+    if (response.status == 200){
+      console.log(response)
+      setCollectionIpfsHash(response.data.IpfsHash)
+    }
+    setJsonUploading(false)
   }
   return (
     <Container>
@@ -181,25 +285,26 @@ export const CollectionCreate = () => {
                   pr='48px'
                   type='text'
                   placeholder='Example: Treasures of the Sea'
+                  value={name} onChange={handleNameChange}
                 />
         </CollectionItem>
         <CollectionItem className="collection-item">
-          <h3>URL</h3>
+          <h3>URL <span className="required">*</span></h3>
           <p>Customize your URL on Marble NFT Marketplace. Must only contain lowercase letters, numbers, and hyphens.</p>
           <InputGroup size='sm'>
             <InputLeftAddon children={`${window.location.origin}/`} />
-            <Input placeholder='collection-name' />
+            <Input placeholder='collection-name' value={slug} onChange={handleSlugChange}/>
           </InputGroup>
         </CollectionItem>
         <CollectionItem className="collection-item">
           <h3>Description</h3>
           <p>Markdown syntax is supported. 0 of 1000 characters used.</p>
-          <Textarea/>
+          <Textarea value={description} onChange={handleDescriptionChange}/>
         </CollectionItem>
         <CollectionItem className="collection-item">
           <h3>Category</h3>
           <p>Adding a category will help make your item discoverable on Marble NFT Marketplace.</p>
-          <Select id='category_id'>
+          <Select id='category_id' value={category} onChange={handleCategoryChange}>
             {nftcategories.length > 0 && nftcategories.map((category, idx) => (
                 <option value={category.id} key={`cat${idx}`}>{category.name=='All'?'':category.name}</option>
             ))}
@@ -212,31 +317,31 @@ export const CollectionCreate = () => {
               <InputLeftAddon pointerEvents='none'>
                 <YourSite/>
               </InputLeftAddon>
-              <Input type='text' placeholder='yoursite.io' />
+              <Input type='text' placeholder='yoursite.io' value={website} onChange={handleWebsiteChange}/>
             </InputGroup>
             <InputGroup className="link-item">
               <InputLeftAddon pointerEvents='none'>
                 <Discord/>https://discord.gg/
               </InputLeftAddon>
-              <Input placeholder='abcdef' />
+              <Input placeholder='abcdef' value={discord} onChange={handleDiscordChange}/>
             </InputGroup>
             <InputGroup className="link-item">
               <InputLeftAddon pointerEvents='none'>
                 <Instagram/>https://www.instagram.com/
               </InputLeftAddon>
-              <Input type='text' placeholder='YourInstagramHandle' />
+              <Input type='text' placeholder='YourInstagramHandle' value={instagram} onChange={handleInstagramChange}/>
             </InputGroup>
             <InputGroup className="link-item">
               <InputLeftAddon pointerEvents='none'>
                 <MediumM/>https://medium.com/@
               </InputLeftAddon>
-              <Input type='text' placeholder='YourMediumHandle' />
+              <Input type='text' placeholder='YourMediumHandle' value={medium} onChange={handleMediumChange}/>
             </InputGroup>
             <InputGroup className="link-item last-item">
               <InputLeftAddon pointerEvents='none'>
                 <Telegram/>https://t.me/
               </InputLeftAddon>
-              <Input type='text' placeholder='abcdef' />
+              <Input type='text' placeholder='abcdef' value={telegram} onChange={handleTelegramChange}/>
             </InputGroup>
           </Stack>
         </CollectionItem>
@@ -245,18 +350,18 @@ export const CollectionCreate = () => {
           <p>Collec a free when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout of your choosing.</p>
           <Link href="#" passHref>Learn more about creator earnings.</Link>
           <p>Percentage fee</p>
-          <Input type='number' placeholder='e.d. 2.5' />
+          <Input type='number' placeholder='e.d. 2.5' value={earningFee} onChange={handleEarningFeeChange}/>
         </CollectionItem>
         <CollectionItem className="collection-item">
           <h3>Blockchain</h3>
           <HStack spacing={0} className="chain-group">
-            <Image alt="Token Icon" className="token-icon" src="https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/juno.png"/><span>&nbsp;&nbsp;JUNO</span>
+            <Image alt="Token Icon" className="token-icon" src="/juno.png"/><span>JUNO</span>
           </HStack>
         </CollectionItem>
         <CollectionItem className="collection-item">
           <h3>Payment tokens</h3>
           <HStack spacing={0} className="chain-group">
-            <Image alt="Token Icon" className="token-icon" src="https://raw.githubusercontent.com/osmosis-labs/assetlists/main/images/juno.png"/><span>&nbsp;&nbsp;JUNO</span>
+            <Image alt="Token Icon" className="token-icon" src="/juno.png"/><span>JUNO</span>
           </HStack>
         </CollectionItem>
         <CollectionItem className="collection-item">
@@ -266,8 +371,12 @@ export const CollectionCreate = () => {
             <HStack {...group}>
               {options.map((value) => {
                 const radio = getRadioProps({ value })
+                if (radio.isChecked){
+                  themeValue = radio.value.toString()
+                }
+                
                 return (
-                  <RadioCard key={value} {...radio}>
+                  <RadioCard key={value} value={value} {...radio}>
                     {value == '1' &&
                       <Template>
                         <CheckboxItem className="check-icon"><CheckIcon/></CheckboxItem>
@@ -308,7 +417,7 @@ export const CollectionCreate = () => {
           <h3>Explicit & sensitive content</h3>
           <ExplicitItem>
             <p>Set this collection as explicit and senstive content</p>
-            <Switch id='explicit-senstive' />
+            <Switch value="yes" id='explicit-senstive' onChange={(e) => e.target.checked?setExplicit(e.target.value):setExplicit("")}/>
           </ExplicitItem>
         </CollectionItem>
         <CollectionItem className="collection-item">
@@ -320,10 +429,21 @@ export const CollectionCreate = () => {
             }}
             variant="primary"
             size="large"
-            onClick={(e) => createCollection(e)}
+            onClick={(e) => {
+              
+              createCollection(e)
+            
+            }}
+
+            disabled={isJsonUploading}
           >
             Create
           </Button>
+          {collectionIpfsHash != "" &&
+            <span>
+            Pinata IpfsHash: <Link href={`https://gateway.pinata.cloud/ipfs/${collectionIpfsHash}`} passHref>{collectionIpfsHash}</Link>
+            </span>
+          }
         </CollectionItem>
       </ChakraProvider>
     </Container>

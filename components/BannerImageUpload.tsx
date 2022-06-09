@@ -82,16 +82,15 @@ const BannerImageUpload = ({ data, dispatch, item }) => {
   }
 
   // to handle file uploads
-  const uploadFilesBIU = (files) => {
+  const uploadFilesBIU = async(files) => {
     // get the files from the fileList as an array
     // let files = data.fileList
     // initialize formData object
     const formData = new FormData()
     // loop over files and add to formData
-    console.log("BIU")
     files.forEach((file) => formData.append("file", file))
     let url = `https://api.pinata.cloud/pinning/pinFileToIPFS`
-    return axios
+    let response = await axios
         .post(url, formData, {
             maxBodyLength: Infinity, //this is needed to prevent axios from erroring out with large files
             headers: {
@@ -99,32 +98,11 @@ const BannerImageUpload = ({ data, dispatch, item }) => {
                 pinata_api_key: PUBLIC_PINATA_API_KEY,
                 pinata_secret_api_key: PUBLIC_PINATA_SECRET_API_KEY
             }
-        })
-        .then(function (response) {
-            console.log("BIU")
-            if (response.status == 200){
-              setIpfsHashBIU(response.data.IpfsHash)
-              dispatch({ type: "SET_BANNER", banner: response.data.IpfsHash })
-            }
-              
-        })
-        .catch(function (error) {
-        })
-
-    // Upload the files as a POST request to the server using fetch
-    // Note: /api/fileupload is not a real endpoint, it is just an example
-    // const response = await fetch("/api/fileupload", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-
-    // //successful file upload
-    // if (response.ok) {
-    //   alert("Files uploaded successfully")
-    // } else {
-    //   // unsuccessful file upload
-    //   alert("Error uploading files")
-    // }
+        });
+    if (response.status == 200){
+      setIpfsHashBIU(response.data.IpfsHash)
+      dispatch({ type: "SET_BANNER", banner: response.data.IpfsHash })
+    }
   }
 
   return (
