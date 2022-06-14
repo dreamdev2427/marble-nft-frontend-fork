@@ -38,8 +38,8 @@ const mainnet: AppConfig = {
   chainId: 'juno-1',
   chainName: 'Juno',
   addressPrefix: 'juno',
-  rpcUrl: 'https://rpc-juno.itastakers.com:443/',
-  httpUrl: 'https://lcd-juno.itastakers.com:443/',
+  rpcUrl: 'https://rpc.uni.juno.deuslabs.fi',//'https://rpc-juno.itastakers.com:443/',
+  httpUrl: 'https://lcd.uni.juno.deuslabs.fi', //'https://lcd-juno.itastakers.com:443/',
   token: {
     coinDenom: 'JUNO',
     coinDecimals: 6,
