@@ -1,8 +1,8 @@
 {
-  "chainId": "uni-2",
+  "chainId": "uni-3",
   "chainName": "Juno Uni Testnet",
-  "rpc": "https://rpc.juno.giansalex.dev",
-  "rest": "https://api.uni.junomint.com",
+  "rpc": "https://rpc.uni.juno.deuslabs.fi",
+  "rest": "https://lcd.uni.juno.deuslabs.fi",
   "stakeCurrency": {
     "coinDenom": "JUNOX",
     "coinMinimalDenom": "ujunox",

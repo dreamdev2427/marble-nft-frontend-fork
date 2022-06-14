@@ -3,6 +3,7 @@ import {
   SigningCosmWasmClient,
 } from '@cosmjs/cosmwasm-stargate'
 import { Coin } from '@cosmjs/stargate'
+import { unsafelyGetDefaultExecuteFee } from 'util/fees'
 
 export interface OfferResponse {
   contract: string
@@ -16,9 +17,19 @@ export interface OffersResponse {
   offers: OfferResponse[]
 }
 
+export interface CollectionResponse {
+  id: number
+  collection_addr: string
+  cw721_addr: string
+}
+
+export interface CollectonListResponse {
+  collection: CollectionResponse[]
+}
+
 export interface MarketInstance {
   readonly contractAddress: string
-
+  listCollections: () => Promise<CollectonListResponse>
   numOffers: () => Promise<number>
   offer: (
     contract: string,
@@ -34,7 +45,8 @@ export interface MarketInstance {
 
 export interface MarketTxInstance {
   readonly contractAddress: string
-
+  // actions
+  addCollection: (owner: string, max_tokens: number, name: string, symbol: string, token_code_id: number, cw20_address: string, royalty: number, uri: string) => Promise<string>
   // actions
   buy: (sender: string, offerId: string, price: Coin) => Promise<string>
   withdraw: (sender: string, offerId: string) => Promise<string>
@@ -46,6 +58,8 @@ export interface MarketContract {
 }
 
 export const Market = (contractAddress: string): MarketContract => {
+  const defaultExecuteFee = unsafelyGetDefaultExecuteFee()
+
   const use = (client: CosmWasmClient): MarketInstance => {
     const numOffers = async (): Promise<number> => {
       const result = await client.queryContractSmart(contractAddress, {
@@ -85,6 +99,12 @@ export const Market = (contractAddress: string): MarketContract => {
       })
       return result
     }
+    const listCollections = async (): Promise<CollectonListResponse> => {
+      const result = await client.queryContractSmart(contractAddress, {
+        list_collections: {},
+      })
+      return result.list
+    }
 
     return {
       contractAddress,
@@ -92,6 +112,7 @@ export const Market = (contractAddress: string): MarketContract => {
       offer,
       offersBySeller,
       allOffers,
+      listCollections,
     }
   }
 
@@ -122,11 +143,43 @@ export const Market = (contractAddress: string): MarketContract => {
       )
       return result.transactionHash
     }
-
+    const addCollection = async (
+      owner: string, 
+      maxTokens: number, 
+      name: string, 
+      symbol: string, 
+      tokenCodeId: number, 
+      cw20Address: string, 
+      royalty: number, 
+      uri: string
+    ): Promise<string> => {
+      const result = await client.execute(
+        owner,
+        contractAddress,
+        { 
+          add_collection: 
+          { 
+            owner: owner, 
+            max_tokens: maxTokens, 
+            name: name, 
+            symbol: symbol, 
+            token_code_id: tokenCodeId, 
+            cw20_address: cw20Address, 
+            royalty: royalty, 
+            uri: uri
+          } 
+        },
+        defaultExecuteFee
+      )
+      
+      console.log("call end add collection:", result)
+      return result.transactionHash
+    }
     return {
       contractAddress,
       buy,
       withdraw,
+      addCollection
     }
   }
 

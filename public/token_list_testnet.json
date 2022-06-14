@@ -1,0 +1,47 @@
+{
+  "name": "Marble Token List",
+  "logoURI": "",
+  "keywords": ["special tokens"],
+  "tags": {
+    "Marble": {
+      "name": "Marble",
+      "description": "Tokens that are listed on Marble"
+    }
+  },
+  "timestamp": "2022-01-12T00:00:00+00:00",
+  "base_token": {
+    "id": "juno-network",
+    "pool_id": "BLOCK+BLOCK",
+    "chain_id": "uni-3",
+    "token_address": "juno15s50e6k9s8mac9cmrg2uq85cgw7fxxfh24xhr0chems2rjxsfjjs8kmuje",
+    "swap_address": "",
+    "symbol": "BLOCK",
+    "name": "Block",
+    "decimals": 6,
+    "logoURI": "https://i.ibb.co/KWVPvLK/Marble-DAO-1080-1080-px-2.png",
+    "tags": ["cw20"],
+    "native":false,
+    "denom":"block"
+    },
+  "tokens": [
+    {
+        "id": "juno-network",
+        "pool_id": "BLOCK+BLOCK",
+        "chain_id": "uni-3",
+        "token_address": "juno15s50e6k9s8mac9cmrg2uq85cgw7fxxfh24xhr0chems2rjxsfjjs8kmuje",
+        "swap_address": "",
+        "symbol": "BLOCK",
+        "name": "Block",
+        "decimals": 6,
+        "logoURI": "https://i.ibb.co/KWVPvLK/Marble-DAO-1080-1080-px-2.png",
+        "tags": ["cw20"],
+        "native":false,
+        "denom":"block"
+    }
+  ],
+  "version": {
+    "major": 0,
+    "minor": 1,
+    "patch": 0
+  }
+}

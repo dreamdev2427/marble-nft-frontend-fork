@@ -35,8 +35,16 @@ import { toast } from 'react-toastify'
 import DropZone from "components/DropZone"
 import FeaturedImageUpload from "components/FeaturedImageUpload"
 import BannerImageUpload from "components/BannerImageUpload"
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { walletState, WalletStatusType } from 'state/atoms/walletAtoms'
+import { Market, useSdk } from 'services/nft'
+
 
 const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
+const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
+const PUBLIC_CW20_CONTRACT = process.env.NEXT_PUBLIC_CW20_CONTRACT || ''
+const PUBLIC_CW721_BASE_CODE_ID = process.env.NEXT_PUBLIC_CW721_BASE_CODE_ID || 388
+
 const PUBLIC_PINATA_API_KEY = process.env.NEXT_PUBLIC_PINATA_API_KEY || ''
 const PUBLIC_PINATA_SECRET_API_KEY = process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY || ''
 const PUBLIC_PINATA_URL = process.env.NEXT_PUBLIC_PINATA_URL || ''
@@ -89,6 +97,8 @@ export const CollectionCreate = () => {
   const [earningFee, setEarningFee] = useState("")
   const [explicit, setExplicit] = useState("")
   const [collectionIpfsHash, setCollectionIpfsHash] = useState("")
+  const { client } = useSdk()
+  const { address, client: signingClient } = useRecoilValue(walletState)
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -170,6 +180,23 @@ export const CollectionCreate = () => {
   }, [])
   
   const createCollection = async(e) => {
+    //if (status !== WalletStatusType.connected) {
+    if (!address || !signingClient) {
+      toast.warning(
+        `Please connect your wallet.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return
+    }
+
     if (name == "")
     {
       toast.warning(
@@ -245,12 +272,23 @@ export const CollectionCreate = () => {
                 pinata_secret_api_key: PUBLIC_PINATA_SECRET_API_KEY
             }
         })
-
+    let ipfsHash = ""
     if (response.status == 200){
       console.log(response)
       setCollectionIpfsHash(response.data.IpfsHash)
+      ipfsHash = response.data.IpfsHash
     }
     setJsonUploading(false)
+    
+    if (!address || !signingClient) {
+      console.log("unauthorized user")
+      return
+    }
+    const marketContract = Market(PUBLIC_MARKETPLACE).useTx(signingClient)
+    const collection = await marketContract.addCollection(
+      address, 10000, name, "MNFT", Number(PUBLIC_CW721_BASE_CODE_ID), PUBLIC_CW20_CONTRACT, Number(earningFee), ipfsHash
+    )
+    console.log("Collection:", collection)
   }
   return (
     <Container>
