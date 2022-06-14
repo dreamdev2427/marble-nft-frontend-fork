@@ -37,12 +37,27 @@ export interface MarketInstance {
   readonly contractAddress: string
   listCollections: () => Promise<CollectionResponse[]>
   config: () => Promise<MarketContractConfig>
+  //old functions
+  numOffers: () => Promise<number>
+  offer: (
+    contract: string,
+    tokenId: string
+  ) => Promise<OfferResponse | undefined>
+  offersBySeller: (
+    seller: string,
+    startAfter?: string,
+    limit?: number
+  ) => Promise<OffersResponse>
+  allOffers: (startAfter?: string, limit?: number) => Promise<OffersResponse>
 }
 
 export interface MarketTxInstance {
   readonly contractAddress: string
   // actions
   addCollection: (owner: string, max_tokens: number, name: string, symbol: string, token_code_id: number, cw20_address: string, royalty: number, uri: string) => Promise<string>
+  //old functions
+  buy: (sender: string, offerId: string, price: Coin) => Promise<string>
+  withdraw: (sender: string, offerId: string) => Promise<string>
 }
 
 export interface MarketContract {
@@ -66,11 +81,52 @@ export const Market = (contractAddress: string): MarketContract => {
       })
       return result.list
     }
+    const numOffers = async (): Promise<number> => {
+      const result = await client.queryContractSmart(contractAddress, {
+        get_count: {},
+      })
+      return result.count
+    }
 
+    const offer = async (
+      contract: string,
+      tokenId: string
+    ): Promise<OfferResponse | undefined> => {
+      const result: OffersResponse = await client.queryContractSmart(
+        contractAddress,
+        { get_offer: { contract, token_id: tokenId } }
+      )
+      return result.offers.length > 0 ? result.offers[0] : undefined
+    }
+
+    const offersBySeller = async (
+      seller: string,
+      startAfter?: string,
+      limit?: number
+    ): Promise<OffersResponse> => {
+      const result = await client.queryContractSmart(contractAddress, {
+        get_offers: { seller, start_after: startAfter, limit: limit },
+      })
+      return result
+    }
+
+    const allOffers = async (
+      startAfter?: string,
+      limit?: number
+    ): Promise<OffersResponse> => {
+      const result = await client.queryContractSmart(contractAddress, {
+        all_offers: { start_after: startAfter, limit: limit },
+      })
+      return result
+    }
     return {
       contractAddress,
       config,
       listCollections,
+      numOffers,
+      offer,
+      offersBySeller,
+      allOffers
     }
   }
 
@@ -107,9 +163,38 @@ export const Market = (contractAddress: string): MarketContract => {
       console.log("call end add collection:", result)
       return result.transactionHash
     }
+
+    const buy = async (
+      sender: string,
+      offerId: string,
+      price: Coin
+    ): Promise<string> => {
+      const result = await client.execute(
+        sender,
+        contractAddress,
+        { buy: { offering_id: offerId } },
+        undefined
+      )
+      return result.transactionHash
+    }
+
+    const withdraw = async (
+      sender: string,
+      offerId: string
+    ): Promise<string> => {
+      const result = await client.execute(
+        sender,
+        contractAddress,
+        { withdraw_nft: { offering_id: offerId } },
+        undefined
+      )
+      return result.transactionHash
+    }
     return {
       contractAddress,
-      addCollection
+      addCollection,
+      buy,
+      withdraw
     }
   }
 
