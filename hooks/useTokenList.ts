@@ -48,6 +48,7 @@ export const useTokenList = () => {
   const { data, isLoading } = useQuery<TokenList>(
     '@token-list',
     async () => {
+      console.log("token block list:", process.env.NEXT_PUBLIC_TOKEN_BLOCK_LIST_URL)
       const response = await fetch(process.env.NEXT_PUBLIC_TOKEN_BLOCK_LIST_URL)
       return await response.json()
     },
