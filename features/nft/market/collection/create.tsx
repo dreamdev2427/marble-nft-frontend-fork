@@ -248,7 +248,7 @@ export const CollectionCreate = () => {
     jsonData["tokens"] = ["JUNO"]
     jsonData["themeValue"] = themeValue
     jsonData["explicit"] = explicit
-
+    jsonData["owner"] = address
     const pinataJson = {
       "pinataMetadata": 
       {
@@ -289,6 +289,18 @@ export const CollectionCreate = () => {
       address, 10000, name, "MNFT", Number(PUBLIC_CW721_BASE_CODE_ID), PUBLIC_CW20_CONTRACT, Number(earningFee), ipfsHash
     )
     console.log("Collection:", collection)
+    toast.warning(
+      `You have created your collection successfully.`,
+      {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    )
   }
   return (
     <Container>

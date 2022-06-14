@@ -13,7 +13,8 @@ export interface CollectionContractConfig {
   name: string
   symbol: string
   unused_token_id: number
-  royalty: number
+  royalty: number,
+  uri: string,
 }
 
 

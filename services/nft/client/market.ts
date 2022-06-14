@@ -4,7 +4,12 @@ import {
 } from '@cosmjs/cosmwasm-stargate'
 import { Coin } from '@cosmjs/stargate'
 import { unsafelyGetDefaultExecuteFee } from 'util/fees'
-
+export interface MarketContractConfig {
+  owner: string
+  max_collection_id: number
+  collection_code_id: number
+  cw721_base_code_id: number
+}
 export interface OfferResponse {
   contract: string
   id: string
@@ -21,6 +26,7 @@ export interface CollectionResponse {
   id: number
   collection_addr: string
   cw721_addr: string
+  uri: string
 }
 
 export interface CollectonListResponse {
@@ -29,7 +35,9 @@ export interface CollectonListResponse {
 
 export interface MarketInstance {
   readonly contractAddress: string
-  listCollections: () => Promise<CollectonListResponse>
+  listCollections: () => Promise<CollectionResponse[]>
+  config: () => Promise<MarketContractConfig>
+  //old functions
   numOffers: () => Promise<number>
   offer: (
     contract: string,
@@ -47,7 +55,7 @@ export interface MarketTxInstance {
   readonly contractAddress: string
   // actions
   addCollection: (owner: string, max_tokens: number, name: string, symbol: string, token_code_id: number, cw20_address: string, royalty: number, uri: string) => Promise<string>
-  // actions
+  //old functions
   buy: (sender: string, offerId: string, price: Coin) => Promise<string>
   withdraw: (sender: string, offerId: string) => Promise<string>
 }
@@ -61,6 +69,18 @@ export const Market = (contractAddress: string): MarketContract => {
   const defaultExecuteFee = unsafelyGetDefaultExecuteFee()
 
   const use = (client: CosmWasmClient): MarketInstance => {
+    const config = async (): Promise<MarketContractConfig> => {
+      const result = await client.queryContractSmart(contractAddress, {
+        config: {},
+      })
+      return result
+    }
+    const listCollections = async (): Promise<CollectionResponse[]> => {
+      const result = await client.queryContractSmart(contractAddress, {
+        list_collections: {},
+      })
+      return result.list
+    }
     const numOffers = async (): Promise<number> => {
       const result = await client.queryContractSmart(contractAddress, {
         get_count: {},
@@ -99,50 +119,18 @@ export const Market = (contractAddress: string): MarketContract => {
       })
       return result
     }
-    const listCollections = async (): Promise<CollectonListResponse> => {
-      const result = await client.queryContractSmart(contractAddress, {
-        list_collections: {},
-      })
-      return result.list
-    }
-
     return {
       contractAddress,
+      config,
+      listCollections,
       numOffers,
       offer,
       offersBySeller,
-      allOffers,
-      listCollections,
+      allOffers
     }
   }
 
   const useTx = (client: SigningCosmWasmClient): MarketTxInstance => {
-    const buy = async (
-      sender: string,
-      offerId: string,
-      price: Coin
-    ): Promise<string> => {
-      const result = await client.execute(
-        sender,
-        contractAddress,
-        { buy: { offering_id: offerId } },
-        undefined
-      )
-      return result.transactionHash
-    }
-
-    const withdraw = async (
-      sender: string,
-      offerId: string
-    ): Promise<string> => {
-      const result = await client.execute(
-        sender,
-        contractAddress,
-        { withdraw_nft: { offering_id: offerId } },
-        undefined
-      )
-      return result.transactionHash
-    }
     const addCollection = async (
       owner: string, 
       maxTokens: number, 
@@ -175,11 +163,38 @@ export const Market = (contractAddress: string): MarketContract => {
       console.log("call end add collection:", result)
       return result.transactionHash
     }
+
+    const buy = async (
+      sender: string,
+      offerId: string,
+      price: Coin
+    ): Promise<string> => {
+      const result = await client.execute(
+        sender,
+        contractAddress,
+        { buy: { offering_id: offerId } },
+        undefined
+      )
+      return result.transactionHash
+    }
+
+    const withdraw = async (
+      sender: string,
+      offerId: string
+    ): Promise<string> => {
+      const result = await client.execute(
+        sender,
+        contractAddress,
+        { withdraw_nft: { offering_id: offerId } },
+        undefined
+      )
+      return result.transactionHash
+    }
     return {
       contractAddress,
+      addCollection,
       buy,
-      withdraw,
-      addCollection
+      withdraw
     }
   }
 
