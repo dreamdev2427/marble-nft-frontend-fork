@@ -289,7 +289,7 @@ export const CollectionCreate = () => {
       address, 10000, name, "MNFT", Number(PUBLIC_CW721_BASE_CODE_ID), PUBLIC_CW20_CONTRACT, Number(earningFee), ipfsHash
     )
     console.log("Collection:", collection)
-    toast.warning(
+    toast.success(
       `You have created your collection successfully.`,
       {
         position: 'top-right',
