@@ -198,7 +198,12 @@ export const FILTER_EYES = [
     'name': 'Sunglasses pixel',
   }
 ]
-
+export const FILTER_HEAD = [
+  {
+    'id': 'head',
+    'name': 'Head'
+  }
+]
 export const FILTER_HELMET = [
   {
     'id': 'blue_helmet',

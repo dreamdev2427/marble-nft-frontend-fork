@@ -2,7 +2,7 @@ import React, { useReducer, useState, useEffect } from "react";
 import Head from "next/head";
 import { AppLayout } from 'components/Layout/AppLayout'
 import { PageHeader } from 'components/Layout/PageHeader'
-import { CollectionCreate } from 'features/nft/market/collection/create'
+import { CreateNFTBulk } from 'features/nft/market/create/bulk'
 import { styled } from 'components/theme'
 
 import { useConnectWallet } from '../../hooks/useConnectWallet'
@@ -29,13 +29,13 @@ export default function Home() {
     <AppLayout fullWidth={fullWidth}>
       <SdkProvider config={config}>
         <PageHeader
-          title="Collection Create"
+          title="Create New Item"
           subtitle=""
           align="left"
         />
         { Boolean(key?.name) &&
         <Container className="middle mauto">
-          <CollectionCreate/>
+          <CreateNFTBulk/>
         </Container>
         }
         { !Boolean(key?.name) &&

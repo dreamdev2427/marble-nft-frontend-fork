@@ -1,177 +1,672 @@
-import * as React from "react";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import * as React from "react"
+import { useCallback, useState, useReducer, useEffect } from "react"
+import { useRouter } from 'next/router'
+import axios from 'axios'
+import Link from 'next/link'
+import { styled } from 'components/theme'
+import { Button } from 'components/Button'
+
 import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
+  FILTER_ACCESSORIES,
+  FILTER_BACKGROUND,
+  FILTER_CLOTHES,
+  FILTER_EXPRESSIONS,
+  FILTER_EYES,
+  FILTER_HELMET,
+  FILTER_EARRING,
+  FILTER_HEAD
+} from "store/types"
+
+import { 
+  ChakraProvider, 
+  Input, 
+  InputGroup, 
+  Image,
   Textarea,
-  useBoolean,
-  useToast,
-} from "@chakra-ui/react";
-import { Bech32, toHex } from "@cosmjs/encoding";
-import { FileUpload, TransactionLink } from "components/NFT"
-import {
-  CW721,
-  unSanitizeIpfsUrl,
-  uploadFile,
-  useSdk,
-} from "services/nft";
-import { config } from "services/config";
+  Select, 
+  AspectRatio,
+  Stack,
+  HStack,
+  useRadioGroup,
+  Table,
+  Tbody,
+  Tr,
+  Td,
+  TableContainer,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react'
+import { toast } from 'react-toastify'
+import NFTUpload from "components/NFTUpload"
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { walletState, WalletStatusType } from 'state/atoms/walletAtoms'
+import { Market, useSdk } from 'services/nft'
 
-function generateId(address: string) {
-  // TODO: Format ID?
-  const pubkey = toHex(Bech32.decode(address).data);
-  return (
-    pubkey?.substr(2, 10) +
-    pubkey?.substring(pubkey.length - 8) +
-    '-' +
-    Math.random().toString(36).substr(2, 9)
-  ).toUpperCase();
+const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
+const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
+const PUBLIC_CW20_CONTRACT = process.env.NEXT_PUBLIC_CW20_CONTRACT || ''
+const PUBLIC_CW721_BASE_CODE_ID = process.env.NEXT_PUBLIC_CW721_BASE_CODE_ID || 388
+
+const PUBLIC_PINATA_API_KEY = process.env.NEXT_PUBLIC_PINATA_API_KEY || ''
+const PUBLIC_PINATA_SECRET_API_KEY = process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY || ''
+const PUBLIC_PINATA_URL = process.env.NEXT_PUBLIC_PINATA_URL || ''
+
+interface NftCollectionInfo {
+  readonly id: number;
+  readonly name: string;
 }
+let filter_status:any = []
+export const CreateNFT = () => {
+  const router = useRouter()
+  //const toast = useToast()
+  const [nftcollections, setNftCollections] = useState<NftCollectionInfo[]>(
+    []
+  )
+  const [isJsonUploading, setJsonUploading] = useState(false)
+  const [name, setName] = useState("")
+  const [externalLink, setExternalLink] = useState("")
+  const [description, setDescription] = useState("")
+  const [collectionId, setCollectionId] = useState(0)
+  const [accessories, setAccessories] = useState("none")
+  const [background, setBackground] = useState("none")
+  const [clothes, setClothes] = useState("none")
+  const [earring, setEarring] = useState("none")
+  const [expressions, setExpressions] = useState("none")
+  const [eyes, setEyes] = useState("none")
+  const [head, setHead] = useState("none")
+  const [helmet, setHelmet] = useState("none")
 
-export const Create = () => {
-  const toast = useToast();
-  const history = useHistory();
-  const { getSignClient, address } = useSdk();
-  const [files, setFiles] = useState<File[]>();
-  const [nftName, setNftName] = useState<string>();
-  const [description, setDescription] = useState<string>();
-  const [loading, setLoading] = useBoolean();
+  const [supply, setSupply] = useState("")
+  const [collectionIpfsHash, setCollectionIpfsHash] = useState("")
+  const { client } = useSdk()
+  const { address, client: signingClient } = useRecoilValue(walletState)
 
-  async function createNft(e: any) {
-    // TODO: use formik validations
-    e.preventDefault();
+  const handleNameChange = (event) => {
+    setName(event.target.value)
+  }
+  const handleExternalLinkChange = (event) => {
+    setExternalLink(event.target.value)
+  }
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value)
+  }
+  const handleCollectionIdChange = (event) => {
+    setCollectionId(event.target.value)
+  }
+  const handleSupplyChange = (event) => {
+    setSupply(event.target.value)
+  }
 
-    if (!address) {
-      toast({
-        title: "Account required.",
-        description: "Please connect wallet.",
-        status: "warning",
-        position: "top",
-        isClosable: true,
-      });
-
-      return;
-    }
-
-    if (!files || files.length === 0) {
-      return;
-    }
-
-    setLoading.on();
-    // TODO: Load on init page and show after load page
-    const nftId = generateId(address);
-
-    try {
-      const fileHash = await uploadFile(files[0]);
-      console.log(fileHash, nftId);
-      const nftMsg = {
-        token_id: nftId,
-        owner: address,
-        name: nftName!,
-        description: description,
-        image: unSanitizeIpfsUrl(fileHash)
-      };
-
-      const contract = CW721(config.contract).useTx(getSignClient()!);
-      const txHash = await contract.mint(address, nftMsg);
-
-      toast({
-        title: `Successful Transaction`,
-        description: (<TransactionLink tx={txHash} />),
-        status: "success",
-        position: "bottom-right",
-        isClosable: true,
-      });
-
-      setLoading.off();
-      history.push(`/account/token/${nftId}`);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: `${error}`,
-        status: "error",
-        position: "bottom-right",
-        isClosable: true,
-      });
-      setLoading.off();
+  // reducer function to handle state changes
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "SET_IN_DROP_ZONE":
+        return { ...state, inDropZone: action.inDropZone }
+      case "ADD_FILE_TO_LIST":
+        return { ...state, fileList: state.fileList.concat(action.files) }
+      case "SET_NFT":
+        return { ...state, nft: action.nft}
+      default:
+        return state
     }
   }
 
-  return (
-    <Flex
-      p={4}
-      mb={8}
-      justifyContent="center"
-      direction="row">
-      <Box maxW="500px" w="100%">
-        <Box>
-          <Box mt={6} mb={10}>
-            <Heading as="h3" fontSize="3xl">Create a single NFT</Heading>
-          </Box>
-          <Box as={'form'} id="nft-form" onSubmit={createNft}>
-            <Box>
-              <FormControl id="name" isRequired>
-                <FormLabel
-                  fontSize="sm"
-                  fontFamily="mono"
-                  fontWeight="semibold"
-                >Image</FormLabel>
-                <FileUpload accept="image/*" onDrop={acceptedFiles => setFiles(acceptedFiles)} />
-              </FormControl>
-            </Box>
-            <Box mt={4}>
-              <FormControl id="name" isRequired>
-                <FormLabel
-                  fontSize="sm"
-                  fontFamily="mono"
-                  fontWeight="semibold"
-                >Name</FormLabel>
-                <Input
-                  name="name"
-                  spellCheck={false}
-                  onChange={e => setNftName(e.target.value)} />
-              </FormControl>
-            </Box>
-            <Box mt={4}>
-              <FormControl id="description">
-                <FormLabel
-                  fontSize="sm"
-                  fontFamily="mono"
-                  fontWeight="semibold"
-                >Description</FormLabel>
-                <Textarea name="description"
-                  placeholder="NFT description"
-                  spellCheck={false}
-                  onChange={e => setDescription(e.target.value)} />
-              </FormControl>
-            </Box>
-            <Box mt={6}>
-              <Button
-                isLoading={loading}
-                loadingText="Minting"
-                type="submit"
-                height="var(--chakra-sizes-10)"
-                fontSize={'md'}
-                fontWeight="semibold"
-                borderRadius={'50px'}
-                color={'white'}
-                bg="pink.500"
-                _hover={{
-                  bg: "gray.500",
-                }}>
-                Create
-              </Button>
-            </Box>
-          </Box>
-        </Box>
+  // destructuring state and dispatch, initializing fileList to empty array
+  const [data, dispatch] = useReducer(reducer, {
+    inDropZone: false,
+    fileList: [],
+    nft: "",
+  })
 
-      </Box>
-    </Flex>
-  );
+  useEffect(() => {
+    (async () => {
+      if (!client){
+        return;
+      }
+      
+      const marketContract = Market(PUBLIC_MARKETPLACE).use(client)
+      let collectionList = await marketContract.listCollections()
+      let collections = []
+      for (let i = 0; i < collectionList.length; i++){
+        let res_collection:any = {}
+        let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collectionList[i].uri)
+        res_collection = await ipfs_collection.json()
+        let collection_info:any = {}
+        collection_info.id = collectionList[i].id
+        collection_info.name = res_collection.name
+        collections.push(collection_info)
+      }
+      setNftCollections(collections)
+      
+    })()
+
+  }, [client])
+  
+  const createNFT = async(e) => {
+    //if (status !== WalletStatusType.connected) {
+    if (!address || !signingClient) {
+      toast.warning(
+        `Please connect your wallet.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return
+    }
+
+    if (name == "")
+    {
+      toast.warning(
+        `Please input the NFT name.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }    
+    if (data.nft == "")
+    {
+      toast.warning(
+        `Please upload a nft file.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }
+    if (collectionId == 0)
+    {
+      toast.warning(
+        `Please select a collection.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }
+    const jsonData:any = {}
+    jsonData["name"] = name
+    jsonData["externalLink"] = externalLink
+    jsonData["description"] = description
+    jsonData["collectionId"] = collectionId
+    jsonData["attributes"] = []
+    jsonData["attributes"].push({"trait_type": "Accessories", "value": accessories});
+    
+    jsonData["owner"] = address
+    const pinataJson = {
+      "pinataMetadata": 
+      {
+        "name": name, 
+      }, 
+      "pinataContent": jsonData
+    }
+    console.log(pinataJson)
+    setJsonUploading(true)
+    let url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`
+    let response = await axios
+        .post(url, pinataJson, {
+            maxBodyLength: Infinity, //this is needed to prevent axios from erroring out with large files
+            headers: {
+                'Content-Type': `application/json`,
+                pinata_api_key: PUBLIC_PINATA_API_KEY,
+                pinata_secret_api_key: PUBLIC_PINATA_SECRET_API_KEY
+            }
+        })
+    let ipfsHash = ""
+    if (response.status == 200){
+      console.log(response)
+      setCollectionIpfsHash(response.data.IpfsHash)
+      ipfsHash = response.data.IpfsHash
+    }
+    setJsonUploading(false)
+    
+    if (!address || !signingClient) {
+      console.log("unauthorized user")
+      return
+    }
+    const marketContract = Market(PUBLIC_MARKETPLACE).useTx(signingClient)
+    const collection = await marketContract.addCollection(
+      address, 10000, name, "MNFT", Number(PUBLIC_CW721_BASE_CODE_ID), PUBLIC_CW20_CONTRACT, Number(supply), ipfsHash
+    )
+    console.log("Collection:", collection)
+    toast.success(
+      `You have created your collection successfully.`,
+      {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    )
+  }
+  return (
+    <Container>
+      <p><span className="required">*</span> Required Fields</p>
+      <ItemContainer className="collection-item">
+        <h3>Image, Video, Audio, Or 3D model<span className="required">*</span></h3>
+        <p>File Types Supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GIFT. Max size: 100MB</p>
+        <AspectRatio maxW='1400px' ratio={3.5}>
+          <NFTUpload data={data} dispatch={dispatch} item="nft-create"/>
+        </AspectRatio>
+      </ItemContainer>
+      <ChakraProvider>
+        <CollectionItem className="collection-item">
+          <h3>Name <span className="required">*</span></h3>
+          <Input
+                  pr='48px'
+                  type='text'
+                  placeholder='Example: Treasures of the Sea'
+                  value={name} onChange={handleNameChange}
+                />
+        </CollectionItem>
+        <CollectionItem className="collection-item">
+          <h3>External Link</h3>
+          <p>Please input the url for NFT.</p>
+          <InputGroup size='sm'>
+            <Input placeholder='External Link' value={externalLink} onChange={handleExternalLinkChange}/>
+          </InputGroup>
+        </CollectionItem>
+        <CollectionItem className="collection-item">
+          <h3>Description</h3>
+          <p>Markdown syntax is supported. 0 of 1000 characters used.</p>
+          <Textarea value={description} onChange={handleDescriptionChange}/>
+        </CollectionItem>
+        <CollectionItem className="collection-item">
+          <h3>Collection <span className="required">*</span></h3>
+          <p>This is the collection where your item will appear.</p>
+          <Select value={collectionId} onChange={handleCollectionIdChange}>
+            {nftcollections.length > 0 && nftcollections.map((collection, idx) => (
+                <option value={collection.id} key={`collection${idx}`}>{collection.name}</option>
+            ))}
+          </Select>
+        </CollectionItem>
+        
+        <CollectionItem className="collection-item">
+          <h3>Properties</h3>
+          <Stack spacing={0} className="property-group">
+            <TableContainer className='nft-property-tbl-container'>
+              <Table variant='simple'>
+                <Tbody>
+                  <Tr>
+                    <Td>Accessories</Td>
+                    <Td>
+                    {FILTER_ACCESSORIES.map((item, index) => (
+                      <Button
+                        key={`accessories${index}`}
+                        variant="secondary"
+                        className={`${accessories==item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (accessories == item.id){
+                            setAccessories("none")
+                          }else{
+                            setAccessories(item.id)
+                          }
+                          
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Background</Td>
+                    <Td>
+                    {FILTER_BACKGROUND.map((item, index) => (
+                      <Button
+                        key={`background${index}`}
+                        variant="secondary"
+                        className={`${background == item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (background == item.id){
+                            setBackground("none")
+                          }else{
+                            setBackground(item.id)
+                          }
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Clothes</Td>
+                    <Td>
+                    {FILTER_CLOTHES.map((item, index) => (
+                      <Button
+                        key={`clothes${index}`}
+                        variant="secondary"
+                        className={`${clothes == item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (clothes == item.id){
+                            setClothes("none")
+                          }else{
+                            setClothes(item.id)
+                          }
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Earring</Td>
+                    <Td>
+                    {FILTER_EARRING.map((item, index) => (
+                      <Button
+                        key={`earring${index}`}
+                        variant="secondary"
+                        className={`${earring == item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (earring == item.id){
+                            setEarring("none")
+                          }else{
+                            setEarring(item.id)
+                          }
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Expressions</Td>
+                    <Td>
+                    {FILTER_EXPRESSIONS.map((item, index) => (
+                      <Button
+                        key={`expressions${index}`}
+                        variant="secondary"
+                        className={`${expressions == item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (expressions == item.id){
+                            setExpressions("none")
+                          }else{
+                            setExpressions(item.id)
+                          }
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Eyes</Td>
+                    <Td>
+                    {FILTER_EYES.map((item, index) => (
+                      <Button
+                        key={`eyes${index}`}
+                        variant="secondary"
+                        className={`${eyes == item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (eyes == item.id){
+                            setEyes("none")
+                          }else{
+                            setEyes(item.id)
+                          }
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Head</Td>
+                    <Td>
+                    {FILTER_HEAD.map((item, index) => (
+                      <Button
+                        key={`head${index}`}
+                        variant="secondary"
+                        className={`${head == item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (head == item.id){
+                            setHead("none")
+                          }else{
+                            setHead(item.id)
+                          }
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Helmet</Td>
+                    <Td>
+                    {FILTER_HELMET.map((item, index) => (
+                      <Button
+                        key={`helmet${index}`}
+                        variant="secondary"
+                        className={`${helmet == item.id?'active':'default'}`}
+                        onClick={() => {
+                          if (helmet == item.id){
+                            setHelmet("none")
+                          }else{
+                            setHelmet(item.id)
+                          }
+                          return false
+                        }}
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Stack>
+        </CollectionItem>
+        <CollectionItem className="collection-item">
+          <h3>Supply</h3>
+          <p>The number of items that can be minted. No gas cost to you!</p>
+          <NumberInput defaultValue={1} min={1} step={1} value={supply} onChange={handleSupplyChange}>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+          </NumberInput>
+        </CollectionItem>
+        <CollectionItem className="collection-item">
+          <h3>Blockchain</h3>
+          <HStack spacing={0} className="chain-group">
+            <Image alt="Token Icon" className="token-icon" src="/juno.png"/><span>JUNO</span>
+          </HStack>
+        </CollectionItem>
+        <CollectionItem className="collection-item">
+          <Button className="btn-default"
+            css={{
+              'background': '$black',
+              'color': '$white',
+              'stroke': '$white',
+            }}
+            variant="primary"
+            size="large"
+            onClick={(e) => {
+              
+              createNFT(e)
+            
+            }}
+
+            disabled={isJsonUploading}
+          >
+            Create
+          </Button>
+          {collectionIpfsHash != "" &&
+            <span>
+            Pinata IpfsHash: <Link href={`https://gateway.pinata.cloud/ipfs/${collectionIpfsHash}`} passHref>{collectionIpfsHash}</Link>
+            </span>
+          }
+        </CollectionItem>
+      </ChakraProvider>
+    </Container>
+  )
 }
+
+const Container = styled('div', {
+  maxWidth: '1400px',
+  '.collection-item':{
+    marginBottom: '$16',
+  },
+  'h3':{
+    fontWeight: 'bold',
+  },
+  'p':{
+    color: '$textColors$secondary',
+  }
+})
+const LogoFeaturedContinaer = styled('div', {
+
+})
+const LogoContainer = styled('div', {
+
+})
+const FeaturedContainer = styled('div', {
+
+})
+const ItemContainer = styled('div', {
+
+})
+const CollectionItem = styled('div', {
+  '.link-group':{
+    border: '1px solid $chakraborder',
+    borderRadius: '$2',
+    '.link-item':{
+      borderLeft: '0px',
+      borderRight: '0px',
+      borderTop: '0px',
+      borderBottom: '1px solid $chakraborder',
+      '>div':{
+        border: '0px',
+        borderRadius: '0px',
+        background: 'transparent',
+        paddingRight: '1px',
+        'svg':{
+          marginRight: '$8',
+          width: '26px',
+          height: '25px',
+          'path':{
+            fill: '$chakraicon',
+          }
+        }
+      },
+      '>input':{
+        border: '0px',
+        borderRadius: '0px',
+        paddingLeft: '0px',
+        boxShadow: 'none',
+      },
+      '&.last-item':{
+        border: '0px',
+      }
+    }
+  },
+  '.chain-group':{
+    border: '1px solid $chakraborder',
+    borderRadius: '$2',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    'img':{
+      width: '$8',
+      margin: '$4'
+    }
+  },
+  '.property-group':{
+    'button':{
+      '&.active':{
+        background: '$backgroundColors$tertiary',
+        fontWeight: 'bold',
+      }
+    }
+  }
+})
+const CheckboxItem = styled('div', {
+  display: 'none',
+  position: 'absolute',
+  top: '$space$27',
+  right: '$space$27',
+  'svg':{
+    background: '$black',
+    borderRadius: '50%',
+    width: '$9',
+    height: '$9',
+    padding: '$space$3',
+    border: '$borderWidths$3 solid $white',
+    boxShadow: '0px 4px 44px $backgroundColors$secondary'
+  }
+})
+const Template = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '$8',
+  position: 'relative',
+})
+const Design = styled('div', {
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '$4',
+})
+const ExplicitItem = styled('div', {
+  display: 'flex',
+  '.chakra-switch':{
+    marginLeft: 'auto',
+    '>span[data-checked]':{
+      background: '$black',
+    }
+  }
+})
+const TokenItem = styled('div', {
+  'flexDirection': 'row',
+  'display': 'flex',
+  'justifyContent': 'center',
+  'alignItems': 'center',
+})

@@ -29,7 +29,12 @@ import {
   useRadio,
   Switch,
   Box,
-  useToast
+  useToast,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 import DropZone from "components/DropZone"
@@ -99,6 +104,7 @@ export const CollectionCreate = () => {
   const [collectionIpfsHash, setCollectionIpfsHash] = useState("")
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
+  const [token, setToken] = useState("BLOCK")
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -165,7 +171,6 @@ export const CollectionCreate = () => {
     defaultValue: '1',
     onChange: console.log,
   })
-  
   const group = getRootProps()
   
 
@@ -245,7 +250,7 @@ export const CollectionCreate = () => {
     jsonData["telegram"] = telegram
     jsonData["earningFee"] = earningFee
     jsonData["network"] = "JUNO"
-    jsonData["tokens"] = ["JUNO"]
+    jsonData["tokens"] = ["BLOCK", "MARBLE"]
     jsonData["themeValue"] = themeValue
     jsonData["explicit"] = explicit
     jsonData["owner"] = address
@@ -400,7 +405,13 @@ export const CollectionCreate = () => {
           <p>Collec a free when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout of your choosing.</p>
           <Link href="#" passHref>Learn more about creator earnings.</Link>
           <p>Percentage fee</p>
-          <Input type='number' placeholder='e.d. 2.5' value={earningFee} onChange={handleEarningFeeChange}/>
+          <NumberInput defaultValue={1.5} min={0.1} max={2.5} step={0.1} value={earningFee} onChange={handleEarningFeeChange}>
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+          </NumberInput>
         </CollectionItem>
         <CollectionItem className="collection-item">
           <h3>Blockchain</h3>
@@ -411,10 +422,21 @@ export const CollectionCreate = () => {
         <CollectionItem className="collection-item">
           <h3>Payment tokens</h3>
           <HStack spacing={0} className="chain-group">
-            <Image alt="Token Icon" className="token-icon" src="/juno.png"/><span>JUNO</span>
+            <TokenItem 
+            onClick={(e) => {
+              setToken("BLOCK")
+            }}>
+              <Image alt="Token Icon" className="token-icon" src="/block-logo.png"/><span>Block</span>
+            </TokenItem>
+            <TokenItem 
+            onClick={(e) => {
+              setToken("MARBLE")
+            }}>
+              <Image alt="Token Icon" className="token-icon" src="/marble.png"/><span>Marble</span>
+            </TokenItem>
           </HStack>
         </CollectionItem>
-        <CollectionItem className="collection-item">
+        <CollectionItem className="collection-item hide">
           <h3>Display theme</h3>
           <p>Change how your items are shown.</p>
           <Stack spacing={0} className="theme-group">
@@ -463,7 +485,7 @@ export const CollectionCreate = () => {
             </HStack>
           </Stack>
         </CollectionItem>
-        <CollectionItem className="collection-item">
+        <CollectionItem className="collection-item hide">
           <h3>Explicit & sensitive content</h3>
           <ExplicitItem>
             <p>Set this collection as explicit and senstive content</p>
@@ -627,4 +649,10 @@ const ExplicitItem = styled('div', {
       background: '$black',
     }
   }
+})
+const TokenItem = styled('div', {
+  'flexDirection': 'row',
+  'display': 'flex',
+  'justifyContent': 'center',
+  'alignItems': 'center',
 })

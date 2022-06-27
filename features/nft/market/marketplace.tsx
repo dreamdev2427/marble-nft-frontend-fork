@@ -9,7 +9,7 @@ import { SdkProvider } from "services/nft/client/wallet"
 import { config } from "services/config";
 import { Gallery } from "./gallery"
 import { Account } from "./account"
-import { Create } from "./create"
+import { Create } from "./create/create"
 import theme from "theme"
 
 const NFT: NextPage = () => {
