@@ -158,6 +158,16 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                   </a>
                 </Link>
                 }
+                { Boolean(key?.name) &&
+                <Link href="/nft/create" passHref>
+                  <a className="dropdown-item">
+                    <Astronaut />
+                    <span className={isActive('/nft/create')}>
+                    Create NFT
+                    </span>
+                  </a>
+                </Link>
+                }
                 <Link href="/collection/marblenauts" passHref>
                   <a className="dropdown-item">
                     <Astronaut />
@@ -312,6 +322,19 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
               css={getActiveStylesIfActive('/collection/create')}
             >
               Create Collection
+            </Button>
+          </Link>
+        }
+        { Boolean(key?.name) &&
+          <Link href="/nft/create" passHref>
+            <Button
+              className="top-menu"
+              as="a"
+              variant="ghost"
+              iconCenter={<IconWrapper icon={<Astronaut />} />}
+              css={getActiveStylesIfActive('/nft/create')}
+            >
+              Create NFT
             </Button>
           </Link>
         }
