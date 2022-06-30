@@ -405,8 +405,8 @@ export const CollectionCreate = () => {
           <p>Collec a free when a user re-sells an item you originally created. This is deducted from the final sale price and paid monthly to a payout of your choosing.</p>
           <Link href="#" passHref>Learn more about creator earnings.</Link>
           <p>Percentage fee</p>
-          <NumberInput defaultValue={1.5} min={0.1} max={2.5} step={0.1} value={earningFee} onChange={handleEarningFeeChange}>
-              <NumberInputField />
+          <NumberInput defaultValue={1.5} min={0.1} max={2.5} step={0.1} >
+              <NumberInputField value={earningFee} onChange={handleEarningFeeChange}/>
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />

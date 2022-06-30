@@ -101,7 +101,7 @@ const NFTUpload = ({ data, dispatch, item }) => {
         });
     if (response.status == 200){
       setIpfsHashBIU(response.data.IpfsHash)
-      dispatch({ type: "SET_BANNER", banner: response.data.IpfsHash })
+      dispatch({ type: "SET_NFT", nft: response.data.IpfsHash })
     }
   }
 

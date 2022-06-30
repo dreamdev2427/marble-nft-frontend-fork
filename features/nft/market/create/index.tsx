@@ -43,11 +43,9 @@ import { toast } from 'react-toastify'
 import NFTUpload from "components/NFTUpload"
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { walletState, WalletStatusType } from 'state/atoms/walletAtoms'
-import { Market, useSdk } from 'services/nft'
+import { Market, CW721, useSdk } from 'services/nft'
 
-const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
 const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
-const PUBLIC_CW20_CONTRACT = process.env.NEXT_PUBLIC_CW20_CONTRACT || ''
 const PUBLIC_CW721_BASE_CODE_ID = process.env.NEXT_PUBLIC_CW721_BASE_CODE_ID || 388
 
 const PUBLIC_PINATA_API_KEY = process.env.NEXT_PUBLIC_PINATA_API_KEY || ''
@@ -78,9 +76,9 @@ export const CreateNFT = () => {
   const [eyes, setEyes] = useState("none")
   const [head, setHead] = useState("none")
   const [helmet, setHelmet] = useState("none")
-
-  const [supply, setSupply] = useState("")
-  const [collectionIpfsHash, setCollectionIpfsHash] = useState("")
+  const [price, setPrice] = useState(1)
+  const [supply, setSupply] = useState(1)
+  const [nftIpfsHash, setNftIpfsHash] = useState("")
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
 
@@ -98,6 +96,9 @@ export const CreateNFT = () => {
   }
   const handleSupplyChange = (event) => {
     setSupply(event.target.value)
+  }
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value)
   }
 
   // reducer function to handle state changes
@@ -132,12 +133,21 @@ export const CreateNFT = () => {
       let collections = []
       for (let i = 0; i < collectionList.length; i++){
         let res_collection:any = {}
-        let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collectionList[i].uri)
-        res_collection = await ipfs_collection.json()
-        let collection_info:any = {}
-        collection_info.id = collectionList[i].id
-        collection_info.name = res_collection.name
-        collections.push(collection_info)
+        console.log("uri:", process.env.NEXT_PUBLIC_PINATA_URL + collectionList[i].uri)
+        //if (collectionList[i].uri.indexOf("airdrop") == -1){
+        try{
+          let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collectionList[i].uri)
+          res_collection = await ipfs_collection.json()
+          let collection_info:any = {}
+          collection_info.id = collectionList[i].id
+          collection_info.name = res_collection.name
+          collections.push(collection_info)
+        }catch (err){
+          console.log("err", err)
+        }
+          
+        //}
+        
       }
       setNftCollections(collections)
       
@@ -216,9 +226,17 @@ export const CreateNFT = () => {
     jsonData["externalLink"] = externalLink
     jsonData["description"] = description
     jsonData["collectionId"] = collectionId
+    jsonData["uri"] = data.nft
+    jsonData["supply"] = supply
     jsonData["attributes"] = []
     jsonData["attributes"].push({"trait_type": "Accessories", "value": accessories});
-    
+    jsonData["attributes"].push({"trait_type": "Background", "value": background});
+    jsonData["attributes"].push({"trait_type": "Clothes", "value": clothes});
+    jsonData["attributes"].push({"trait_type": "Earring", "value": earring});
+    jsonData["attributes"].push({"trait_type": "Expressions", "value": expressions});
+    jsonData["attributes"].push({"trait_type": "Eyes", "value": eyes});
+    jsonData["attributes"].push({"trait_type": "Head", "value": head});
+    jsonData["attributes"].push({"trait_type": "Helmet", "value": helmet});
     jsonData["owner"] = address
     const pinataJson = {
       "pinataMetadata": 
@@ -242,7 +260,7 @@ export const CreateNFT = () => {
     let ipfsHash = ""
     if (response.status == 200){
       console.log(response)
-      setCollectionIpfsHash(response.data.IpfsHash)
+      
       ipfsHash = response.data.IpfsHash
     }
     setJsonUploading(false)
@@ -251,13 +269,20 @@ export const CreateNFT = () => {
       console.log("unauthorized user")
       return
     }
-    const marketContract = Market(PUBLIC_MARKETPLACE).useTx(signingClient)
-    const collection = await marketContract.addCollection(
-      address, 10000, name, "MNFT", Number(PUBLIC_CW721_BASE_CODE_ID), PUBLIC_CW20_CONTRACT, Number(supply), ipfsHash
-    )
-    console.log("Collection:", collection)
+
+    const marketContract = Market(PUBLIC_MARKETPLACE).use(client)
+    let collection = await marketContract.collection(collectionId)
+    const cw721Contract = CW721(collection.collection_address).useTx(signingClient)
+    setNftIpfsHash(ipfsHash + ":::" + collection.collection_address)
+    console.log("collection", collection)
+    let nft = await cw721Contract.mint(address, ipfsHash, price.toString())
+    console.log("nft info:", nft)
+    // const nft = await marketContract.mint(
+    //   address, ipfsHash
+    // )
+    // console.log("nft info:", nft)
     toast.success(
-      `You have created your collection successfully.`,
+      `You have created your NFT successfully.`,
       {
         position: 'top-right',
         autoClose: 5000,
@@ -305,6 +330,7 @@ export const CreateNFT = () => {
           <h3>Collection <span className="required">*</span></h3>
           <p>This is the collection where your item will appear.</p>
           <Select value={collectionId} onChange={handleCollectionIdChange}>
+            <option value="0"></option>
             {nftcollections.length > 0 && nftcollections.map((collection, idx) => (
                 <option value={collection.id} key={`collection${idx}`}>{collection.name}</option>
             ))}
@@ -505,8 +531,8 @@ export const CreateNFT = () => {
         <CollectionItem className="collection-item">
           <h3>Supply</h3>
           <p>The number of items that can be minted. No gas cost to you!</p>
-          <NumberInput defaultValue={1} min={1} step={1} value={supply} onChange={handleSupplyChange}>
-              <NumberInputField />
+          <NumberInput defaultValue={1} min={1} step={1} >
+              <NumberInputField value={supply} onChange={handleSupplyChange}/>
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
@@ -514,10 +540,14 @@ export const CreateNFT = () => {
           </NumberInput>
         </CollectionItem>
         <CollectionItem className="collection-item">
-          <h3>Blockchain</h3>
-          <HStack spacing={0} className="chain-group">
-            <Image alt="Token Icon" className="token-icon" src="/juno.png"/><span>JUNO</span>
-          </HStack>
+          <h3>Price</h3>
+          <NumberInput defaultValue={1} min={1} step={1} >
+              <NumberInputField value={price} onChange={handlePriceChange}/>
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+          </NumberInput>
         </CollectionItem>
         <CollectionItem className="collection-item">
           <Button className="btn-default"
@@ -538,9 +568,9 @@ export const CreateNFT = () => {
           >
             Create
           </Button>
-          {collectionIpfsHash != "" &&
+          {nftIpfsHash != "" &&
             <span>
-            Pinata IpfsHash: <Link href={`https://gateway.pinata.cloud/ipfs/${collectionIpfsHash}`} passHref>{collectionIpfsHash}</Link>
+            Pinata IpfsHash: <Link href={`https://gateway.pinata.cloud/ipfs/${nftIpfsHash}`} passHref>{nftIpfsHash}</Link>
             </span>
           }
         </CollectionItem>

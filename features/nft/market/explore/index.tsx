@@ -45,18 +45,23 @@ export const Explore = () => {
       let collections = []
       for (let i = 0; i < collectionList.length; i++){
         let res_collection:any = {}
-        let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collectionList[i].uri)
-        res_collection = await ipfs_collection.json()
-        let collection_info:any = {}
-        collection_info.name = res_collection.name
-        collection_info.description = res_collection.description
-        collection_info.image = process.env.NEXT_PUBLIC_PINATA_URL + res_collection.logo
-        collection_info.banner_image = process.env.NEXT_PUBLIC_PINATA_URL + res_collection.logo
-        collection_info.slug = res_collection.slug
-        collection_info.creator = res_collection.owner??''
-        collection_info.cat_ids = res_collection.category
-        console.log("collection_info", collection_info)
-        collections.push(collection_info)
+        try{
+          let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collectionList[i].uri)
+          res_collection = await ipfs_collection.json()
+          let collection_info:any = {}
+          collection_info.name = res_collection.name
+          collection_info.description = res_collection.description
+          collection_info.image = process.env.NEXT_PUBLIC_PINATA_URL + res_collection.logo
+          collection_info.banner_image = process.env.NEXT_PUBLIC_PINATA_URL + res_collection.logo
+          collection_info.slug = res_collection.slug
+          collection_info.creator = res_collection.owner??''
+          collection_info.cat_ids = res_collection.category
+          console.log("collection_info", collection_info)
+          collections.push(collection_info)
+        }catch (err){
+          console.log("err", err)
+        }
+        
       }
       
       setNftCollections(collections)
