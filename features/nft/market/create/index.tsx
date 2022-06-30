@@ -263,7 +263,7 @@ export const CreateNFT = () => {
       
       ipfsHash = response.data.IpfsHash
     }
-    setJsonUploading(false)
+    
     
     if (!address || !signingClient) {
       console.log("unauthorized user")
@@ -281,6 +281,7 @@ export const CreateNFT = () => {
     //   address, ipfsHash
     // )
     // console.log("nft info:", nft)
+    setJsonUploading(false)
     toast.success(
       `You have created your NFT successfully.`,
       {
@@ -568,11 +569,7 @@ export const CreateNFT = () => {
           >
             Create
           </Button>
-          {nftIpfsHash != "" &&
-            <span>
-            Pinata IpfsHash: <Link href={`https://gateway.pinata.cloud/ipfs/${nftIpfsHash}`} passHref>{nftIpfsHash}</Link>
-            </span>
-          }
+          
         </CollectionItem>
       </ChakraProvider>
     </Container>

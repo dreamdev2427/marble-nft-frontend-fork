@@ -79,15 +79,15 @@ export const Create = () => {
       };
 
       const contract = CW721(config.contract).useTx(getSignClient()!);
-      const txHash = await contract.mint(address, nftMsg);
+      //const txHash = await contract.mint(address, nftMsg);
 
-      toast({
-        title: `Successful Transaction`,
-        description: (<TransactionLink tx={txHash} />),
-        status: "success",
-        position: "bottom-right",
-        isClosable: true,
-      });
+      // toast({
+      //   title: `Successful Transaction`,
+      //   description: (<TransactionLink tx={txHash} />),
+      //   status: "success",
+      //   position: "bottom-right",
+      //   isClosable: true,
+      // });
 
       setLoading.off();
       history.push(`/account/token/${nftId}`);

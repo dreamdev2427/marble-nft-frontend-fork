@@ -11,11 +11,11 @@ import { NftPrice } from './price'
 import Link from 'next/link'
 interface NftCardProps {
   readonly nft: NftInfo;
-  readonly slug: string;
+  readonly id: string;
   readonly type: string; 
 }
 
-export function NftCard({ nft, slug, type }: NftCardProps): JSX.Element {
+export function NftCard({ nft, id, type }: NftCardProps): JSX.Element {
   return (
     <NftCardDiv className="nft-card">
       <ImgDiv className="nft-img-url">

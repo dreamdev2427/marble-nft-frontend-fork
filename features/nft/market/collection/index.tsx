@@ -11,9 +11,9 @@ import { NftTable } from "components/NFT"
 import {
   NftInfo,
 } from "services/nft"
-import { useRecoilValue } from 'recoil'
-import { CW721, Marble, useSdk } from 'services/nft'
-import { walletState } from 'state/atoms/walletAtoms'
+import { CW721, Market, useSdk } from 'services/nft'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { walletState, WalletStatusType } from 'state/atoms/walletAtoms'
 import InfiniteScroll from "react-infinite-scroll-component"
 import { 
   ChakraProvider, 
@@ -34,8 +34,8 @@ import { setUIData } from "store/actions/uiAction"
 import { setFilterData } from "store/actions/filterAction"
 import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS, FILTER_STATUS_TXT } from "store/types"
 
-const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
-const PUBLIC_CW721_OWNER = process.env.NEXT_PUBLIC_CW721_OWNER || ''
+const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
+
 export const CollectionTab = ({index}) => {
   
   return (
@@ -62,20 +62,31 @@ export const CollectionTab = ({index}) => {
   )
 }
 let nftCurrentIndex = 0
+let collectionNFTs = []
 interface CollectionProps {
-  readonly slug: string
-  readonly name: string
+  readonly id: string
+  // readonly name: string
+  // readonly collectionAddress: string
+  // readonly numTokens: number
+  // readonly uri: string
 }
-export const Collection = ({slug, name}: CollectionProps) => {  
+export const Collection = ({id}: CollectionProps) => {  
   const pageCount = 10
   const router = useRouter()
   const query = router.query
   const { asPath, pathname } = useRouter();
+  const { client } = useSdk()
+  const { address, client: signingClient } = useRecoilValue(walletState)
 
+  const [tokens, setNFTIds] = useState<number[]>([])
+  const [collectionAddress, setCollectionAddress] = useState("")
+  const [cw721Address, setCw721Address] = useState("")
+  const [numTokens, setNumTokens] = useState(0)
   const [isCollapse, setCollapse] = useState(false)
   const [isMobileFilterCollapse, setMobileFilterCollapse] = useState(true)
   const [isLargeNFT, setLargeNFT] = useState(true)
   const [filterCount, setFilterCount] = useState(0)
+  const [currentTokenCount, setCurrentTokenCount] = useState(0)
   const [nfts, setNfts] = useState<NftInfo[]>(
     []
   )
@@ -118,29 +129,52 @@ export const Collection = ({slug, name}: CollectionProps) => {
   }
   useEffect(() => {
     (async () => {
-      if (slug === undefined || slug == "[name]")
+      
+      if (id === undefined || id == "[name]")
         return false
+      console.log("id", id)
+      if (!client){
+        return
+      }
+      console.log("client", client)
+      const marketContract = Market(PUBLIC_MARKETPLACE).use(client)
+      let collection = await marketContract.collection(parseInt(id))
+      let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collection.uri)
+      let res_collection = await ipfs_collection.json()
+      
+      setCollectionAddress(collection.collection_address)
+      setCw721Address(collection.cw721_address)
+      const cw721Contract = CW721(collection.cw721_address).use(client)
+
+      let numTokens = await cw721Contract.numTokens()
+      setNumTokens(numTokens)
+
       //getMoreNfts()
       setNfts([])
-      let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/Collection Metadata.json')
-      let collection = await res_collection.json()
-      let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/all-traits.json')
-      let all_traits = await res_traits.json()
+      let tokenIdsInfo = await cw721Contract.allTokens()
+      let tokenIds = tokenIdsInfo.tokens
+      for (let i = 0; i < tokenIds.length; i++){
+        let nftInfo = await cw721Contract.nftInfo(tokenIds[i])
+        let ipfs_nft = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + nftInfo.token_uri)
+        let res_nft = await ipfs_nft.json()
+        res_nft["tokenId"] = tokenIds[i]
+        collectionNFTs.push(res_nft)
+      }
+      console.log("NFTs:", collectionNFTs)
       let traits = []
-      for (let i = 0; i < all_traits.length; i++){
+      for (let i = 0; i < collectionNFTs.length; i++){
         if (filter_status.length == 0 
-          || filter_status.indexOf(all_traits[i].Accessories) != -1
-          || filter_status.indexOf(all_traits[i].Background) != -1
-          || filter_status.indexOf(all_traits[i].Clothes) != -1
-          || filter_status.indexOf(all_traits[i].Earring) != -1
-          || filter_status.indexOf(all_traits[i].Expressions) != -1
-          || filter_status.indexOf(all_traits[i].Eyes) != -1
-          || filter_status.indexOf(all_traits[i].Helmet) != -1
+          || filter_status.indexOf(collectionNFTs[i].attributes[0].value) != -1
+          || filter_status.indexOf(collectionNFTs[i].attributes[1].value) != -1
+          || filter_status.indexOf(collectionNFTs[i].attributes[2].value) != -1
+          || filter_status.indexOf(collectionNFTs[i].attributes[3].value) != -1
+          || filter_status.indexOf(collectionNFTs[i].attributes[4].value) != -1
+          || filter_status.indexOf(collectionNFTs[i].attributes[5].value) != -1
+          || filter_status.indexOf(collectionNFTs[i].attributes[7].value) != -1
         ){
-          traits.push(all_traits[i])
+          traits.push(collectionNFTs[i])
         }
       }
-      //let traits = await res_traits.json()
       let nftsForCollection = []
       let hasMoreFlag = false
       let i = 0
@@ -149,23 +183,12 @@ export const Collection = ({slug, name}: CollectionProps) => {
       if (traits.length == 0)
         isPageEnd = true
       while (!isPageEnd){
-        let nftPath = ""
-        //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + name + '/' + traits[i].tokenId)) {
-        if (traits[i].tokenId > 2){
-          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId
-        }else{
-          nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId + '.json'
-        }
-        if (nftPath != ""){
-          let res_nft = await fetch(nftPath)
-          let nft = await res_nft.json()
-          if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
-            nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection.name})
-            hasMoreFlag = true
-            nftIndex++
-            if (nftIndex == pageCount){
-              isPageEnd = true
-            }
+        if (searchVal == "" || traits[i].name.indexOf(searchVal) != -1){
+          nftsForCollection.push({'tokenId': traits[i].tokenId, 'address': '', 'image': process.env.NEXT_PUBLIC_PINATA_URL + traits[i].uri, 'name': traits[i].name, 'user': traits[i].owner, 'price': '8', 'total': 2, 'collectionName': ""})
+          hasMoreFlag = true
+          nftIndex++
+          if (nftIndex == pageCount){
+            isPageEnd = true
           }
         }
         i++;
@@ -179,67 +202,67 @@ export const Collection = ({slug, name}: CollectionProps) => {
       setHasMore(hasMoreFlag)
     })();
 
-  }, [slug, filterCount, searchVal])
+  }, [id, filterCount, searchVal, client])
 
   const getMoreNfts = async () => {
-    if (slug === undefined || slug == "[name]" || !hasMore)
+    if (id === undefined || id == "[name]" || !hasMore)
       return false
-    let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/Collection Metadata.json')
-    let collection = await res_collection.json()
-    let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/all-traits.json')
-    let all_traits = await res_traits.json()
-    let traits = []
-    for (let i = 0; i < all_traits.length; i++){
-      if (filter_status.length == 0 
-        || filter_status.indexOf(all_traits[i].Accessories) != -1
-        || filter_status.indexOf(all_traits[i].Background) != -1
-        || filter_status.indexOf(all_traits[i].Clothes) != -1
-        || filter_status.indexOf(all_traits[i].Earring) != -1
-        || filter_status.indexOf(all_traits[i].Expressions) != -1
-        || filter_status.indexOf(all_traits[i].Eyes) != -1
-        || filter_status.indexOf(all_traits[i].Helmet) != -1
-      ){
-        traits.push(all_traits[i])
-      }
-    }
-    let nftsForCollection = []
-    let hasMoreFlag = false
+    // let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + id + '/Collection Metadata.json')
+    // let collection = await res_collection.json()
+    // let res_traits = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + id + '/all-traits.json')
+    // let all_traits = await res_traits.json()
+    // let traits = []
+    // for (let i = 0; i < all_traits.length; i++){
+    //   if (filter_status.length == 0 
+    //     || filter_status.indexOf(all_traits[i].Accessories) != -1
+    //     || filter_status.indexOf(all_traits[i].Background) != -1
+    //     || filter_status.indexOf(all_traits[i].Clothes) != -1
+    //     || filter_status.indexOf(all_traits[i].Earring) != -1
+    //     || filter_status.indexOf(all_traits[i].Expressions) != -1
+    //     || filter_status.indexOf(all_traits[i].Eyes) != -1
+    //     || filter_status.indexOf(all_traits[i].Helmet) != -1
+    //   ){
+    //     traits.push(all_traits[i])
+    //   }
+    // }
+    // let nftsForCollection = []
+    // let hasMoreFlag = false
 
-    let i = nftCurrentIndex
-    let nftIndex = 0
-    let isPageEnd = false
-    if (i == traits.length){
-      isPageEnd = true
-    }
-    while (!isPageEnd){
-      let nftPath = ""
-      //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId)) {
-      if (traits[i].tokenId > 2){
-        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId
-      }else{
-        nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/' + traits[i].tokenId + '.json'
-      }
-      if (nftPath != ""){
-        let res_nft = await fetch(nftPath)
-        let nft = await res_nft.json()
-        if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
-          nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection.name})
-          hasMoreFlag = true
-          nftIndex++
-          if (nftIndex == pageCount){
-            isPageEnd = true
-          }
-        }
-      }
-      i++;
-      if (i == traits.length){
-        isPageEnd = true
-      }
-    }
-    nftCurrentIndex = i
-    console.log("More nftCurrentIndex", nftCurrentIndex)
-    setNfts((nft)=>[...nft, ...nftsForCollection])
-    setHasMore(hasMoreFlag)
+    // let i = nftCurrentIndex
+    // let nftIndex = 0
+    // let isPageEnd = false
+    // if (i == traits.length){
+    //   isPageEnd = true
+    // }
+    // while (!isPageEnd){
+    //   let nftPath = ""
+    //   //if (fs.existsSync(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + id + '/' + traits[i].tokenId)) {
+    //   if (traits[i].tokenId > 2){
+    //     nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + id + '/' + traits[i].tokenId
+    //   }else{
+    //     nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + id + '/' + traits[i].tokenId + '.json'
+    //   }
+    //   if (nftPath != ""){
+    //     let res_nft = await fetch(nftPath)
+    //     let nft = await res_nft.json()
+    //     if (searchVal == "" || nft.name.indexOf(searchVal) != -1){
+    //       nftsForCollection.push({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': 'bbb', 'price': '8', 'total': 2, 'collectionName': collection.name})
+    //       hasMoreFlag = true
+    //       nftIndex++
+    //       if (nftIndex == pageCount){
+    //         isPageEnd = true
+    //       }
+    //     }
+    //   }
+    //   i++;
+    //   if (i == traits.length){
+    //     isPageEnd = true
+    //   }
+    // }
+    // nftCurrentIndex = i
+    // console.log("More nftCurrentIndex", nftCurrentIndex)
+    // setNfts((nft)=>[...nft, ...nftsForCollection])
+    // setHasMore(hasMoreFlag)
   }
 
   useEffect(() => {
@@ -267,9 +290,7 @@ export const Collection = ({slug, name}: CollectionProps) => {
     
   }, [dispatch, isLargeNFT])
 
-  const { client } = useSdk()
-  const { address, client: signingClient } = useRecoilValue(walletState)
-  const [tokens, setNFTIds] = useState<number[]>([])
+  
 
   return (
     <CollectionWrapper>
@@ -379,7 +400,7 @@ export const Collection = ({slug, name}: CollectionProps) => {
           loader={<h3> Loading...</h3>}
           endMessage={<h4></h4>}
         >
-        <NftTable data={nfts} slug={slug} type="buy"/>
+        <NftTable data={nfts} id={id} type="buy"/>
         </InfiniteScroll>
       </NftList>
     </CollectionWrapper>

@@ -10,11 +10,11 @@ import { State } from 'store/reducers'
 
 interface NftTableProps {
   readonly data: NftInfo[]
-  readonly slug: string
+  readonly id: string
   readonly type: string
 }
 
-export function NftTable({ data, slug, type }: NftTableProps) {
+export function NftTable({ data, id, type }: NftTableProps) {
   const dispatch = useDispatch()
   const uiListData = useSelector((state: State) => state.uiData)
   const { nft_column_count } = uiListData
@@ -28,13 +28,13 @@ export function NftTable({ data, slug, type }: NftTableProps) {
     <NftGrid className={`nft-grid column${nft_column_count}`}>
       {data.map(nft => (
         //<Link href="https://app.marbledao.finance/marblenauts-nft" passHref key={nft.tokenId}>
-        <Link href={`/${slug}/${nft.tokenId}`} passHref key={nft.tokenId}>
+        <Link href={`/nft/${id}/${nft.tokenId}`} passHref key={nft.tokenId}>
           <LinkBox as="picture" 
             transition="transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) 0s"
             _hover={{
               transform: "scale(1.05)"
             }}>
-            <NftCard nft={nft} slug={slug} type={type}/>
+            <NftCard nft={nft} id={id} type={type}/>
           </LinkBox>
         </Link>  
       ))}

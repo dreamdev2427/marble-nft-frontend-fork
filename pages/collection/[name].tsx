@@ -13,17 +13,42 @@ import { State } from 'store/reducers'
 import { setUIData } from "store/actions/uiAction";
 import { setFilterData } from "store/actions/filterAction";
 import { NFT_COLUMN_COUNT, UI_ERROR, FILTER_STATUS } from "store/types";
+import { SdkProvider } from "services/nft/client/wallet"
+import { config } from "services/config";
+import { Market, CW721, useSdk } from 'services/nft'
+import { useConnectWallet } from '../../hooks/useConnectWallet'
+import { walletState, WalletStatusType } from '../../state/atoms/walletAtoms'
+import { useRecoilValue, useRecoilState } from 'recoil'
+
+
+
+const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
 
 export default function Home() {
   const DEFAULT_NFT_COLUMN_COUNT = 3
   const DEFAULT_FILTER_STATUS = []
+  const { mutate: connectWallet } = useConnectWallet()
+  const [{ key }, setWalletState] = useRecoilState(walletState)
+  function resetWalletConnection() {
+    setWalletState({
+      status: WalletStatusType.idle,
+      address: '',
+      key: null,
+      client: null,
+    })
+  }
+  const { client } = useSdk()
+  const { address, client: signingClient } = useRecoilValue(walletState)
 
   const router = useRouter()
   const query = router.query
   const { asPath, pathname } = useRouter();
-  const slug = asPath.replace('/collection/', '')
+  const collectionId = asPath.replace('/collection/', '')
+  const [numTokens, setNumTokens] = useState(0)
   const [collectionName, setCollectionName] = useState("")
   const [collectionDescription, setCollectionDescription] = useState("")
+  const [collectionAddress, setCollectionAddress] = useState("")
+  const [uri, setUri] = useState("")
 
   const [fullWidth, setFullWidth] = useState(true);
   const [tabIndex, setTabIndex] = React.useState(0)
@@ -59,21 +84,19 @@ export default function Home() {
   }, [dispatch]);
   useEffect(() => {
     (async () => {
-      console.log("name", slug)
-      if (slug === undefined || slug == "[name]")
+      
+      if (collectionId === undefined || collectionId == "[name]")
         return false
-      let res_collection = await fetch(process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + slug + '/Collection Metadata.json')
-      let collection = await res_collection.json()
-      setCollectionName(collection.name)
-      setCollectionDescription(collection.description)
+      
     })();
 
-  }, [slug])
+  }, [collectionId])
   return (
     <AppLayout fullWidth={fullWidth}>
+      <SdkProvider config={config}>
       <PageHeader
-        title={collectionName}
-        subtitle={collectionDescription}
+        title="collectionName"
+        subtitle={collectionId}
       />
       <Tabs index={tabIndex} onChange={handleTabsChange}>
         <TabList css={`border-bottom: 1px solid ${borderColor}`}>
@@ -84,7 +107,7 @@ export default function Home() {
         <TabPanels>
           <TabPanel>
             <Container className="middle mauto">
-              <Collection slug={slug} name={collectionName}/>
+              <Collection id={collectionId}/>
             </Container>
           </TabPanel>
           <TabPanel>
@@ -92,6 +115,7 @@ export default function Home() {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      </SdkProvider>
     </AppLayout>
   )
 }
