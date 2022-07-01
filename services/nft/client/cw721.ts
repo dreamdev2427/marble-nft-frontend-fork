@@ -2,20 +2,18 @@ import {
   CosmWasmClient,
   SigningCosmWasmClient,
 } from '@cosmjs/cosmwasm-stargate'
+import { unsafelyGetDefaultExecuteFee } from 'util/fees'
 
 export interface NftInfoResponse {
   /**
    * Describes the asset to which this NFT represents
    */
-  description: string
+  extension: string
   /**
    * "A URI pointing to a resource with mime type image/* representing the asset to which this NFT represents. Consider making any images at a width between 320 and 1080 pixels and aspect ratio between 1.91:1 and 4:5 inclusive. TODO: Use https://docs.rs/url_serde for type-safety
    */
-  image: string
-  /**
-   * Identifies the asset to which this NFT represents
-   */
-  name: string
+  token_uri: string
+  
 }
 
 export interface TokensResponse {
@@ -70,7 +68,8 @@ export interface CW721TxInstance {
   readonly contractAddress: string
 
   // actions
-  mint: (sender: string, nft: NftMsg) => Promise<string>
+  mint: (sender: string, uri: string, price: string) => Promise<string>
+  batchMint: (sender: string, uri: string[]) => Promise<string>
   transfer: (
     sender: string,
     recipient: string,
@@ -90,6 +89,8 @@ export interface CW721Contract {
 }
 
 export const CW721 = (contractAddress: string): CW721Contract => {
+  const defaultExecuteFee = unsafelyGetDefaultExecuteFee()
+  
   const use = (client: CosmWasmClient): CW721Instance => {
     const ownerOf = async (tokenId: string): Promise<string> => {
       const result = await client.queryContractSmart(contractAddress, {
@@ -152,12 +153,22 @@ export const CW721 = (contractAddress: string): CW721Contract => {
   }
 
   const useTx = (client: SigningCosmWasmClient): CW721TxInstance => {
-    const mint = async (sender: string, nft: NftMsg): Promise<string> => {
+    const mint = async (sender: string, uri: string, price: string): Promise<string> => {
       const result = await client.execute(
         sender,
         contractAddress,
-        { mint: nft },
-        undefined
+        { mint: {uri: uri, price: price } },
+        defaultExecuteFee
+      )
+      return result.transactionHash
+    }
+
+    const batchMint = async (sender: string, uriArr: string[]): Promise<string> => {
+      const result = await client.execute(
+        sender,
+        contractAddress,
+        { batch_mint: {uri: uriArr} },
+        defaultExecuteFee
       )
       return result.transactionHash
     }
@@ -199,6 +210,7 @@ export const CW721 = (contractAddress: string): CW721Contract => {
 
     return {
       contractAddress,
+      batchMint,
       mint,
       transfer,
       send,

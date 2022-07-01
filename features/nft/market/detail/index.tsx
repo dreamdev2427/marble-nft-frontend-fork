@@ -10,7 +10,8 @@ import Link from 'next/link'
 import {
   NftInfo,
   CW721,
-  Marble,
+  Collection,
+  Market,
   useSdk
 } from "services/nft"
 import { walletState } from 'state/atoms/walletAtoms'
@@ -29,47 +30,40 @@ import {
 } from '@chakra-ui/react'
 
 interface DetailParams {
-  readonly collection: string
+  readonly collectionId: string
   readonly id: string
 }
-const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
-export const NFTDetail = ({ collection, id}) => {
+const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
+export const NFTDetail = ({ collectionId, id}) => {
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
   const [nft, setNft] = useState<NftInfo>(
-    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': collection }
+    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': "" }
   )
 
   const loadNft = useCallback(async () => {
-    console.log("call init load nft", client)
     if (!client) return
-
-    if (id === undefined || id == "[id]")
+    if (collectionId === undefined || collectionId == "[collection]" || id === undefined || id == "[id]")
       return false
-
-    const marbleContract = Marble(PUBLIC_CW721_CONTRACT).use(client)
-    console.log("marbleContract:", marbleContract)
-    const contractConfig = await marbleContract.getConfig()
-    // console.log("cw721:", contractConfig.cw721_address)
-    const contract = CW721(contractConfig.cw721_address).use(client)
-    const ownerAddress = await contract.ownerOf((id - 1).toString())
-    let nftPath = ""
-    if (id > 2){
-      nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id
-    }else{
-      nftPath = process.env.NEXT_PUBLIC_COLLECTION_URL_PREFIX + collection + '/' + id + '.json'
-    }
-
-    if (nftPath != ""){
-      let res_nft = await fetch(nftPath)
-      let nft = await res_nft.json()
-      setNft({'tokenId': nft.tokenId, 'address': '', 'image': nft.image, 'name': nft.name, 'user': ownerAddress, 'price': '8', 'total': 2, 'collectionName': collection})
-    }
+    console.log("IDS:", collectionId, id)
+    const marketContract = Market(PUBLIC_MARKETPLACE).use(client)
+    let collection = await marketContract.collection(parseInt(collectionId))
+    console.log("collection", collection)
+    let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collection.uri)
+    let res_collection = await ipfs_collection.json()
+    const cw721Contract = CW721(collection.cw721_address).use(client)
+    let nftInfo = await cw721Contract.nftInfo(id)
+    let ipfs_nft = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + nftInfo.token_uri)
+    let res_nft = await ipfs_nft.json()
+    console.log("NFT Info:", res_nft)
+    const collectionContract = Collection(collection.collection_address).use(client)
+    let price = await collectionContract.getPrice([id])
+    console.log("price", price)
+    setNft({'tokenId': id, 'address': '', 'image': process.env.NEXT_PUBLIC_PINATA_URL + res_nft.uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': '8', 'total': 2, 'collectionName': res_collection.name})
   }, [client])
   useEffect(() => {
-    console.log("init:", collection, id)
     loadNft()
-  }, [loadNft, collection, id]);
+  }, [loadNft, collectionId, id]);
   return (
     <Nft className="nft-info">
         <NftUriTag className="nft-uri">
@@ -77,7 +71,7 @@ export const NFTDetail = ({ collection, id}) => {
         </NftUriTag>
         <NftInfoTag className="nft-detail">
           <h2 className="nft-title">{nft.name}</h2>
-          <Link href={`/collection/${nft.collectionName}`} passHref>The Marblenauts</Link>
+          <Link href={`/collection/${collectionId}`} passHref>{nft.collectionName}</Link>
           <NftMeta className="nft-meta">
             <Button className="nft-meta-link"
               as="a"

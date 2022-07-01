@@ -24,8 +24,8 @@ export interface OffersResponse {
 
 export interface CollectionResponse {
   id: number
-  collection_addr: string
-  cw721_addr: string
+  collection_address: string
+  cw721_address: string
   uri: string
 }
 
@@ -37,6 +37,7 @@ export interface MarketInstance {
   readonly contractAddress: string
   listCollections: () => Promise<CollectionResponse[]>
   config: () => Promise<MarketContractConfig>
+  collection: (id: number) => Promise<CollectionResponse>
   //old functions
   numOffers: () => Promise<number>
   offer: (
@@ -55,6 +56,8 @@ export interface MarketTxInstance {
   readonly contractAddress: string
   // actions
   addCollection: (owner: string, max_tokens: number, name: string, symbol: string, token_code_id: number, cw20_address: string, royalty: number, uri: string) => Promise<string>
+  mint: (owner: string, uri: string) => Promise<string>
+  
   //old functions
   buy: (sender: string, offerId: string, price: Coin) => Promise<string>
   withdraw: (sender: string, offerId: string) => Promise<string>
@@ -80,6 +83,12 @@ export const Market = (contractAddress: string): MarketContract => {
         list_collections: {},
       })
       return result.list
+    }
+    const collection = async (id: any): Promise<CollectionResponse> => {
+      const result = await client.queryContractSmart(contractAddress, {
+        collection: {"id": parseInt(id)},
+      })
+      return result
     }
     const numOffers = async (): Promise<number> => {
       const result = await client.queryContractSmart(contractAddress, {
@@ -123,6 +132,7 @@ export const Market = (contractAddress: string): MarketContract => {
       contractAddress,
       config,
       listCollections,
+      collection,
       numOffers,
       offer,
       offersBySeller,
@@ -164,6 +174,25 @@ export const Market = (contractAddress: string): MarketContract => {
       return result.transactionHash
     }
 
+    const mint = async (
+      owner: string, 
+      uri: string
+    ): Promise<string> => {
+      const result = await client.execute(
+        owner,
+        contractAddress,
+        { 
+          mint: 
+          { 
+            uri: uri
+          } 
+        },
+        defaultExecuteFee
+      )
+      
+      console.log("call end mint nft:", result)
+      return result.transactionHash
+    }
     const buy = async (
       sender: string,
       offerId: string,
@@ -193,6 +222,7 @@ export const Market = (contractAddress: string): MarketContract => {
     return {
       contractAddress,
       addCollection,
+      mint,
       buy,
       withdraw
     }

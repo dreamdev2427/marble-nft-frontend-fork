@@ -51,14 +51,14 @@ export const Account = () => {
 
     const tokens = await Promise.all(allNfts);
     return tokens.map((nft, idx) => {
-      return {
-        tokenId: ids[idx],
-        user: 'unknown',
-        title: nft.name,
-        price: 'Not listed',
-        image: publicIpfsUrl(nft.image),
-        total: 1
-      };
+      // return {
+      //   tokenId: ids[idx],
+      //   user: 'unknown',
+      //   title: nft.name,
+      //   price: 'Not listed',
+      //   image: publicIpfsUrl(nft.image),
+      //   total: 1
+      // };
     });
   };
 
@@ -83,7 +83,7 @@ export const Account = () => {
 
       const items = tokens.map((nft, idx) => {
         const off = result.offers[idx];
-        nft.price = formatPrice(off.list_price);
+        // nft.price = formatPrice(off.list_price);
         return nft;
       });
       //setNftSale(items);
@@ -131,7 +131,7 @@ export const Account = () => {
                         transform: "scale(1.05)"
                       }}>
                       <LinkOverlay as={ReactRouterLink} to={getNftPath(nft.tokenId)}>
-                        <NftCard nft={nft} slug="mablenauts" type="sell"/>
+                        <NftCard nft={nft} id="0" type="sell"/>
                       </LinkOverlay>
                     </LinkBox>
                   ))}
@@ -146,7 +146,7 @@ export const Account = () => {
                         transform: "scale(1.05)"
                       }}>
                       <LinkOverlay as={ReactRouterLink} to={getNftPath(nft.tokenId)}>
-                        <NftCard nft={nft} slug="mablenauts" type="sell" />
+                        <NftCard nft={nft} id="0" type="sell" />
                       </LinkOverlay>
                     </LinkBox>
                   ))}

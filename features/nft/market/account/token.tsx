@@ -76,7 +76,7 @@ export const AccountToken = () => {
     const marketContract = Market(config.marketContract).use(client);
 
     const result = await contract.nftInfo(id);
-    result.image = publicIpfsUrl(result.image);
+    // result.image = publicIpfsUrl(result.image);
     const offer = await marketContract.offer(config.contract, id);
 
     setOffer(offer);
@@ -237,8 +237,8 @@ export const AccountToken = () => {
                 boxSize="420px"
                 fit="cover"
                 fallbackSrc="assets/cosmverse.jpg"
-                src={nft.image}
-                alt={nft.name} />
+                src="{nft.image}"
+                alt="{nft.name}" />
             </Flex>
           </GridItem>
           <GridItem colSpan={3}>
@@ -249,7 +249,7 @@ export const AccountToken = () => {
                     fontWeight="bold"
                     fontSize="3xl"
                   >
-                    {nft.name}
+                    nft.name
                   </chakra.h1>
                   <chakra.p
                     mt={1}
@@ -263,7 +263,7 @@ export const AccountToken = () => {
                     maxW="400px"
                     fontSize="md"
                   >
-                    {nft.description}
+                    nft.description
                   </chakra.p>
                 </Box>
                 <Box>

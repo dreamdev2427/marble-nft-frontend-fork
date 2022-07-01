@@ -14,6 +14,7 @@ export interface NftCategory {
     readonly name: string;
 }
 export interface NftCollection {
+    readonly id: number;
     readonly image: string;
     readonly num_tokens: number;
     readonly name: string;

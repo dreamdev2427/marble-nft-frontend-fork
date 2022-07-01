@@ -6,9 +6,9 @@ import { useState } from "react";
 import { styled } from 'components/theme'
 import { useRouter } from 'next/router'
 
-import { useConnectWallet } from '../../hooks/useConnectWallet'
+import { useConnectWallet } from '../../../hooks/useConnectWallet'
 import { useRecoilState } from 'recoil'
-import { walletState, WalletStatusType } from '../../state/atoms/walletAtoms'
+import { walletState, WalletStatusType } from '../../../state/atoms/walletAtoms'
 import { SdkProvider } from "services/nft/client/wallet"
 import { config } from "services/config";
 
@@ -25,10 +25,9 @@ export default function Home() {
   }
 
   const { asPath, pathname } = useRouter()
-  const id = asPath.split("/")[2]
-  const collection = asPath.split("/")[1]
+  const id = asPath.split("/")[3]
+  const collectionId = asPath.split("/")[2]
   const [fullWidth, setFullWidth] = useState(true);
-
   return (
 
     <AppLayout fullWidth={fullWidth}>
@@ -40,7 +39,7 @@ export default function Home() {
           />
         <Container className="middle mauto">
 
-          <NFTDetail collection={collection} id={id}/>
+          <NFTDetail collectionId={collectionId} id={id}/>
         </Container>
       </SdkProvider>
     </AppLayout>
