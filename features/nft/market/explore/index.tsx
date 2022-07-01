@@ -34,7 +34,7 @@ export const Explore = () => {
       if (!client){
         return;
       }
-      
+      console.log("market place:", PUBLIC_MARKETPLACE)
       const marketContract = Market(PUBLIC_MARKETPLACE).use(client)
       let collectionList = await marketContract.listCollections()
       let res_categories = await fetch(process.env.NEXT_PUBLIC_CATEGORY_URL)
