@@ -50,9 +50,9 @@ export const Gallery = () => {
       return {
         tokenId: result.tokens[idx],
         user: 'unknown',
-        title: nft.name,
+        title: 'nft.name',
         price: off ? formatPrice(off.list_price) : "Not listed",
-        image: publicIpfsUrl(nft.image),
+        image: publicIpfsUrl('nft.image'),
         total: 1
       };
     });

@@ -401,7 +401,7 @@ export const MyCollectedNFTs = () => {
           loader={<h3> Loading...</h3>}
           endMessage={<h4></h4>}
         >
-          <NftTable data={nfts} slug={collectionSlug} type="sell"/>
+          <NftTable data={nfts} id="0" type="sell"/>
         </InfiniteScroll>
       </NftList>
     </CollectionWrapper>
