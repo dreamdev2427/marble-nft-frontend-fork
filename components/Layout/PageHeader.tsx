@@ -11,7 +11,7 @@ import { useConnectWallet } from '../../hooks/useConnectWallet'
 import { walletState, WalletStatusType } from '../../state/atoms/walletAtoms'
 import { useRecoilValue, useRecoilState } from 'recoil'
 
-export const PageHeader = ({ title, subtitle, align='center' }) => {
+export const PageHeader = ({ title, subtitle, align='center', className='' }) => {
   const { mutate: connectWallet } = useConnectWallet()
   const [{ key }, setWalletState] = useRecoilState(walletState)
   function resetWalletConnection() {
@@ -49,6 +49,7 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
           {APP_NAME} — {title}
         </title>
       </Head>
+        <HeaderContainer className={`${className}`}>
         <Text
           variant="header"
           className={`page-title ${title=="NFT"?"nft-title":""}`}
@@ -65,9 +66,13 @@ export const PageHeader = ({ title, subtitle, align='center' }) => {
           {title=="collectionName"?collectionDescription:subtitle}
         </Text>
         }
+        </HeaderContainer>
     </>
   )
 }
+const HeaderContainer = styled('div', {
+
+})
 const Banner = styled('div', {
   height: '$25',
 
