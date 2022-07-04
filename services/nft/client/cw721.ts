@@ -15,7 +15,9 @@ export interface NftInfoResponse {
   token_uri: string
   
 }
-
+export interface NftBulkExtension {
+  
+}
 export interface TokensResponse {
   /**
    * Contains all token_ids in lexicographical ordering If there are more than `limit`, use `start_from` in future queries to achieve pagination.
@@ -69,7 +71,7 @@ export interface CW721TxInstance {
 
   // actions
   mint: (sender: string, uri: string, price: string) => Promise<string>
-  batchMint: (sender: string, uri: string[]) => Promise<string>
+  batchMint: (sender: string, owners: string[], uri: string[], price: string[], extension: NftBulkExtension[]) => Promise<string>
   transfer: (
     sender: string,
     recipient: string,
@@ -163,11 +165,11 @@ export const CW721 = (contractAddress: string): CW721Contract => {
       return result.transactionHash
     }
 
-    const batchMint = async (sender: string, uriArr: string[]): Promise<string> => {
+    const batchMint = async (sender: string, owners: string[], uriArr: string[], priceArr: string[], extension: NftBulkExtension[]): Promise<string> => {
       const result = await client.execute(
         sender,
         contractAddress,
-        { batch_mint: {uri: uriArr} },
+        { batch_mint: {owner: owners, uri: uriArr, price: priceArr, extension: extension} },
         defaultExecuteFee
       )
       return result.transactionHash
