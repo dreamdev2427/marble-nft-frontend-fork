@@ -32,9 +32,10 @@ export default function Home() {
           title="Create New Item"
           subtitle=""
           align="left"
+          className="mw1400"
         />
         { Boolean(key?.name) &&
-        <Container className="middle mauto">
+        <Container className="middle mauto mw1400">
           <CreateNFT/>
         </Container>
         }

@@ -222,6 +222,12 @@ div{
   .page-title{
     max-width: 1680px;
     margin: 0 auto 16px auto;
+    
+  }
+  .mw1400{
+    .page-title{
+      max-width: 1400px;
+    }
   }
   .banner-section{
     background-repeat: no-repeat;
@@ -331,6 +337,9 @@ div{
           }
           .collection-banner-section,
           .collection-nft-section{
+            max-width: 1400px;
+          }
+          &.mw1400{
             max-width: 1400px;
           }
         }
