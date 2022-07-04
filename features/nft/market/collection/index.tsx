@@ -184,7 +184,11 @@ export const Collection = ({id}: CollectionProps) => {
         isPageEnd = true
       while (!isPageEnd){
         if (searchVal == "" || traits[i].name.indexOf(searchVal) != -1){
-          nftsForCollection.push({'tokenId': traits[i].tokenId, 'address': '', 'image': process.env.NEXT_PUBLIC_PINATA_URL + traits[i].uri, 'name': traits[i].name, 'user': traits[i].owner, 'price': '8', 'total': 2, 'collectionName': ""})
+          let uri = traits[i].uri
+          if (uri.indexOf("https://") == -1){
+            uri = process.env.NEXT_PUBLIC_PINATA_URL + traits[i].uri
+          }
+          nftsForCollection.push({'tokenId': traits[i].tokenId, 'address': '', 'image': uri, 'name': traits[i].name, 'user': traits[i].owner, 'price': '8', 'total': 2, 'collectionName': ""})
           hasMoreFlag = true
           nftIndex++
           if (nftIndex == pageCount){
