@@ -240,7 +240,7 @@ div{
   }
   .main-section{
     margin-top: 150px;
-    padding: 0 32px;
+    padding: 0 56px;
     .tab-link{
       border-radius: 0px;
       &.active{
@@ -318,7 +318,7 @@ div{
   }
   .fullWidth{
     &.main-section{
-      padding: 0px;
+      padding: 56px;
       .container{
         max-width: 100%;
         .middle{
@@ -430,12 +430,12 @@ div{
   div{
     .fullWidth{
       &.main-section{
-        padding: 0px;
+        padding: 56px;
         .container{
           max-width: 100%;
           padding: 0px;
           .middle{
-            padding: 0 32px;
+            padding: 0 40px;
           }
         }
       }
