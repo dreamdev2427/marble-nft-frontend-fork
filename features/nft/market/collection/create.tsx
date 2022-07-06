@@ -105,6 +105,7 @@ export const CollectionCreate = () => {
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
   const [token, setToken] = useState("BLOCK")
+  const [tokens, setTokens] = useState<string[]>([])
 
   const handleNameChange = (event) => {
     setName(event.target.value)
@@ -136,7 +137,9 @@ export const CollectionCreate = () => {
   const handleEarningFeeChange = (event) => {
     setEarningFee(event.target.value)
   }
-
+  const handleTokenChange = (event) => {
+    setTokens((tokens)=>[...tokens, ...event.target.value])
+  }
   // reducer function to handle state changes
   const reducer = (state, action) => {
     switch (action.type) {
@@ -435,6 +438,10 @@ export const CollectionCreate = () => {
               <Image alt="Token Icon" className="token-icon" src="/marble.png"/><span>Marble</span>
             </TokenItem>
           </HStack>
+          <Select id='token_id' value={token} onChange={handleTokenChange}>
+            <option value="Marble">Marble</option>
+            <option value="Block">Block</option>
+          </Select>
         </CollectionItem>
         <CollectionItem className="collection-item hide">
           <h3>Display theme</h3>
