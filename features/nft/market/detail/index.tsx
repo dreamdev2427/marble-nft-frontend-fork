@@ -56,15 +56,17 @@ export const NFTDetail = ({ collectionId, id}) => {
     console.log("nft Info:", nftInfo.token_uri)
     let ipfs_nft = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + nftInfo.token_uri)
     let res_nft = await ipfs_nft.json()
+    
     console.log("NFT Info:", res_nft.name)
     const collectionContract = Collection(collection.collection_address).use(client)
-    let price = await collectionContract.getPrice([id])
+    let price:any = await collectionContract.getPrice([parseInt(id)])
     console.log("price", price)
+    res_nft.price = price.prices[0].price
     let uri = res_nft.uri
     if (uri.indexOf("https://") == -1){
       uri = process.env.NEXT_PUBLIC_PINATA_URL + res_nft.uri
     }
-    setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': '8', 'total': 2, 'collectionName': res_collection.name})
+    setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': res_nft.price, 'total': 2, 'collectionName': res_collection.name})
   }, [client])
   useEffect(() => {
     loadNft()

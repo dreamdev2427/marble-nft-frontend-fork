@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import { AppLayout } from 'components/Layout/AppLayout'
 import { PageHeader } from 'components/Layout/PageHeader'
-import { Collection, CollectionTab } from 'features/nft/market/collection'
+import { CollectionNFTList, CollectionTab } from 'features/nft/market/collection'
 import { styled, theme } from 'components/theme'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
@@ -107,7 +107,7 @@ export default function Home() {
         <TabPanels>
           <TabPanel>
             <Container className="middle mauto">
-              <Collection id={collectionId}/>
+              <CollectionNFTList id={collectionId}/>
             </Container>
           </TabPanel>
           <TabPanel>

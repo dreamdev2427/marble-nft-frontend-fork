@@ -11,7 +11,7 @@ import { NftTable } from "components/NFT"
 import {
   NftInfo,
 } from "services/nft"
-import { CW721, Market, useSdk } from 'services/nft'
+import { CW721, Market, Collection, useSdk } from 'services/nft'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { walletState, WalletStatusType } from 'state/atoms/walletAtoms'
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -70,7 +70,7 @@ interface CollectionProps {
   // readonly numTokens: number
   // readonly uri: string
 }
-export const Collection = ({id}: CollectionProps) => {  
+export const CollectionNFTList = ({id}: CollectionProps) => {  
   const pageCount = 10
   const router = useRouter()
   const query = router.query
@@ -141,11 +141,13 @@ export const Collection = ({id}: CollectionProps) => {
       let collection = await marketContract.collection(parseInt(id))
       let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collection.uri)
       let res_collection = await ipfs_collection.json()
-      
+      console.log("collection:", collection)
       setCollectionAddress(collection.collection_address)
       setCw721Address(collection.cw721_address)
-      const cw721Contract = CW721(collection.cw721_address).use(client)
 
+      const cwCollectionContract = Collection(collection.collection_address).use(client)
+      
+      const cw721Contract = CW721(collection.cw721_address).use(client)
       let numTokens = await cw721Contract.numTokens()
       setNumTokens(numTokens)
 
@@ -158,8 +160,11 @@ export const Collection = ({id}: CollectionProps) => {
         let ipfs_nft = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + nftInfo.token_uri)
         let res_nft = await ipfs_nft.json()
         res_nft["tokenId"] = tokenIds[i]
+        let price:any = await cwCollectionContract.getPrice([parseInt(tokenIds[i])])
+        res_nft["price"] = price.prices[0].price
         collectionNFTs.push(res_nft)
       }
+
       console.log("NFTs:", collectionNFTs)
       let traits = []
       for (let i = 0; i < collectionNFTs.length; i++){
@@ -188,7 +193,7 @@ export const Collection = ({id}: CollectionProps) => {
           if (uri.indexOf("https://") == -1){
             uri = process.env.NEXT_PUBLIC_PINATA_URL + traits[i].uri
           }
-          nftsForCollection.push({'tokenId': traits[i].tokenId, 'address': '', 'image': uri, 'name': traits[i].name, 'user': traits[i].owner, 'price': '8', 'total': 2, 'collectionName': ""})
+          nftsForCollection.push({'tokenId': traits[i].tokenId, 'address': '', 'image': uri, 'name': traits[i].name, 'user': traits[i].owner, 'price': traits[i].price, 'total': 2, 'collectionName': ""})
           hasMoreFlag = true
           nftIndex++
           if (nftIndex == pageCount){
