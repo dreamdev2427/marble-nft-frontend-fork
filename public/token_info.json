@@ -1,0 +1,14 @@
+{
+  "tokens": [
+    {
+      "name": "Marble",
+      "symbol": "Marble",
+      "logoUri": "/tokens/marble.png"
+    },
+    {
+      "name": "Block",
+      "symbol": "Block",
+      "logoUri": "/tokens/block.png"
+    }
+  ]
+}
