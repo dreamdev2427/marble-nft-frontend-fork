@@ -35,6 +35,9 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Tag,
+  TagLabel,
+  TagCloseButton,
 } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 import DropZone from "components/DropZone"
@@ -83,6 +86,13 @@ function RadioCard(props) {
     </Box>
   )
 }
+interface CollectionToken {
+  readonly name: string
+  readonly symbol: string
+  readonly logoUri: string
+}
+let collectionTokenArr = []
+let collectionTokenCount = 0
 export const CollectionCreate = () => {
   const router = useRouter()
   //const toast = useToast()
@@ -104,9 +114,10 @@ export const CollectionCreate = () => {
   const [collectionIpfsHash, setCollectionIpfsHash] = useState("")
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
-  const [token, setToken] = useState("BLOCK")
-  const [tokens, setTokens] = useState<string[]>([])
-
+  const [token, setToken] = useState("")
+  const [tokens, setTokens] = useState<number[]>([])
+  const [collectionTokens, setCollectionTokens] = useState<CollectionToken[]>([])
+  const [tokenReomveCount, setTokenReomveCount] = useState(0)
   const handleNameChange = (event) => {
     setName(event.target.value)
   }
@@ -138,7 +149,31 @@ export const CollectionCreate = () => {
     setEarningFee(event.target.value)
   }
   const handleTokenChange = (event) => {
-    setTokens((tokens)=>[...tokens, ...event.target.value])
+    setToken(event.target.value)
+    if (tokens.indexOf(parseInt(event.target.value)) == -1){
+      console.log("tokens", tokens, event.target.value)
+      if (event.target.value == "")
+        return
+      let tokenIds = tokens
+      tokenIds.push(parseInt(event.target.value))
+      setTokens(tokenIds)
+      collectionTokenArr = tokenIds
+      collectionTokenCount++
+      setTokenReomveCount(collectionTokenCount)
+    }
+  }
+  const closeTokenButton = (tokenId) => {
+    let tokenIds = tokens
+    console.log("before close token Ids", tokenIds)
+    tokenIds.splice(tokenIds.indexOf(parseInt(tokenId)), 1)
+    console.log("after close token Ids", tokenIds)
+    collectionTokenArr = tokenIds
+
+    setTokens(tokenIds)
+    
+    setToken("")
+    collectionTokenCount--
+    setTokenReomveCount(collectionTokenCount)
   }
   // reducer function to handle state changes
   const reducer = (state, action) => {
@@ -182,12 +217,20 @@ export const CollectionCreate = () => {
       let res_categories = await fetch(process.env.NEXT_PUBLIC_CATEGORY_URL)
       let categories = await res_categories.json()
       setNftCategories(categories.categories)
-      
+      const response = await fetch(process.env.NEXT_PUBLIC_COLLECTION_TOKEN_LIST_URL)
+      const collectionTokenList = await response.json()
+      setCollectionTokens(collectionTokenList.tokens)
     })()
 
   }, [])
+
+  useEffect(() => {
+    console.log("collectionTokenArr", collectionTokenArr)
+
+  }, [tokenReomveCount])
   
   const createCollection = async(e) => {
+    
     //if (status !== WalletStatusType.connected) {
     if (!address || !signingClient) {
       toast.warning(
@@ -237,13 +280,32 @@ export const CollectionCreate = () => {
       )
       return  
     }
-    
+
+    let tokenSymbols = []
+    for (let i = 0; i < tokens.length; i++){
+      tokenSymbols.push(collectionTokens[tokens[i]].symbol)
+    }
+    if (tokenSymbols.length == 0){
+      toast.warning(
+        `Please select a payment token.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }
     const jsonData = {}
     jsonData["logo"] = data.logo
     jsonData["featuredImage"] = data.featuredImage
     jsonData["banner"] = data.banner
     jsonData["name"] = name
-    jsonData["slug"] = slug
+    jsonData["slug"] = ""
     jsonData["description"] = description
     jsonData["category"] = category
     jsonData["website"] = website
@@ -253,7 +315,8 @@ export const CollectionCreate = () => {
     jsonData["telegram"] = telegram
     jsonData["earningFee"] = earningFee
     jsonData["network"] = "JUNO"
-    jsonData["tokens"] = ["BLOCK", "MARBLE"]
+    jsonData["tokens"] = tokenSymbols
+
     jsonData["themeValue"] = themeValue
     jsonData["explicit"] = explicit
     jsonData["owner"] = address
@@ -346,7 +409,7 @@ export const CollectionCreate = () => {
                   value={name} onChange={handleNameChange}
                 />
         </CollectionItem>
-        <CollectionItem className="collection-item">
+        <CollectionItem className="collection-item hide">
           <h3>URL <span className="required">*</span></h3>
           <p>Customize your URL on Marble NFT Marketplace. Must only contain lowercase letters, numbers, and hyphens.</p>
           <InputGroup size='sm'>
@@ -425,22 +488,26 @@ export const CollectionCreate = () => {
         <CollectionItem className="collection-item">
           <h3>Payment tokens</h3>
           <HStack spacing={0} className="chain-group">
-            <TokenItem 
-            onClick={(e) => {
-              setToken("BLOCK")
-            }}>
-              <Image alt="Token Icon" className="token-icon" src="/block-logo.png"/><span>Block</span>
-            </TokenItem>
-            <TokenItem 
-            onClick={(e) => {
-              setToken("MARBLE")
-            }}>
-              <Image alt="Token Icon" className="token-icon" src="/marble.png"/><span>Marble</span>
-            </TokenItem>
+          {collectionTokenArr.map(tokenId => (
+            <Tag
+              borderRadius='full'
+              variant='solid'
+              key={collectionTokens[tokenId].symbol}
+            >
+              <TagLabel>
+                <CollectionTokenItem>
+                <Image alt="Token Icon" className="token-icon" src={collectionTokens[tokenId].logoUri}/><span>{collectionTokens[tokenId].name}</span>
+                </CollectionTokenItem>
+              </TagLabel>
+              <TagCloseButton onClick={()=>closeTokenButton(tokenId)}/>
+            </Tag>
+          ))}
           </HStack>
           <Select id='token_id' value={token} onChange={handleTokenChange}>
-            <option value="Marble">Marble</option>
-            <option value="Block">Block</option>
+            <option value=""></option>
+            {collectionTokens.length > 0 && collectionTokens.map((token, idx) => (
+                <option value={idx}>{token.name}</option>
+            ))}
           </Select>
         </CollectionItem>
         <CollectionItem className="collection-item hide">
@@ -658,6 +725,12 @@ const ExplicitItem = styled('div', {
   }
 })
 const TokenItem = styled('div', {
+  'flexDirection': 'row',
+  'display': 'flex',
+  'justifyContent': 'center',
+  'alignItems': 'center',
+})
+const CollectionTokenItem = styled('div', {
   'flexDirection': 'row',
   'display': 'flex',
   'justifyContent': 'center',
