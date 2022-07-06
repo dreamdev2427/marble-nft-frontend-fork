@@ -33,3 +33,9 @@ export function toMinDenom(amount: number, denom: string): string {
   const coin = getTokenConfig(denom)!
   return Math.ceil(amount * Math.pow(10, coin.decimals)).toString()
 }
+
+export function isValidURL(string) {
+  var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
+  return (res !== null)
+}
+

@@ -97,12 +97,14 @@ export function NavigationSidebar({ openNav ,setOpenNav }) {
                   <span className={isActive('https://app.marbledao.finance/transfer')}>Transfer</span>
                 </a>
               </Link>
-              <Link href="https://app.marbledao.finance/pools" passHref>
+              {/* 
+              <Link href="https://app.marbledao.finance/pools" passHref >
                 <a className="dropdown-item">
                   <Open />
                   <span className={isActive('https://app.marbledao.finance/pools')}>Liquidity</span>
                 </a>
               </Link>
+              */}
               <Link href="https://app.marbledao.finance/presale-claim" passHref>
                 <a className="dropdown-item">
                   <Airdrop />
