@@ -47,7 +47,6 @@ import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { walletState, WalletStatusType } from 'state/atoms/walletAtoms'
 import { Market, useSdk } from 'services/nft'
 
-
 const PUBLIC_CW721_CONTRACT = process.env.NEXT_PUBLIC_CW721_CONTRACT || ''
 const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
 const PUBLIC_CW20_CONTRACT = process.env.NEXT_PUBLIC_CW20_CONTRACT || ''
@@ -162,19 +161,7 @@ export const CollectionCreate = () => {
       setTokenReomveCount(collectionTokenCount)
     }
   }
-  const closeTokenButton = (tokenId) => {
-    let tokenIds = tokens
-    console.log("before close token Ids", tokenIds)
-    tokenIds.splice(tokenIds.indexOf(parseInt(tokenId)), 1)
-    console.log("after close token Ids", tokenIds)
-    collectionTokenArr = tokenIds
-
-    setTokens(tokenIds)
-    
-    setToken("")
-    collectionTokenCount--
-    setTokenReomveCount(collectionTokenCount)
-  }
+  
   // reducer function to handle state changes
   const reducer = (state, action) => {
     switch (action.type) {
@@ -488,27 +475,37 @@ export const CollectionCreate = () => {
         <CollectionItem className="collection-item">
           <h3>Payment tokens</h3>
           <HStack spacing={0} className="chain-group">
-          {collectionTokenArr.map(tokenId => (
-            <Tag
-              borderRadius='full'
-              variant='solid'
-              key={collectionTokens[tokenId].symbol}
-            >
-              <TagLabel>
-                <CollectionTokenItem>
-                <Image alt="Token Icon" className="token-icon" src={collectionTokens[tokenId].logoUri}/><span>{collectionTokens[tokenId].name}</span>
-                </CollectionTokenItem>
-              </TagLabel>
-              <TagCloseButton onClick={()=>closeTokenButton(tokenId)}/>
-            </Tag>
-          ))}
-          </HStack>
-          <Select id='token_id' value={token} onChange={handleTokenChange}>
-            <option value=""></option>
+          
             {collectionTokens.length > 0 && collectionTokens.map((token, idx) => (
-                <option value={idx}>{token.name}</option>
+              <Button
+                key={`token${idx}`}
+                variant="secondary"
+                className={`${tokens.indexOf(idx) != -1?'active':'default'}`}
+                onClick={() => {
+
+                  if (tokens.indexOf(idx) == -1){
+                    let tokenIds = tokens
+                    tokenIds.push(idx)
+                    setTokens(tokenIds)
+                    collectionTokenCount++
+                    setTokenReomveCount(collectionTokenCount)
+                  }else{
+                    let tokenIds = tokens
+                    tokenIds.splice(tokenIds.indexOf(idx), 1)
+                    console.log("Tokens", tokenIds)
+                    setTokens(tokenIds)
+                    collectionTokenCount--
+                    setTokenReomveCount(collectionTokenCount)
+                  }
+                  console.log("tokens:", tokens)
+                  return false
+                }}
+              >
+                <Image alt="Token Icon" className="token-icon" src={collectionTokens[idx].logoUri}/>{token.name}
+              </Button>
             ))}
-          </Select>
+          
+          </HStack>
         </CollectionItem>
         <CollectionItem className="collection-item hide">
           <h3>Display theme</h3>
@@ -663,6 +660,12 @@ const CollectionItem = styled('div', {
     'img':{
       width: '$8',
       margin: '$4'
+    },
+    'button':{
+      '&.active':{
+        background: '$backgroundColors$tertiary',
+        fontWeight: 'bold',
+      }
     }
   },
   '.theme-group':{

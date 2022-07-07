@@ -270,6 +270,18 @@ div{
     .nft-detail{
       width: 60%;
     }
+    .chain-group{
+      button{
+        margin: 8px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: row;
+        img{
+          margin: 0 8px 0 0;
+        }
+      }
+
+    }
   }
   .container{
     width: 100%;
