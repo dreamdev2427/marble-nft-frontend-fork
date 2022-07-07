@@ -483,6 +483,20 @@ export const CollectionCreate = () => {
                 className={`${tokens.indexOf(idx) != -1?'active':'default'}`}
                 onClick={() => {
 
+                  // if (tokens.indexOf(idx) == -1){
+                  //   let tokenIds = tokens
+                  //   tokenIds.push(idx)
+                  //   setTokens(tokenIds)
+                  //   collectionTokenCount++
+                  //   setTokenReomveCount(collectionTokenCount)
+                  // }else{
+                  //   let tokenIds = tokens
+                  //   tokenIds.splice(tokenIds.indexOf(idx), 1)
+                  //   console.log("Tokens", tokenIds)
+                  //   setTokens(tokenIds)
+                  //   collectionTokenCount--
+                  //   setTokenReomveCount(collectionTokenCount)
+                  // }
                   if (tokens.indexOf(idx) == -1){
                     let tokenIds = []
                     tokenIds.push(idx)
@@ -497,7 +511,6 @@ export const CollectionCreate = () => {
                     collectionTokenCount--
                     setTokenReomveCount(collectionTokenCount)
                   }
-                  console.log("tokens:", tokens)
                   return false
                 }}
               >
