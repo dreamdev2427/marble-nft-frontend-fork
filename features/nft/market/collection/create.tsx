@@ -484,7 +484,7 @@ export const CollectionCreate = () => {
                 onClick={() => {
 
                   if (tokens.indexOf(idx) == -1){
-                    let tokenIds = tokens
+                    let tokenIds = []
                     tokenIds.push(idx)
                     setTokens(tokenIds)
                     collectionTokenCount++
@@ -493,7 +493,7 @@ export const CollectionCreate = () => {
                     let tokenIds = tokens
                     tokenIds.splice(tokenIds.indexOf(idx), 1)
                     console.log("Tokens", tokenIds)
-                    setTokens(tokenIds)
+                    setTokens([])
                     collectionTokenCount--
                     setTokenReomveCount(collectionTokenCount)
                   }
