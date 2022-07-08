@@ -219,7 +219,17 @@ button {
   }
 
 }
-
+.visible-yes{
+  visibility: visible;
+  svg{
+    path{
+      fill: #000;
+    }
+  }
+}
+.visible-no{
+  visibility: hidden;
+}
 div{
   .page-title{
     max-width: 1680px;
@@ -263,6 +273,13 @@ div{
     .nft-uri{
       width: 40%;
       padding-right: 30px;
+      img{
+        width: 100%;
+      }
+    }
+    .sel-nft-uri{
+      width: 40%;
+      padding-right: 0px;
       img{
         width: 100%;
       }
@@ -338,6 +355,7 @@ div{
         .middle{
           max-width: 1680px;
           padding: 0px;
+          position: relative;
           .logo-featured-container{
             display: flex;
             gap: 32px;
