@@ -72,128 +72,140 @@ export const NFTDetail = ({ collectionId, id}) => {
     loadNft()
   }, [loadNft, collectionId, id]);
   return (
-    <Nft className="nft-info">
-        <NftUriTag className="nft-uri">
-          <Image src={nft.image} alt="NFT Image"/>
-        </NftUriTag>
-        <NftInfoTag className="nft-detail">
-          <h2 className="nft-title">{nft.name}</h2>
-          <Link href={`/collection/${collectionId}`} passHref>{nft.collectionName}</Link>
-          <NftMeta className="nft-meta">
-            <Button className="nft-meta-link"
-              as="a"
-              variant="ghost"
-              iconLeft={<IconWrapper icon={<User />} />}
-              title={nft.user}
-            >
-              <span className="owner-address">Owned by {nft.user}</span>
-            </Button>
-          </NftMeta>
-          <NftBuyOfferTag className="nft-buy-offer">
-            <NftSale className="disabled">
-              <IconWrapper icon={<Clock />}/>
-              This section is under development
-            </NftSale>
-            <PriceTag>
-              <label className="price-lbl">Current Price</label>
-              <NftPrice nft={nft}/>
-              <ButtonGroup>
-              <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
-                <Button className="btn-buy btn-default"
-                  css={{
-                    'background': '$black',
-                    'color': '$white',
-                    'stroke': '$white',
-                  }}
-                  iconLeft={<IconWrapper icon={<Credit />} />}
-                  variant="primary"
-                  size="large"
+    <>
+      {nft.user == address &&
+      <OwnerAction>
+        <Link href={`/nft/${collectionId}/${id}/sell`} passHref>
+        <Button>Sell</Button>
+        </Link>
+      </OwnerAction>
+      }
+      <Nft className="nft-info">
+          
+          <NftUriTag className="nft-uri">
+            {nft.image && 
+            <Image src={nft.image} alt="NFT Image"/>
+            }
+          </NftUriTag>
+          <NftInfoTag className="nft-detail">
+            <h2 className="nft-title">{nft.name}</h2>
+            <Link href={`/collection/${collectionId}`} passHref>{nft.collectionName}</Link>
+            <NftMeta className="nft-meta">
+              <Button className="nft-meta-link"
+                as="a"
+                variant="ghost"
+                iconLeft={<IconWrapper icon={<User />} />}
+                title={nft.user}
+              >
+                <span className="owner-address">Owned by {nft.user}</span>
+              </Button>
+            </NftMeta>
+            <NftBuyOfferTag className="nft-buy-offer">
+              <NftSale className="disabled">
+                <IconWrapper icon={<Clock />}/>
+                This section is under development
+              </NftSale>
+              <PriceTag>
+                <label className="price-lbl">Current Price</label>
+                <NftPrice nft={nft}/>
+                <ButtonGroup>
+                <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
+                  <Button className="btn-buy btn-default"
+                    css={{
+                      'background': '$black',
+                      'color': '$white',
+                      'stroke': '$white',
+                    }}
+                    iconLeft={<IconWrapper icon={<Credit />} />}
+                    variant="primary"
+                    size="large"
 
-                >
-                  Buy Now
+                  >
+                    Buy Now
+                    </Button>
+                    </Link>
+                  <Button className="btn-offer btn-default"
+                    css={{
+                      'background': '$white',
+                      'color': '$textColors$primary',
+                      'stroke': '$white',
+                    }}
+                    iconLeft={<IconWrapper icon={<Credit />} />}
+                    variant="primary"
+                    size="large"
+
+                  >
+                    Soon Offer
                   </Button>
-                  </Link>
-                <Button className="btn-offer btn-default"
-                  css={{
-                    'background': '$white',
-                    'color': '$textColors$primary',
-                    'stroke': '$white',
-                  }}
-                  iconLeft={<IconWrapper icon={<Credit />} />}
-                  variant="primary"
-                  size="large"
+                </ButtonGroup>
+              </PriceTag>
+            </NftBuyOfferTag>
+  {/*
+            <NftOfferTag className="nft-offer">
+              <TableTitle className="offer-title">
+                <IconWrapper icon={<Package />} />Offers
+              </TableTitle>
+              <TableContainer>
+                <Table variant='simple'>
+                  <Thead>
+                    <Tr>
+                      <Th>Unit Price</Th>
+                      <Th>USD Unit Price</Th>
+                      <Th>Quantity</Th>
+                      <Th>Floor Differance</Th>
+                      <Th>Expirantion</Th>
+                      <Th>From</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    <Tr>
+                      <Td>0.555 Weth</Td>
+                      <Td>$1,69</Td>
+                      <Td>1</Td>
+                      <Td>31% below</Td>
+                      <Td>2 days</Td>
+                      <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
+                    </Tr>
+                    <Tr>
+                      <Td>0.555 Weth</Td>
+                      <Td>$1,69</Td>
+                      <Td>1</Td>
+                      <Td>31% below</Td>
+                      <Td>2 days</Td>
+                      <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
+                    </Tr>
+                    <Tr>
+                      <Td>0.555 Weth</Td>
+                      <Td>$1,69</Td>
+                      <Td>1</Td>
+                      <Td>31% below</Td>
+                      <Td>2 days</Td>
+                      <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
+                    </Tr>
+                    <Tr>
+                      <Td>0.555 Weth</Td>
+                      <Td>$1,69</Td>
+                      <Td>1</Td>
+                      <Td>31% below</Td>
+                      <Td>2 days</Td>
+                      <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
+                    </Tr>
+                    <Tr>
+                      <Td>0.555 Weth</Td>
+                      <Td>$1,69</Td>
+                      <Td>1</Td>
+                      <Td>31% below</Td>
+                      <Td>2 days</Td>
+                      <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </NftOfferTag> */}
+          </NftInfoTag>
 
-                >
-                  Soon Offer
-                </Button>
-              </ButtonGroup>
-            </PriceTag>
-          </NftBuyOfferTag>
-{/*
-          <NftOfferTag className="nft-offer">
-            <TableTitle className="offer-title">
-              <IconWrapper icon={<Package />} />Offers
-            </TableTitle>
-            <TableContainer>
-              <Table variant='simple'>
-                <Thead>
-                  <Tr>
-                    <Th>Unit Price</Th>
-                    <Th>USD Unit Price</Th>
-                    <Th>Quantity</Th>
-                    <Th>Floor Differance</Th>
-                    <Th>Expirantion</Th>
-                    <Th>From</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>0.555 Weth</Td>
-                    <Td>$1,69</Td>
-                    <Td>1</Td>
-                    <Td>31% below</Td>
-                    <Td>2 days</Td>
-                    <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
-                  </Tr>
-                  <Tr>
-                    <Td>0.555 Weth</Td>
-                    <Td>$1,69</Td>
-                    <Td>1</Td>
-                    <Td>31% below</Td>
-                    <Td>2 days</Td>
-                    <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
-                  </Tr>
-                  <Tr>
-                    <Td>0.555 Weth</Td>
-                    <Td>$1,69</Td>
-                    <Td>1</Td>
-                    <Td>31% below</Td>
-                    <Td>2 days</Td>
-                    <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
-                  </Tr>
-                  <Tr>
-                    <Td>0.555 Weth</Td>
-                    <Td>$1,69</Td>
-                    <Td>1</Td>
-                    <Td>31% below</Td>
-                    <Td>2 days</Td>
-                    <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
-                  </Tr>
-                  <Tr>
-                    <Td>0.555 Weth</Td>
-                    <Td>$1,69</Td>
-                    <Td>1</Td>
-                    <Td>31% below</Td>
-                    <Td>2 days</Td>
-                    <Td><span className="from-link">Follow Twitter-TrollCI...</span></Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </NftOfferTag> */}
-        </NftInfoTag>
-
-    </Nft>
+      </Nft>
+    </>
   );
 }
 const Nft = styled('div', {
@@ -320,4 +332,9 @@ const TableTitle = styled('div', {
   padding: '$space$14 $space$16',
   gap: '$4',
   borderBottom: '1px solid $borderColors$default',
+})
+const OwnerAction = styled('div', {
+  position: 'absolute',
+  margin: '-40px 0',
+  right: '0',
 })
