@@ -277,7 +277,7 @@ export const CreateNFT = () => {
     const cw721Contract = CW721(collection.collection_address).useTx(signingClient)
     setNftIpfsHash(ipfsHash + ":::" + collection.collection_address)
     console.log("collection", collection)
-    let nft = await cw721Contract.mint(address, ipfsHash, price.toString())
+    let nft = await cw721Contract.mint(address, ipfsHash, "0")
     console.log("nft info:", nft)
     // const nft = await marketContract.mint(
     //   address, ipfsHash
@@ -542,7 +542,7 @@ export const CreateNFT = () => {
               </NumberInputStepper>
           </NumberInput>
         </CollectionItem>
-        <CollectionItem className="collection-item">
+        <CollectionItem className="collection-item hide">
           <h3>Price</h3>
           <NumberInput defaultValue={1} min={1} step={1} >
               <NumberInputField value={price} onChange={handlePriceChange}/>
