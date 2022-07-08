@@ -34,13 +34,19 @@ interface DetailParams {
   readonly id: string
 }
 const PUBLIC_MARKETPLACE = process.env.NEXT_PUBLIC_MARKETPLACE || ''
+interface CollectionToken {
+  readonly name: string
+  readonly symbol: string
+  readonly logoUri: string
+}
+
 export const NFTSell = ({ collectionId, id}) => {
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
   const [nft, setNft] = useState<NftInfo>(
     {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': "" }
   )
-
+  const [collectionTokens, setCollectionTokens] = useState<CollectionToken[]>([])
   const loadNft = useCallback(async () => {
     if (!client) return
     if (collectionId === undefined || collectionId == "[collection]" || id === undefined || id == "[id]")
@@ -54,11 +60,9 @@ export const NFTSell = ({ collectionId, id}) => {
     console.log("Res collection:", res_collection)
     const cw721Contract = CW721(collection.cw721_address).use(client)
     let nftInfo = await cw721Contract.nftInfo(id)
-    console.log("nft Info:", nftInfo.token_uri)
     let ipfs_nft = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + nftInfo.token_uri)
     let res_nft = await ipfs_nft.json()
     
-    console.log("NFT Info:", res_nft.name)
     const collectionContract = Collection(collection.collection_address).use(client)
     let price:any = await collectionContract.getPrice([parseInt(id)])
     console.log("price", price)
@@ -68,10 +72,17 @@ export const NFTSell = ({ collectionId, id}) => {
       uri = process.env.NEXT_PUBLIC_PINATA_URL + res_nft.uri
     }
     setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': res_nft.price, 'total': 2, 'collectionName': res_collection.name})
+    
+    const response = await fetch(process.env.NEXT_PUBLIC_COLLECTION_TOKEN_LIST_URL)
+    const collectionTokenList = await response.json()
+    setCollectionTokens(collectionTokenList.tokens)
+  
   }, [client])
   useEffect(() => {
+    
     loadNft()
   }, [loadNft, collectionId, id]);
+
   return (
     <>
       <Nft className="nft-info">
@@ -84,7 +95,15 @@ export const NFTSell = ({ collectionId, id}) => {
           </ButtonGroup>
           <h4>Price</h4>
           <PriceContiner>
-
+          {collectionTokens.length > 0 && collectionTokens.map((token, idx) => (
+              <Button
+                key={`token${idx}`}
+                variant="secondary"
+                
+              >
+                <Image alt="Token Icon" className="token-icon" src={collectionTokens[idx].logoUri}/>{token.name}
+              </Button>
+            ))}
           </PriceContiner>
         </NftInfoTag>
         <NftUriTag className="sell-nft-uri">

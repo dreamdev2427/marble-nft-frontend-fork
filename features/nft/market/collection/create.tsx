@@ -219,54 +219,54 @@ export const CollectionCreate = () => {
   
   const createCollection = async(e) => {
     
-    // if (!address || !signingClient) {
-    //   toast.warning(
-    //     `Please connect your wallet.`,
-    //     {
-    //       position: 'top-right',
-    //       autoClose: 5000,
-    //       hideProgressBar: true,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //     }
-    //   )
-    //   return
-    // }
+    if (!address || !signingClient) {
+      toast.warning(
+        `Please connect your wallet.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return
+    }
 
-    // if (name == "")
-    // {
-    //   toast.warning(
-    //     `Please input the collection name.`,
-    //     {
-    //       position: 'top-right',
-    //       autoClose: 5000,
-    //       hideProgressBar: true,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //     }
-    //   )
-    //   return  
-    // }    
-    // if (data.logo == "")
-    // {
-    //   toast.warning(
-    //     `Please upload a logo image.`,
-    //     {
-    //       position: 'top-right',
-    //       autoClose: 5000,
-    //       hideProgressBar: true,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //     }
-    //   )
-    //   return  
-    // }
+    if (name == "")
+    {
+      toast.warning(
+        `Please input the collection name.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }    
+    if (data.logo == "")
+    {
+      toast.warning(
+        `Please upload a logo image.`,
+        {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      )
+      return  
+    }
     if (earningFee == "" || parseFloat(earningFee) > 2.5 || parseFloat(earningFee) < 0){
       toast.warning(
         `Please input the correct earningFee.(between 0 and 2.5)`,

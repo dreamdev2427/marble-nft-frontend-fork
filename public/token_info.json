@@ -2,12 +2,12 @@
   "tokens": [
     {
       "name": "Marble",
-      "symbol": "Marble",
+      "symbol": "MARBLE",
       "logoUri": "/tokens/marble.png"
     },
     {
       "name": "Block",
-      "symbol": "Block",
+      "symbol": "BLOCK",
       "logoUri": "/tokens/block.png"
     }
   ]
