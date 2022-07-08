@@ -137,10 +137,13 @@ export const CreateNFT = () => {
         try{
           let ipfs_collection = await fetch(process.env.NEXT_PUBLIC_PINATA_URL + collectionList[i].uri)
           res_collection = await ipfs_collection.json()
-          let collection_info:any = {}
-          collection_info.id = collectionList[i].id
-          collection_info.name = res_collection.name
-          collections.push(collection_info)
+          if (res_collection.owner == address){
+            let collection_info:any = {}
+            collection_info.id = collectionList[i].id
+            collection_info.name = res_collection.name
+            collections.push(collection_info)
+          }
+          
         }catch (err){
           console.log("err", err)
         }
