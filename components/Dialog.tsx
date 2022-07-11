@@ -91,10 +91,10 @@ const StyledDivForModal = styled.div`
   opacity: 0;
   max-width: 456px;
   width: 100%;
-  position: absolute;
-  z-index: 99;
+  position: fixed;
+  z-index: 6;
   left: 50%;
-  top: 50%;
+  top: 40%;
   transform: translate(-50%, -50%);
   background-color: ${colorTokens.lightGray};
   border-radius: 6px;
@@ -106,7 +106,7 @@ const StyledDivForOverlay = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
-  z-index: 98;
+  z-index: 5;
   left: 0;
   top: 0;
   background-color: #000;

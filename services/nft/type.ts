@@ -7,6 +7,7 @@ export interface NftInfo {
     readonly price: string;
     readonly total: number;
     readonly collectionName: string;
+    readonly symbol: string;
 }
 export interface NftCategory {
     readonly id: string;

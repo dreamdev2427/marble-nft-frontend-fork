@@ -1,7 +1,8 @@
-import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 import { styled } from 'components/theme'
 import { Button } from 'components/Button'
+import { DateRange } from "rsuite/DateRangePicker"
 import { IconWrapper } from 'components/IconWrapper'
 import { NftPrice } from 'components/NFT/nft-card/price'
 import { User, CopyNft, Heart, Clock, Package, Credit } from 'icons'
@@ -17,17 +18,12 @@ import {
 import { walletState } from 'state/atoms/walletAtoms'
 import { useRecoilValue } from 'recoil'
 import {
+  ChakraProvider, 
+  Input,
   Image,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
+  Select
 } from '@chakra-ui/react'
+import DateRangePicker from 'rsuite/DateRangePicker';
 
 interface DetailParams {
   readonly collectionId: string
@@ -39,14 +35,32 @@ interface CollectionToken {
   readonly symbol: string
   readonly logoUri: string
 }
-
+let today = new Date()
 export const NFTSell = ({ collectionId, id}) => {
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
   const [nft, setNft] = useState<NftInfo>(
-    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': "" }
+    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': "", 'symbol': 'MARBLE' }
   )
   const [collectionTokens, setCollectionTokens] = useState<CollectionToken[]>([])
+  const [price, setPrice] = useState(0)
+  const [fee, setFee] = useState(1)
+  const [supply, setSupply] = useState(0)
+  const [sellType, setSellType] = useState("fixed")
+  const [method, setMethod] = useState("")
+  const [quantity, setQuantity] = useState(1)
+
+  const [duration, setDuration] = useState<DateRange>([today, new Date(today.getFullYear(), today.getMonth(), today.getDate()+7)])
+  const handlePriceChange = (event) => {
+    setPrice(event.target.value)
+  }
+  const handleMethodChange = (event) => {
+    setMethod(event.target.value)
+  }
+  const handleQuantityChange = (event) => {
+    setQuantity(event.target.value)
+  }
+
   const loadNft = useCallback(async () => {
     if (!client) return
     if (collectionId === undefined || collectionId == "[collection]" || id === undefined || id == "[id]")
@@ -71,31 +85,75 @@ export const NFTSell = ({ collectionId, id}) => {
     if (uri.indexOf("https://") == -1){
       uri = process.env.NEXT_PUBLIC_PINATA_URL + res_nft.uri
     }
-    setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': res_nft.price, 'total': 2, 'collectionName': res_collection.name})
-    
+    console.log("collection", res_collection)
+    setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': res_nft.price, 'total': 2, 'collectionName': res_collection.name, 'symbol': res_collection.tokens[0]})
+    setSupply(res_collection.supply==undefined?2:parseInt(res_collection.supply))
+    console.log("supply:", res_collection.supply)
+    setFee(res_collection.earningFee)
     const response = await fetch(process.env.NEXT_PUBLIC_COLLECTION_TOKEN_LIST_URL)
     const collectionTokenList = await response.json()
     setCollectionTokens(collectionTokenList.tokens)
   
   }, [client])
+
   useEffect(() => {
     
     loadNft()
   }, [loadNft, collectionId, id]);
 
+  useEffect(() => {
+    console.log("duration:", duration)
+  }, [duration]);
+
   return (
-    <>
+    <ChakraProvider>
       <Nft className="nft-info">
         <NftInfoTag className="nft-detail">
-          <h2 className="nft-title">List item for sale</h2>
-          <h4>Type</h4>
-          <ButtonGroup>
-            <Button className="fixed-btn active">Fixed Price</Button>
-            <Button className="auction-btn">Timed Auction</Button>
-          </ButtonGroup>
-          <h4>Price</h4>
-          <PriceContiner>
-          {collectionTokens.length > 0 && collectionTokens.map((token, idx) => (
+          <h2 className="sale-title">List item for sale</h2>
+          {supply > 1 &&
+          <>
+            <h4>Quantity</h4>
+            <QuantityContainer>
+            <Input
+                  type='number'
+                  placeholder=''
+                  value={quantity} onChange={handleQuantityChange}
+                />
+            <p>{supply} avaiable</p>
+            </QuantityContainer>
+          </>
+          }
+          {supply == 1 &&
+          <>
+            <h4>Type</h4>
+            <ButtonGroup>
+              <Button 
+                className={`fixed-btn ${sellType=='fixed'?'active':''}`}
+                onClick={(e) => {
+                  setSellType("fixed")
+                }}
+              >
+                Fixed Price
+              </Button>
+              <Button 
+                className={`auction-btn ${sellType=='auction'?'active':''}`}
+                onClick={(e) => {
+                  setSellType("auction")
+                }}
+              >
+                Timed Auction
+              </Button>
+            </ButtonGroup>
+          </>
+          }
+          {sellType=='fixed' &&
+            <>
+            <h4>Price</h4>
+            <PriceContainer>
+            {collectionTokens.length > 0 && 
+              collectionTokens.filter((token: any) =>
+                token.symbol.toLowerCase() == (nft.symbol.toLowerCase())
+              ).map((token, idx) => (
               <Button
                 key={`token${idx}`}
                 variant="secondary"
@@ -103,8 +161,97 @@ export const NFTSell = ({ collectionId, id}) => {
               >
                 <Image alt="Token Icon" className="token-icon" src={collectionTokens[idx].logoUri}/>{token.name}
               </Button>
-            ))}
-          </PriceContiner>
+              ))}
+              <Input
+                  type='number'
+                  placeholder=''
+                  value={price} onChange={handlePriceChange}
+                />
+            </PriceContainer>
+            </>
+          }
+          {sellType=='auction' &&
+          <>
+            <h4>Method</h4>
+            <Select id='method_id' value={method} onChange={handleMethodChange}>
+              <option value=''></option>
+              <option value='0'>Sell with declining price</option>
+            </Select>
+            <h4>Starting price</h4>
+            <PriceContainer>
+            {collectionTokens.length > 0 && 
+              collectionTokens.filter((token: any) =>
+                token.symbol.toLowerCase() == (nft.symbol.toLowerCase())
+              ).map((token, idx) => (
+              <Button
+                key={`token${idx}`}
+                variant="secondary"
+                
+              >
+                <Image alt="Token Icon" className="token-icon" src={collectionTokens[idx].logoUri}/>{token.name}
+              </Button>
+              ))}
+              <Input
+                  type='number'
+                  placeholder=''
+                  value={price} onChange={handlePriceChange}
+                />
+            </PriceContainer>
+          </>
+          }
+          <h4>Duration</h4>
+          <DurationContainer className="field">
+          <DateRangePicker format="yyyy-MM-dd hh:mm aa" showMeridian value={duration} onChange={setDuration} />
+          </DurationContainer>
+          {sellType=='auction' &&
+          <>
+            <h4>Ending price</h4>
+            <PriceContainer>
+            {collectionTokens.length > 0 && 
+              collectionTokens.filter((token: any) =>
+                token.symbol.toLowerCase() == (nft.symbol.toLowerCase())
+              ).map((token, idx) => (
+              <Button
+                key={`token${idx}`}
+                variant="secondary"
+                
+              >
+                <Image alt="Token Icon" className="token-icon" src={collectionTokens[idx].logoUri}/>{token.name}
+              </Button>
+              ))}
+              <Input
+                  type='number'
+                  placeholder=''
+                  value={price} onChange={handlePriceChange}
+                />
+            </PriceContainer>
+          </>
+          }
+          <h4>Fees</h4>
+          <FeeContainer>
+            <span>Service Fee</span>
+            <span>XXX%</span>
+          </FeeContainer>
+          <FeeContainer>
+            <span>Creator Fee</span>
+            <span>{fee}%</span>
+          </FeeContainer>
+          <ActionContainer>
+          <Button className="btn-default"
+            css={{
+              'background': '$black',
+              'color': '$white',
+              'stroke': '$white',
+            }}
+            variant="primary"
+            size="large"
+            onClick={(e) => {
+            }}
+          >
+            Complete listing
+          </Button>
+          
+        </ActionContainer>
         </NftInfoTag>
         <NftUriTag className="sell-nft-uri">
           {nft.image && 
@@ -112,7 +259,7 @@ export const NFTSell = ({ collectionId, id}) => {
           }
         </NftUriTag>
       </Nft>
-    </>
+    </ChakraProvider>
   );
 }
 const Nft = styled('div', {
@@ -129,6 +276,9 @@ const NftInfoTag = styled('div', {
   ' .nft-title':{
     marginTop: '0px',
   },
+  'h4':{
+    'fontWeight': 'bold',
+  },
   '>a':{
     color: '$colors$link',
   }
@@ -137,7 +287,7 @@ const NftInfoTag = styled('div', {
 const ButtonGroup = styled('div', {
   display: 'flex',
   gap: '0',
-  marginTop: '$space$10',
+  marginBottom: '$space$10',
   'button':{
     width: '50%',
     borderRadius: '0',
@@ -156,6 +306,40 @@ const ButtonGroup = styled('div', {
   }
 })
 
-const PriceContiner = styled('div', {
+const PriceContainer = styled('div', {
+  display: 'flex',
+  marginBottom: '$space$10',
+  'button':{
+    display: 'flex',
+    flexDirection: 'row',
+
+    'img':{
+      width: '$8',
+      marginRight: '$2'
+    }
+  },
+  'input':{
+    width: '100%',
+    height: '$lineHeights$5',
+    marginLeft: '$2'
+  }
   
+})
+const QuantityContainer = styled('div', {
+  marginBottom: '$space$10',
+  'p':{
+    textAlign: 'right',
+  }
+})
+const DurationContainer = styled('div', {
+  marginBottom: '$space$10',
+})
+
+const FeeContainer = styled('div', {
+  marginBottom: '$space$10',
+  display: 'flex',
+  justifyContent: 'space-between',
+})
+const ActionContainer = styled('div', {
+  marginBottom: '$space$10',
 })

@@ -17,6 +17,7 @@ export function randomNft(): NftInfo {
     price: price + (randC ? ' JUNO' : ' ATOM'),
     total: 2,
     address: '',
-    collectionName: 'marblenauts'
+    collectionName: 'marblenauts',
+    symbol: "MARBLE"
   }
 }
