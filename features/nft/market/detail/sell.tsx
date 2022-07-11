@@ -87,7 +87,7 @@ export const NFTSell = ({ collectionId, id}) => {
     }
     console.log("collection", res_collection)
     setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': res_nft.price, 'total': 2, 'collectionName': res_collection.name, 'symbol': res_collection.tokens[0]})
-    setSupply(res_collection.supply==undefined?2:parseInt(res_collection.supply))
+    setSupply(res_collection.supply==undefined?1:parseInt(res_collection.supply))
     console.log("supply:", res_collection.supply)
     setFee(res_collection.earningFee)
     const response = await fetch(process.env.NEXT_PUBLIC_COLLECTION_TOKEN_LIST_URL)
