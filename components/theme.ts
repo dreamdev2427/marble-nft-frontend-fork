@@ -155,6 +155,7 @@ export const { theme, styled, css } = createStitches({
       8: '32px',
       9: '40px',
       10: '64px',
+      11: '80px',
       22: '50px',
       23: '80px',
       24: '86px',

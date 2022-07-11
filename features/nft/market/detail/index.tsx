@@ -28,6 +28,8 @@ import {
   TableCaption,
   TableContainer,
 } from '@chakra-ui/react'
+import { BuyDialog } from 'features/nft/market/detail/BuyDialog'
+import { OfferDialog } from 'features/nft/market/detail/OfferDialog'
 
 interface DetailParams {
   readonly collectionId: string
@@ -38,9 +40,11 @@ export const NFTDetail = ({ collectionId, id}) => {
   const { client } = useSdk()
   const { address, client: signingClient } = useRecoilValue(walletState)
   const [nft, setNft] = useState<NftInfo>(
-    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': "" }
+    {'tokenId': id, 'address': '', 'image': '', 'name': '', 'user': '', 'price': '0', 'total': 2, 'collectionName': "", 'symbol': 'Marble'}
   )
-
+  const [isBuyShowing, setIsBuyShowing] = useState(false)
+  const [isOfferShowing, setIsOfferShowing] = useState(false)
+  
   const loadNft = useCallback(async () => {
     if (!client) return
     if (collectionId === undefined || collectionId == "[collection]" || id === undefined || id == "[id]")
@@ -66,20 +70,25 @@ export const NFTDetail = ({ collectionId, id}) => {
     if (uri.indexOf("https://") == -1){
       uri = process.env.NEXT_PUBLIC_PINATA_URL + res_nft.uri
     }
-    setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': res_nft.price, 'total': 2, 'collectionName': res_collection.name})
+    setNft({'tokenId': id, 'address': '', 'image': uri, 'name': res_nft.name, 'user': res_nft.owner, 'price': res_nft.price, 'total': 2, 'collectionName': res_collection.name, 'symbol': res_collection.tokens[0]})
   }, [client])
   useEffect(() => {
     loadNft()
   }, [loadNft, collectionId, id]);
   return (
-    <>
-      {nft.user == address &&
-      <OwnerAction>
-        <Link href={`/nft/${collectionId}/${id}/sell`} passHref>
-        <Button>Sell</Button>
-        </Link>
-      </OwnerAction>
-      }
+    <NFTContainer>
+      <BuyDialog 
+        isShowing={isBuyShowing}
+        onRequestClose={() => setIsBuyShowing(false)}
+        collectionId={collectionId}
+        id={id}
+      />
+      <OfferDialog 
+        isShowing={isOfferShowing}
+        onRequestClose={() => setIsOfferShowing(false)}
+        collectionId={collectionId}
+        id={id}
+      />
       <Nft className="nft-info">
           
           <NftUriTag className="nft-uri">
@@ -109,7 +118,25 @@ export const NFTDetail = ({ collectionId, id}) => {
                 <label className="price-lbl">Current Price</label>
                 <NftPrice nft={nft}/>
                 <ButtonGroup>
-                <Link href="https://app.marbledao.finance/marblenauts-nft" passHref>
+                {nft.user == address &&
+                  <OwnerAction>
+                    <Link href={`/nft/${collectionId}/${id}/sell`} passHref>
+                    <Button
+                      css={{
+                        'background': '$black',
+                        'color': '$white',
+                        'stroke': '$white',
+                      }}
+                      variant="primary"
+                      size="large"
+                    >
+                      Sell
+                    </Button>
+                    </Link>
+                  </OwnerAction>
+                }
+                {nft.user != address &&
+                <>
                   <Button className="btn-buy btn-default"
                     css={{
                       'background': '$black',
@@ -119,11 +146,13 @@ export const NFTDetail = ({ collectionId, id}) => {
                     iconLeft={<IconWrapper icon={<Credit />} />}
                     variant="primary"
                     size="large"
-
+                    onClick={(e) => {
+                      setIsBuyShowing(true)
+                      return false
+                    }}
                   >
                     Buy Now
-                    </Button>
-                    </Link>
+                  </Button>
                   <Button className="btn-offer btn-default"
                     css={{
                       'background': '$white',
@@ -133,10 +162,15 @@ export const NFTDetail = ({ collectionId, id}) => {
                     iconLeft={<IconWrapper icon={<Credit />} />}
                     variant="primary"
                     size="large"
-
+                    onClick={(e) => {
+                      setIsOfferShowing(true)
+                      return false
+                    }}
                   >
-                    Soon Offer
+                    Offer
                   </Button>
+                  </>
+                }
                 </ButtonGroup>
               </PriceTag>
             </NftBuyOfferTag>
@@ -205,9 +239,11 @@ export const NFTDetail = ({ collectionId, id}) => {
           </NftInfoTag>
 
       </Nft>
-    </>
+    </NFTContainer>
   );
 }
+const NFTContainer = styled('div', {
+})
 const Nft = styled('div', {
   display: 'flex',
 })
@@ -334,7 +370,5 @@ const TableTitle = styled('div', {
   borderBottom: '1px solid $borderColors$default',
 })
 const OwnerAction = styled('div', {
-  position: 'absolute',
-  margin: '-40px 0',
-  right: '0',
+
 })
