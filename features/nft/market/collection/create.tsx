@@ -359,7 +359,7 @@ export const CollectionCreate = () => {
     }
     const marketContract = Market(PUBLIC_MARKETPLACE).useTx(signingClient)
     const collection = await marketContract.addCollection(
-      address, 10000, name, "MNFT", Number(PUBLIC_CW721_BASE_CODE_ID), PUBLIC_CW20_CONTRACT, Number(earningFee), ipfsHash
+      address, 10000, name, "MNFT", Number(PUBLIC_CW721_BASE_CODE_ID), PUBLIC_CW20_CONTRACT, Number(earningFee * 1000000), ipfsHash
     )
     console.log("Collection:", collection)
     toast.success(
