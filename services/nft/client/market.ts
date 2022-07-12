@@ -151,7 +151,6 @@ export const Market = (contractAddress: string): MarketContract => {
       royalty: number, 
       uri: string
     ): Promise<string> => {
-      royalty = Math.round( royalty * 1000000 )
       const result = await client.execute(
         owner,
         contractAddress,
