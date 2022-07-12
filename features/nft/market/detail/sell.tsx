@@ -246,6 +246,7 @@ export const NFTSell = ({ collectionId, id}) => {
             variant="primary"
             size="large"
             onClick={(e) => {
+              
             }}
           >
             Complete listing
